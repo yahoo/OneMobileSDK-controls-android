@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016 One by Aol : Publishers. All rights reserved.
+  -->
+
+<resources>
+    <color name="default_ad_accent_color">#FFC600</color>
+    <color name="default_accent_color">#B53087</color>
+    <color name="default_main_color">#FFFFFF</color>
+</resources>

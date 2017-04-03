@@ -1,0 +1,14 @@
+<!--
+  ~ Copyright (c) 2016 One by Aol : Publishers. All rights reserved.
+  -->
+
+<lint>
+    <issue id="IconMissingDensityFolder" severity="ignore"/>
+    <issue id="ContentDescription" severity="ignore"/>
+    <issue id="Overdraw" severity="ignore"/>
+    <issue id="RtlSymmetry" severity="ignore"/>
+    <issue id="SpUsage" severity="ignore"/>
+    <issue id="UnusedResources" severity="ignore"/>
+    <issue id="ClickableViewAccessibility" severity="ignore"/>
+    <issue id="SetJavaScriptEnabled" severity="ignore"/>
+</lint>

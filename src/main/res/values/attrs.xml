@@ -1,0 +1,11 @@
+<!--
+  ~ Copyright (c) 2016 One by Aol : Publishers. All rights reserved.
+  -->
+
+<resources>
+    <declare-styleable name="ControlsAttrs">
+        <attr name="mainColor" format="color"/>
+        <attr name="accentColor" format="color"/>
+        <attr name="ratio" format="string|reference"/>
+    </declare-styleable>
+</resources>
