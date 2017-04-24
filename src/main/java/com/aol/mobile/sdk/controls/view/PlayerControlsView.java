@@ -41,7 +41,7 @@ import com.aol.mobile.sdk.controls.viewmodel.PlayerControlsVM;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
 
-public class PlayerControlsView extends RelativeLayout implements PlayerControls<View>, Themed {
+public class PlayerControlsView extends RelativeLayout implements PlayerControls, Themed {
     @NonNull
     private final RelativeLayout controlsContainer;
     @NonNull
