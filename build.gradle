@@ -1,5 +1,12 @@
+/*
+ * Copyright (c) 2016 One by Aol : Publishers. All rights reserved.
+ */
+
 repositories {
     jcenter()
+    maven {
+        url "https://comscore.bintray.com/Analytics"
+    }
 }
 
 buildscript {
@@ -8,148 +15,46 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.3.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
+apply from: 'tools/travis.gradle'
+apply from: 'tools/git.gradle'
 
-version = "1.5"
-group = "com.aol.one.publishers.android"
+ext {
+    // Android library config
+    BUILD_TOOLS_VERSION = "25.0.2"
+    MIN_API_VERSION = 16
+    TARGET_API_VERSION = 25
+    LIBRARY_VERSION = GIT_VERSION
 
-android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    // Javadoc configuration
+    JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
 
-    aaptOptions {
-        failOnMissingConfigEntry true
-    }
-
-    lintOptions {
-        abortOnError false
-        showAll true
-        warningsAsErrors false
-        explainIssues true
-
-        textReport true
-        textOutput "stdout"
-
-        htmlReport false
-        xmlReport false
-    }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.all {
-            testLogging {
-                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-                outputs.upToDateWhen { false }
-                showStandardStreams = true
-            }
-        }
-    }
-
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+    // Bintray publish config
+    BINTRAY_KEY = System.getenv('BINTRAY_KEY')
+    BINTRAY_USER = System.getenv('BINTRAY_USER')
+    GROUP_ID = 'com.aol.one.publishers.android'
+    REPO_NAME = 'one-mobile-sdk-controls'
+    ARTIFACT_ID = 'controls'
 }
 
-configurations {
-    jaxDoclet
-}
+apply from: 'tools/android.gradle'
+apply from: 'tools/javadoc.gradle'
+apply from: 'tools/sources.gradle'
+apply from: 'tools/bintray.gradle'
 
 dependencies {
+    //noinspection GradleDynamicVersion
     provided 'com.android.support:support-annotations:25.3.1'
 
-    jaxDoclet('ch.raffael.pegdown-doclet:pegdown-doclet:1.3')
-}
-
-android.libraryVariants.all { variant ->
-    def variantName = "${variant.name.capitalize()}"
-    if (variantName != "Release") return;
-
-    def genJavadocTask = task("generate" + variantName + "Javadoc", type: Javadoc) {
-        dependsOn variant.javaCompile
-
-        title = "OneSDK controls Javadoc for $variant.name."
-        source = variant.javaCompile.source
-        classpath = files(variant.javaCompile.classpath, project.android.getBootClasspath())
-
-        options {
-            doclet "ch.raffael.doclets.pegdown.PegdownDoclet"
-            docletpath configurations.jaxDoclet.files.asType(File[])
-            links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "https://developer.android.com/reference", "${android.sdkDirectory}/docs/reference"
-            encoding = 'UTF-8'
-            locale 'en'
-
-            options.addStringOption "overview", "$rootDir/README.md"
-            options.addStringOption "javadocversion", "v8"
-            options.addStringOption "extensions", "all"
-            options.addStringOption "parse-timeout", "100"
-            options.addStringOption "enable-auto-highlight"
-            options.addStringOption "quiet"
-        }
-
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
-    }
-
-    def jarJavadocTask = task("jar${variant.name.capitalize()}Javadoc", type: Jar) {
-        classifier = 'javadoc'
-        dependsOn genJavadocTask
-        from genJavadocTask.destinationDir
-    }
-    artifacts.add('archives', jarJavadocTask);
-
-    def jarSourcesTask = task("jar${variant.name.capitalize()}Sources", type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-    artifacts.add('archives', jarSourcesTask);
-}
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-            }
-        }
-    }
-}
-
-bintray {
-    // Credentials
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-
-    // Upload source
-    configurations = ['archives']
-
-    // Upload flags
-    dryRun = false
-    override = true
-    publish = true
-
-    // Package configuration
-    pkg {
-        repo = 'maven'
-        name = 'one-mobile-sdk-controls'
-    }
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.2.2'
+    testCompile 'net.javacrumbs.json-unit:json-unit-fluent:1.18.0'
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    testCompile 'com.squareup.assertj:assertj-android:1.1.1'
+    testCompile 'org.mockito:mockito-core:1.10.19'
 }

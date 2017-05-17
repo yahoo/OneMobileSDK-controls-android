@@ -15,6 +15,7 @@ android:
     - android-25
 
     # Additional components
+    - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
 
@@ -27,9 +28,9 @@ cache:
 script: ./gradlew lintRelease testRelease
 
 before_deploy:
-  # Uploading to bintray all artifacts
-  - ./gradlew bintrayUpload
-
+  # Generating javadoc and uploading to bintray all artifacts
+  - ./gradlew binU
+  
 deploy:
   skip_cleanup: true
   provider: script
@@ -41,4 +42,3 @@ deploy:
 notifications:
   email: false
   slack: aol:M5cVriVZt6P4yiHdkH84N10l
-
