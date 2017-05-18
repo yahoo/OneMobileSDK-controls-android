@@ -365,7 +365,6 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         super.setVisibility(visibility);
         if (visibility == INVISIBLE) {
             visibilityModule.timeout();
-            controlsContainer.setVisibility(INVISIBLE);
         }
     }
 
