@@ -1,0 +1,3 @@
+[submodule "tools"]
+	path = tools
+	url = https://github.com/aol-public/OneMobileSDK-tools-android.git
