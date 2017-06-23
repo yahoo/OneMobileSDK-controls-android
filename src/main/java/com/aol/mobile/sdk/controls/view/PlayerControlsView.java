@@ -583,9 +583,14 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        visibilityModule.prolong();
         gestureDetector.onTouchEvent(event);
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        visibilityModule.prolong();
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
