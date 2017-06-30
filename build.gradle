@@ -4,9 +4,6 @@
 
 repositories {
     jcenter()
-    maven {
-        url "https://comscore.bintray.com/Analytics"
-    }
 }
 
 buildscript {
@@ -15,37 +12,34 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'org.ajoberstar:gradle-git-publish:0.2.1'
     }
 }
 
-apply from: 'tools/travis.gradle'
-apply from: 'tools/git.gradle'
+apply from: 'tools/travis-consts.gradle'
+apply from: 'tools/git-consts.gradle'
 
 ext {
     // Android library config
     BUILD_TOOLS_VERSION = "25.0.2"
     MIN_API_VERSION = 16
     TARGET_API_VERSION = 25
-    LIBRARY_VERSION = GIT_VERSION
 
     // Javadoc configuration
     JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
 
-    // Bintray publish config
-    BINTRAY_KEY = System.getenv('BINTRAY_KEY')
-    BINTRAY_USER = System.getenv('BINTRAY_USER')
+    // Maven
     GROUP_ID = 'com.aol.one.publishers.android'
-    REPO_NAME = 'one-mobile-sdk-controls'
     ARTIFACT_ID = 'controls'
+    LIBRARY_VERSION = GIT_BASED_VERSION
 }
 
 apply from: 'tools/android.gradle'
 apply from: 'tools/javadoc.gradle'
 apply from: 'tools/sources.gradle'
-apply from: 'tools/bintray.gradle'
+apply from: 'tools/github-maven.gradle'
 
 dependencies {
     //noinspection GradleDynamicVersion
