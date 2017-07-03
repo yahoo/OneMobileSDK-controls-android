@@ -27,17 +27,15 @@ cache:
 
 script: ./gradlew lintRelease testRelease
 
-before_deploy:
-  # Generating javadoc and uploading to bintray all artifacts
-  - ./gradlew binU
-  
 deploy:
   skip_cleanup: true
   provider: script
   on:
     branch: master
     tags: true
-  script: echo Deployed
+  script:
+    - ./gradlew gitPublishPush
+    - echo Deployed
 
 notifications:
   email: false
