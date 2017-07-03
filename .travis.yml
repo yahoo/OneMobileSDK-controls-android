@@ -1,12 +1,14 @@
 sudo: false
 jdk: oraclejdk8
+
 language: android
+
 android:
   components:
     # Using latest platform tools
     - tools
-    - tools
     - platform-tools
+    - tools
 
     # The BuildTools version used by your project
     - build-tools-25.0.2
@@ -19,25 +21,28 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
-before_cache: rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
-script: ./gradlew lintRelease testRelease
+script:
+    - ./gradlew lintRelease testRelease
 
-before_deploy:
-  # Generating javadoc and uploading to bintray all artifacts
-  - ./gradlew binU
-  
 deploy:
   skip_cleanup: true
   provider: script
   on:
     branch: master
     tags: true
-  script: echo Deployed
+  script: echo Deploying
+
+after_deploy: ./gradlew gitPublishPush
 
 notifications:
   email: false
