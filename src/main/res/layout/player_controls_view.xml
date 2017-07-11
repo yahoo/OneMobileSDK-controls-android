@@ -41,8 +41,13 @@
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/prev_button"
                 style="@style/ControlButton"
+                android:layout_marginLeft="-12dp"
                 android:layout_weight="1"
-                android:src="@drawable/button_back" />
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp"
+                android:src="@drawable/button_back"
+                tools:ignore="RtlHardcoded" />
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/backward_seek_button"
@@ -77,8 +82,13 @@
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/next_button"
                 style="@style/ControlButton"
+                android:layout_marginRight="-12dp"
                 android:layout_weight="1"
-                android:src="@drawable/button_forward" />
+                android:paddingBottom="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
+                android:src="@drawable/button_forward"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
         <RelativeLayout
@@ -227,4 +237,5 @@
             android:padding="5dp"
             android:textColor="#FFFFFF" />
     </FrameLayout>
+
 </RelativeLayout>
