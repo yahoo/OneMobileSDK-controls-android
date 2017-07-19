@@ -247,6 +247,8 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
             }
         });
 
+        subtitlesContainer.setPadding(0, 0, 0, (int) (getResources().getDimension(R.dimen.seeker_height) + getResources().getDimension(R.dimen.seekbar_bottom_padding)));
+
         setupListeners();
         initFocusIssue();
         updateColors();
