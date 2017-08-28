@@ -20,15 +20,33 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.view.*;
-import android.widget.*;
+import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.aol.mobile.sdk.controls.ControlsButton;
 import com.aol.mobile.sdk.controls.ImageLoader;
 import com.aol.mobile.sdk.controls.PlayerControls;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
-import com.aol.mobile.sdk.controls.utils.*;
+import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
+import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
+import com.aol.mobile.sdk.controls.utils.ViewUtils;
+import com.aol.mobile.sdk.controls.utils.VisibilityModule;
+import com.aol.mobile.sdk.controls.utils.VisibilityWrapper;
 import com.aol.mobile.sdk.controls.viewmodel.PlayerControlsVM;
 import com.aol.mobile.sdk.controls.viewmodel.TrackOptionVM;
 
@@ -62,6 +80,8 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     private final TintableImageButton backwardSeekButton;
     @NonNull
     private final TintableImageButton forwardSeekButton;
+    @NonNull
+    private final LinearLayout liveIndicatorLayout;
     @NonNull
     private final TintableImageButton playNextButton;
     @NonNull
@@ -222,6 +242,8 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     private int mainColor;
     @ColorInt
     private int accentColor;
+    @ColorInt
+    private int liveDotColor;
     @NonNull
     private final LinkedList<TrackOptionVM> audioTracks = new LinkedList<>();
     private final LinkedList<TrackOptionVM> ccTracks = new LinkedList<>();
@@ -256,6 +278,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         trackChooserButton = findView(this, R.id.tracks_button);
         forwardSeekButton = findView(this, R.id.forward_seek_button);
         backwardSeekButton = findView(this, R.id.backward_seek_button);
+        liveIndicatorLayout = findView(this, R.id.live_indicator);
         subtitlesContainer = findView(this, R.id.subtitles_container);
         subtitlesView = findView(this, R.id.subtitles_view);
         seekerContainer = findView(this, R.id.seekbar_container);
@@ -326,6 +349,9 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
             item.setMainColor(mainColor);
         }
 
+        TextView liveText = (TextView) liveIndicatorLayout.getChildAt(1);
+        liveText.setTextColor(mainColor);
+
         durationView.setTextColor(mainColor);
         titleView.setTextColor(mainColor);
         currentTimeView.setTextColor(accentColor);
@@ -335,6 +361,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     private void readAttrs(@NonNull Context context, @Nullable AttributeSet attrs) {
         mainColor = context.getResources().getColor(R.color.default_main_color);
         accentColor = context.getResources().getColor(R.color.default_accent_color);
+        liveDotColor = Color.RED;
 
         if (attrs == null) return;
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ControlsAttrs, 0, 0);
@@ -399,6 +426,22 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         renderThumbnail(viewModel.thumbnailImageUrl);
         renderCompassDirection(viewModel.compassLongitude);
         renderAudioAndCcList(viewModel.audioTracks, viewModel.ccTracks);
+
+        RelativeLayout.LayoutParams titleLayoutParams = (RelativeLayout.LayoutParams) titleView.getLayoutParams();
+        if (viewModel.isLiveIndicatorVisible) {
+            titleLayoutParams.setMargins(liveIndicatorLayout.getWidth(), 0, 0, 0);
+        } else {
+            titleLayoutParams.setMargins(0, 0, 0, 0);
+        }
+        titleView.setLayoutParams(titleLayoutParams);
+        liveIndicatorLayout.setVisibility(viewModel.isLiveIndicatorVisible ? VISIBLE : GONE);
+
+        Drawable liveDot = liveIndicatorLayout.getChildAt(0).getBackground();
+        if (viewModel.isOnLiveEdge) {
+            liveDot.setColorFilter(liveDotColor, PorterDuff.Mode.MULTIPLY);
+        } else {
+            liveDot.setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
+        }
 
         isPlaying = viewModel.isStreamPlaying;
         thumbUrl = viewModel.thumbnailImageUrl;
@@ -684,5 +727,9 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     public void setAccentColor(@ColorInt int color) {
         accentColor = color;
         updateColors();
+    }
+
+    public void setLiveDotColor(@ColorInt int color) {
+        liveDotColor = color;
     }
 }

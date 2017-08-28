@@ -8,4 +8,5 @@
     <string name="audio_tracks_title">AUDIO</string>
     <string name="text_tracks_title">SUBTITLES</string>
     <string name="track_close_title">Close</string>
+    <string name="live">LIVE</string>
 </resources>
