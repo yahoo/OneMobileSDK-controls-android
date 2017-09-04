@@ -21,8 +21,6 @@ public interface PlayerControls {
     interface Listener {
         void onButtonClick(@NonNull ControlsButton button);
 
-        void onSubtitleToggled(boolean isTurnedOn);
-
         void onScroll(float distanceX, float distanceY);
 
         void onSeekStarted();
@@ -30,5 +28,9 @@ public interface PlayerControls {
         void onSeekTo(double position);
 
         void onSeekStopped();
+
+        void onAudioTrackSelected(int index);
+
+        void onCcTrackSelected(int index);
     }
 }

@@ -4,7 +4,10 @@
 
 package com.aol.mobile.sdk.controls.viewmodel;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import java.util.LinkedList;
 
 public class PlayerControlsVM {
     public boolean isLoading;
@@ -18,14 +21,13 @@ public class PlayerControlsVM {
     public boolean isSeekerVisible;
     public boolean isSeekForwardButtonVisible;
     public boolean isSeekBackButtonVisible;
-    public boolean isSubtitlesButtonVisible;
-    public boolean isSubtitlesButtonEnabled;
-    public boolean isSubtitlesButtonSelected;
     public boolean isTitleVisible;
     public boolean isSubtitlesTextVisible;
     public boolean isCompassViewVisible;
     public boolean isThumbnailImageVisible;
     public boolean isStreamPlaying;
+    public boolean isTrackChooserButtonEnabled;
+    public boolean isTrackChooserButtonVisible;
     public int seekerBufferedProgress;
     public int seekerMaxValue;
     public double seekerProgress;
@@ -43,4 +45,8 @@ public class PlayerControlsVM {
     public CharSequence subtitlesText;
     @Nullable
     public String thumbnailImageUrl;
+    @NonNull
+    public final LinkedList<TrackOptionVM> audioTracks = new LinkedList<>();
+    @NonNull
+    public final LinkedList<TrackOptionVM> ccTracks = new LinkedList<>();
 }
