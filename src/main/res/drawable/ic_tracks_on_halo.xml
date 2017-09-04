@@ -5,6 +5,6 @@
         <bitmap android:src="@drawable/ic_halo"/>
     </item>
     <item>
-        <bitmap android:src="@drawable/ic_cc_on"/>
+        <bitmap android:src="@drawable/ic_tracks_on"/>
     </item>
 </layer-list>

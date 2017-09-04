@@ -5,4 +5,7 @@
 
 <resources>
     <string name="advertisement">Advertisement</string>
+    <string name="audio_tracks_title">AUDIO</string>
+    <string name="text_tracks_title">SUBTITLES</string>
+    <string name="track_close_title">Close</string>
 </resources>
