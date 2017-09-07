@@ -13,17 +13,19 @@ import android.widget.TextView;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.viewmodel.TrackOptionVM;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static android.view.View.*;
 import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.AUDIO;
 import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.CC;
+import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.TITLE;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 
 public class TracksChooserAdapter extends BaseAdapter {
     @NonNull
-    private final List<Item> items = new LinkedList<>();
+    private final List<Item> items = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
     public void updateData(@NonNull Context context, @NonNull LinkedList<TrackOptionVM> audioTracks,
@@ -50,6 +52,20 @@ public class TracksChooserAdapter extends BaseAdapter {
         }
 
         items.add(new Item(trackColor, resources.getString(R.string.track_close_title), closeIcon));
+
+        notifyDataSetInvalidated();
+    }
+
+    public void select(int index) {
+        Item selectedItem = items.get(index);
+
+        if (selectedItem.type == CC || selectedItem.type == AUDIO) {
+            for (Item item : items) {
+                if (item.type == selectedItem.type) {
+                    item.imageVisibility = item == selectedItem ? VISIBLE : INVISIBLE;
+                }
+            }
+        }
 
         notifyDataSetInvalidated();
     }
