@@ -113,6 +113,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
             if (view == compassView) listener.onButtonClick(ControlsButton.COMPASS);
 
             if (view == trackChooserButton) {
+                adapter.updateData(getContext(), audioTracks, ccTracks);
                 dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -124,11 +125,12 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
                 ListView listView = new ListView(getContext());
                 listView.setDivider(null);
                 listView.setAdapter(adapter);
-                adapter.updateData(getContext(), audioTracks, ccTracks);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        TracksChooserAdapter.Item item = (TracksChooserAdapter.Item) parent.getAdapter().getItem(position);
+                        adapter.select(position);
+
+                        TracksChooserAdapter.Item item = adapter.getItem(position);
 
                         switch (item.type) {
                             case CC:
@@ -411,10 +413,6 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
 
         this.ccTracks.clear();
         this.ccTracks.addAll(ccTracks);
-
-        if (dialog != null && dialog.isShowing()) {
-            adapter.updateData(getContext(), audioTracks, ccTracks);
-        }
 
         if (audioTracks.isEmpty() && ccTracks.isEmpty()) {
             if (dialog != null) {
