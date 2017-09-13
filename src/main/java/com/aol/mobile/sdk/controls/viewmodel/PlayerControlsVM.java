@@ -45,6 +45,8 @@ public class PlayerControlsVM {
     public CharSequence subtitlesText;
     @Nullable
     public String thumbnailImageUrl;
+    public boolean isLiveIndicatorVisible;
+    public boolean isOnLiveEdge;
     @NonNull
     public final LinkedList<TrackOptionVM> audioTracks = new LinkedList<>();
     @NonNull
