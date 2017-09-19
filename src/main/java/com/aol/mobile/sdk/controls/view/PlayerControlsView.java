@@ -428,14 +428,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         renderThumbnail(viewModel.thumbnailImageUrl);
         renderCompassDirection(viewModel.compassLongitude);
         renderAudioAndCcList(viewModel.audioTracks, viewModel.ccTracks);
-
-        RelativeLayout.LayoutParams titleLayoutParams = (RelativeLayout.LayoutParams) titleView.getLayoutParams();
-        if (viewModel.isLiveIndicatorVisible) {
-            titleLayoutParams.setMargins(liveIndicatorLayout.getWidth(), 0, 0, 0);
-        } else {
-            titleLayoutParams.setMargins(0, 0, 0, 0);
-        }
-        titleView.setLayoutParams(titleLayoutParams);
+        
         liveIndicatorLayout.setVisibility(viewModel.isLiveIndicatorVisible ? VISIBLE : GONE);
 
         Drawable liveDot = liveIndicatorLayout.getChildAt(0).getBackground();

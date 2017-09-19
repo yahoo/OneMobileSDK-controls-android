@@ -187,7 +187,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/live_indicator"
         android:layout_margin="14dp"
         android:visibility="invisible"
         tools:ignore="RtlHardcoded">
@@ -244,7 +244,7 @@
         android:id="@+id/live_indicator"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/title_height"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:gravity="center"
