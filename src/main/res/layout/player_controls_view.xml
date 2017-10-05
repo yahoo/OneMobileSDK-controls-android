@@ -145,29 +145,42 @@
                 tools:text="00:00" />
         </RelativeLayout>
 
-        <com.aol.mobile.sdk.controls.view.TintableImageButton
-            android:id="@id/tracks_button"
-            style="@style/ControlToggleButton"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/title_view"
-            android:layout_marginEnd="60dp"
-            android:layout_marginRight="60dp"
-            android:src="@drawable/dr_tracks" />
-
         <TextView
             android:id="@id/title_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_height"
             android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@id/tracks_button"
-            android:layout_toStartOf="@id/tracks_button"
+            android:layout_toLeftOf="@+id/bottom_controls"
+            android:layout_toStartOf="@+id/bottom_controls"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingLeft="9dp"
             android:paddingStart="9dp"
             android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/bottom_controls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/title_view"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:orientation="horizontal">
+
+            <com.aol.mobile.sdk.controls.view.TintableImageButton
+                android:id="@id/tracks_button"
+                style="@style/ControlToggleButton"
+                android:src="@drawable/dr_tracks" />
+
+            <FrameLayout
+                android:id="@+id/cast_placeholder"
+                android:layout_width="@dimen/cast_button_size"
+                android:layout_height="@dimen/cast_button_size"
+                android:visibility="invisible" />
+        </LinearLayout>
 
         <com.aol.mobile.sdk.controls.view.SidePanel
             android:id="@+id/side_panel"
@@ -244,9 +257,9 @@
         android:id="@+id/live_indicator"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/title_height"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
