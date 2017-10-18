@@ -11,10 +11,10 @@ android:
     - tools
 
     # The BuildTools version used by your project
-    - build-tools-25.0.2
+    - build-tools-26.0.1
 
     # The SDK version used to compile your project
-    - android-25
+    - android-26
 
     # Additional components
     - extra-google-google_play_services
@@ -31,18 +31,14 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
-script:
-    - ./gradlew lintRelease testRelease
+script: ./gradlew lintRelease testRelease
 
 deploy:
   skip_cleanup: true
   provider: script
   on:
     branch: master
-    tags: true
-  script: echo Deploying
-
-after_deploy: ./gradlew gitPublishPush
+  script: ./gradlew gitPublishPush
 
 notifications:
   email: false

@@ -4,47 +4,41 @@
 
 repositories {
     jcenter()
+    google()
 }
 
 buildscript {
+    apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/env-props.gradle'
+
+    ext {
+        // Javadoc configuration
+        JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
+
+        // Maven
+        GROUP_ID = 'com.aol.one.publishers.android'
+        ARTIFACT_ID = 'controls'
+        LIBRARY_VERSION = GIT_BASED_VERSION
+    }
+
     repositories {
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'org.ajoberstar:gradle-git-publish:0.2.1'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.50'
+        classpath ANDROID_GRADLE_PLUGIN
+        classpath ANDROID_MAVEN_PLUGIN
+        classpath KOTLIN_PLUGIN
+        classpath GIT_PUBLISH_PLUGIN
     }
 }
 
-apply from: 'tools/travis-consts.gradle'
-apply from: 'tools/git-consts.gradle'
-
-ext {
-    // Android library config
-    BUILD_TOOLS_VERSION = "25.0.2"
-    MIN_API_VERSION = 16
-    TARGET_API_VERSION = 25
-
-    // Javadoc configuration
-    JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
-
-    // Maven
-    GROUP_ID = 'com.aol.one.publishers.android'
-    ARTIFACT_ID = 'controls'
-    LIBRARY_VERSION = GIT_BASED_VERSION
-}
-
-apply from: 'tools/android.gradle'
-apply from: 'tools/javadoc.gradle'
-apply from: 'tools/sources.gradle'
-apply from: 'tools/github-maven.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/android.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/javadoc.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/sources.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/github-maven.gradle'
 
 dependencies {
-    //noinspection GradleDynamicVersion
-    provided 'com.android.support:support-annotations:25.3.1'
+    provided 'com.android.support:support-annotations:26.1.0'
 
     testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.1.50'
     testCompile 'org.robolectric:robolectric:3.2.2'
