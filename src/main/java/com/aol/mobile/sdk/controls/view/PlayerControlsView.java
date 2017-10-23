@@ -69,9 +69,9 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     @NonNull
     private final TextView titleView;
     @NonNull
-    private final VisibilityWrapper<TintableImageButton> playButton;
+    private final VisibilityWrapper<PlayNoResImageButton> playButton;
     @NonNull
-    private final VisibilityWrapper<TintableImageButton> pauseButton;
+    private final VisibilityWrapper<PauseNoResImageButton> pauseButton;
     @NonNull
     private final VisibilityWrapper<TintableImageButton> replayButton;
     @NonNull
@@ -272,8 +272,8 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
 
         controlsContainer = findView(this, R.id.controls_container);
         progressView = findView(this, R.id.progressbar);
-        playButton = new VisibilityWrapper<>((TintableImageButton) findView(this, R.id.play_button));
-        pauseButton = new VisibilityWrapper<>((TintableImageButton) findView(this, R.id.pause_button));
+        playButton = new VisibilityWrapper<>((PlayNoResImageButton) findView(this, R.id.play_button));
+        pauseButton = new VisibilityWrapper<>((PauseNoResImageButton) findView(this, R.id.pause_button));
         replayButton = new VisibilityWrapper<>((TintableImageButton) findView(this, R.id.replay_button));
         playNextButton = findView(this, R.id.next_button);
         playPreviousButton = findView(this, R.id.prev_button);
