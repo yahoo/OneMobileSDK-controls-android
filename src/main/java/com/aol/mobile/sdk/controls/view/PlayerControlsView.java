@@ -101,6 +101,10 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     @NonNull
     private final TextView durationView;
     @NonNull
+    private FrameLayout castHolder;
+    @Nullable
+    private View castButton;
+    @NonNull
     private final AndroidHandlerTimer timer = new AndroidHandlerTimer(new Handler());
     @NonNull
     private final VisibilityModule visibilityModule;
@@ -292,6 +296,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         sidePanel = findView(this, R.id.side_panel);
         durationView = findView(this, R.id.duration);
         currentTimeView = findView(this, R.id.current_time);
+        castHolder = findView(this, R.id.cast_placeholder);
 
         themedItems = new Themed[]{
                 playButton.view,
@@ -394,6 +399,12 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         this.listener = listener;
     }
 
+    public void setCastButton(@Nullable View castButton) {
+        castHolder.removeAllViews();
+        castHolder.addView(castButton);
+        this.castButton = castButton;
+    }
+
     @Override
     public void render(@NonNull PlayerControlsVM viewModel) {
         renderControlsVisibility(viewModel.isStreamPlaying);
@@ -412,6 +423,12 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         ViewUtils.renderVisibility(viewModel.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(viewModel.isTrackChooserButtonVisible, trackChooserButton);
 
+        if (castButton != null && viewModel.isCastButtonVisible) {
+            castHolder.setVisibility(VISIBLE);
+        } else{
+            castHolder.setVisibility(GONE);
+        }
+
         ViewUtils.renderAvailability(viewModel.isNextButtonEnabled, playNextButton);
         ViewUtils.renderAvailability(viewModel.isPrevButtonEnabled, playPreviousButton);
         ViewUtils.renderAvailability(viewModel.isTrackChooserButtonEnabled, trackChooserButton);
@@ -428,7 +445,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         renderThumbnail(viewModel.thumbnailImageUrl);
         renderCompassDirection(viewModel.compassLongitude);
         renderAudioAndCcList(viewModel.audioTracks, viewModel.ccTracks);
-        
+
         liveIndicatorLayout.setVisibility(viewModel.isLiveIndicatorVisible ? VISIBLE : GONE);
 
         Drawable liveDot = liveIndicatorLayout.getChildAt(0).getBackground();

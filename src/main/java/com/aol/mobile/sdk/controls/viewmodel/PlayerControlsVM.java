@@ -47,6 +47,7 @@ public class PlayerControlsVM {
     public String thumbnailImageUrl;
     public boolean isLiveIndicatorVisible;
     public boolean isOnLiveEdge;
+    public boolean isCastButtonVisible;
     @NonNull
     public final LinkedList<TrackOptionVM> audioTracks = new LinkedList<>();
     @NonNull
