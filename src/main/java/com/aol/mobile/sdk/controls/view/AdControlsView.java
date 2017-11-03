@@ -45,7 +45,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
     @NonNull
     private final TextView timeLeftTextView;
     @NonNull
-    private  final TextView adTitleTextView;
+    private final TextView adTitleTextView;
     @Nullable
     private Listener listener;
     @NonNull
@@ -109,11 +109,11 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         accentColor = context.getResources().getColor(R.color.default_ad_accent_color);
 
         if (attrs == null) return;
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ControlsAttrs, 0, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.AdControlsView, 0, 0);
 
         try {
-            mainColor = a.getColor(R.styleable.ControlsAttrs_mainColor, mainColor);
-            accentColor = a.getInteger(R.styleable.ControlsAttrs_accentColor, accentColor);
+            mainColor = a.getColor(R.styleable.AdControlsView_mainColor, mainColor);
+            accentColor = a.getInteger(R.styleable.AdControlsView_accentColor, accentColor);
         } finally {
             a.recycle();
         }

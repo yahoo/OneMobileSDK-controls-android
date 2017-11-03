@@ -3,9 +3,21 @@
   -->
 
 <resources>
-    <declare-styleable name="ControlsAttrs">
-        <attr name="mainColor" format="color"/>
-        <attr name="accentColor" format="color"/>
-        <attr name="ratio" format="string|reference"/>
+    <attr name="mainColor" format="color"/>
+    <attr name="accentColor" format="color"/>
+
+    <declare-styleable name="PlayerControlsView">
+        <attr name="mainColor"/>
+        <attr name="accentColor"/>
+    </declare-styleable>
+
+    <declare-styleable name="AdControlsView">
+        <attr name="mainColor"/>
+        <attr name="accentColor"/>
+    </declare-styleable>
+
+    <declare-styleable name="TintableImageButton">
+        <attr name="mainColor"/>
+        <attr name="accentColor"/>
     </declare-styleable>
 </resources>
