@@ -33,11 +33,11 @@ public class TintableImageButton extends ImageButton implements Themed {
 
         if (attrs != null) {
             TypedArray a = context
-                    .obtainStyledAttributes(attrs, R.styleable.ControlsAttrs, defStyle, 0);
+                    .obtainStyledAttributes(attrs, R.styleable.TintableImageButton, defStyle, 0);
 
             try {
-                mainColor = a.getColor(R.styleable.ControlsAttrs_mainColor, mainColor);
-                accentColor = a.getColor(R.styleable.ControlsAttrs_accentColor, accentColor);
+                mainColor = a.getColor(R.styleable.TintableImageButton_mainColor, mainColor);
+                accentColor = a.getColor(R.styleable.TintableImageButton_accentColor, accentColor);
             } finally {
                 a.recycle();
             }

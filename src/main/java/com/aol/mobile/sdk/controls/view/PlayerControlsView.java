@@ -371,11 +371,11 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         liveDotColor = Color.RED;
 
         if (attrs == null) return;
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ControlsAttrs, 0, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PlayerControlsView, 0, 0);
 
         try {
-            mainColor = a.getColor(R.styleable.ControlsAttrs_mainColor, mainColor);
-            accentColor = a.getInteger(R.styleable.ControlsAttrs_accentColor, accentColor);
+            mainColor = a.getColor(R.styleable.PlayerControlsView_mainColor, mainColor);
+            accentColor = a.getInteger(R.styleable.PlayerControlsView_accentColor, accentColor);
         } finally {
             a.recycle();
         }
@@ -425,7 +425,7 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
 
         if (castButton != null && viewModel.isCastButtonVisible) {
             castHolder.setVisibility(VISIBLE);
-        } else{
+        } else {
             castHolder.setVisibility(GONE);
         }
 
