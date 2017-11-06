@@ -3,9 +3,10 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:auto="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/thumbnail"
@@ -13,19 +14,22 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:background="#000"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/controls_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/live_indicator">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.4"
             android:background="@android:color/black"
-            android:clickable="false" />
+            android:clickable="false"/>
 
         <LinearLayout
             android:id="@+id/prev_next_container"
@@ -40,20 +44,16 @@
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/prev_button"
-                style="@style/ControlButton"
-                android:layout_marginLeft="-12dp"
-                android:layout_weight="1"
-                android:paddingBottom="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="12dp"
-                android:src="@drawable/button_back"
-                tools:ignore="RtlHardcoded" />
+                style="@style/NavigationButton"
+                android:layout_marginRight="-12dp"
+                auto:remotePressSource="ic_back_on"
+                auto:remoteSource="ic_back"
+                tools:ignore="RtlHardcoded"/>
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/backward_seek_button"
-                style="@style/ControlButton"
-                android:layout_weight="1"
-                android:src="@drawable/button_10sec" />
+                style="@style/QuickSeekButton"
+                android:layout_weight="1"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -62,33 +62,27 @@
 
                 <com.aol.mobile.sdk.controls.view.TintableImageButton
                     android:id="@+id/play_button"
-                    style="@style/ControlButton"
-                    android:layout_gravity="center"
-                    android:src="@drawable/dr_play" />
+                    style="@style/MainActionButton"
+                    auto:remoteSource="ic_play"/>
 
                 <com.aol.mobile.sdk.controls.view.TintableImageButton
                     android:id="@+id/pause_button"
-                    style="@style/ControlButton"
-                    android:layout_gravity="center"
-                    android:src="@drawable/dr_pause" />
+                    style="@style/MainActionButton"
+                    auto:remoteSource="ic_pause"/>
             </FrameLayout>
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/forward_seek_button"
-                style="@style/ControlButton"
-                android:layout_weight="1"
-                android:src="@drawable/button_10sec" />
+                style="@style/QuickSeekButton"
+                android:layout_weight="1"/>
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@+id/next_button"
-                style="@style/ControlButton"
-                android:layout_marginRight="-12dp"
-                android:layout_weight="1"
-                android:paddingBottom="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="12dp"
-                android:src="@drawable/button_forward"
-                tools:ignore="RtlHardcoded" />
+                style="@style/NavigationButton"
+                android:layout_marginLeft="-12dp"
+                auto:remotePressSource="ic_forward_on"
+                auto:remoteSource="ic_forward"
+                tools:ignore="RtlHardcoded"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -103,6 +97,7 @@
             android:nextFocusDown="@id/tracks_button"
             android:orientation="horizontal"
             android:visibility="invisible"
+            tools:ignore="RtlHardcoded"
             tools:visibility="visible">
 
             <TextView
@@ -117,20 +112,22 @@
                 android:paddingRight="2dp"
                 android:paddingStart="2dp"
                 android:textSize="14dp"
-                tools:text="00:00" />
+                tools:text="00:00"/>
 
-            <SeekBar
+            <com.aol.mobile.sdk.controls.view.TintableSeekbar
                 android:id="@+id/seekbar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/seeker_height"
                 android:maxHeight="@dimen/seeker_height"
                 android:minHeight="@dimen/seeker_height"
-                android:padding="0dp"
-                android:progress="40"
-                android:progressDrawable="@drawable/seeker"
-                android:thumb="@drawable/ic_thumb"
-                android:thumbOffset="0dp" />
+                android:padding="0px"
+                android:progressDrawable="@null"
+                android:thumb="@null"
+                android:thumbOffset="0px"
+                auto:remoteSeekBg="ic_thumbseek_background"
+                auto:remoteSeekProgress="ic_thumbseek"
+                auto:remoteSeekThumb="ic_thumb"/>
 
             <TextView
                 android:id="@+id/duration"
@@ -142,45 +139,33 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:textSize="14dp"
-                tools:text="00:00" />
+                tools:text="00:00"/>
         </RelativeLayout>
+
+        <com.aol.mobile.sdk.controls.view.TintableImageButton
+            android:id="@id/tracks_button"
+            style="@style/ControlToggleButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/title_view"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            tools:ignore="RtlHardcoded"/>
 
         <TextView
             android:id="@id/title_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_height"
             android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/bottom_controls"
-            android:layout_toStartOf="@+id/bottom_controls"
+            android:layout_toLeftOf="@id/tracks_button"
+            android:layout_toStartOf="@id/tracks_button"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingLeft="9dp"
             android:paddingStart="9dp"
-            android:textSize="15sp" />
-
-        <LinearLayout
-            android:id="@+id/bottom_controls"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/title_view"
-            android:layout_marginEnd="60dp"
-            android:layout_marginRight="60dp"
-            android:orientation="horizontal">
-
-            <com.aol.mobile.sdk.controls.view.TintableImageButton
-                android:id="@id/tracks_button"
-                style="@style/ControlToggleButton"
-                android:src="@drawable/dr_tracks" />
-
-            <FrameLayout
-                android:id="@+id/cast_placeholder"
-                android:layout_width="@dimen/cast_button_size"
-                android:layout_height="@dimen/cast_button_size"
-                android:visibility="invisible" />
-        </LinearLayout>
+            android:textSize="15sp"
+            tools:ignore="RtlHardcoded"/>
 
         <com.aol.mobile.sdk.controls.view.SidePanel
             android:id="@+id/side_panel"
@@ -192,7 +177,8 @@
             android:layout_centerVertical="true"
             android:dividerPadding="5dp"
             android:gravity="center_vertical"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -205,36 +191,40 @@
         android:visibility="invisible"
         tools:ignore="RtlHardcoded">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_360_compass_body" />
+        <com.aol.mobile.sdk.controls.view.TintableImageButton
+            style="@style/CompassButton"
+            auto:remoteSource="ic_360_compass_body"/>
 
-        <ImageView
+        <com.aol.mobile.sdk.controls.view.TintableImageButton
             android:id="@+id/compass_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CompassButton"
             android:rotation="180"
-            android:src="@drawable/ic_360_compass_direction" />
+            auto:remoteSource="ic_360_compass_direction"/>
     </FrameLayout>
 
-    <ProgressBar
+
+    <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/progressbar"
-        android:layout_width="@dimen/progressbar_size"
-        android:layout_height="@dimen/progressbar_size"
+        style="@style/MainActionButton"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:indeterminateDrawable="@drawable/loading_animation"
-        android:visibility="invisible" />
+        auto:remotePressEffectSource="@null"
+        auto:remoteSource="ic_loading"/>
 
     <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/replay_button"
         style="@style/ControlButton"
+        android:layout_width="@dimen/controls_main_btn_size"
+        android:layout_height="@dimen/controls_main_btn_size"
         android:layout_alignEnd="@+id/progressbar"
         android:layout_alignRight="@+id/progressbar"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:src="@drawable/dr_replay" />
+        android:padding="0dp"
+        android:scaleType="fitCenter"
+        auto:remotePressEffectSource="ic_halo"
+        auto:remoteSource="ic_replay"
+        tools:ignore="RtlHardcoded"/>
 
     <FrameLayout
         android:id="@+id/subtitles_container"
@@ -250,7 +240,7 @@
             android:background="#55333333"
             android:gravity="center"
             android:padding="5dp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"/>
     </FrameLayout>
 
     <LinearLayout
@@ -263,12 +253,13 @@
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded">
 
         <View
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/live_indicator" />
+            android:background="@drawable/live_indicator"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -278,7 +269,7 @@
             android:layout_marginStart="6dp"
             android:text="@string/live"
             android:textColor="@color/default_main_color"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </LinearLayout>
 
 </RelativeLayout>

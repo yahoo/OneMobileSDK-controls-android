@@ -4,11 +4,10 @@
 
 package com.aol.mobile.sdk.controls.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -17,9 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.aol.mobile.sdk.controls.AdControls;
@@ -35,25 +32,21 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderVisibility;
 
 public final class AdControlsView extends RelativeLayout implements AdControls, Themed {
     @NonNull
-    private final ProgressBar progressView;
+    private final TintableImageButton bufferingView;
     @NonNull
     private final TintableImageButton playButton;
     @NonNull
     private final TintableImageButton pauseButton;
     @NonNull
-    private final SeekBar seekbar;
+    private final TintableSeekbar seekbar;
     @NonNull
     private final TextView timeLeftTextView;
     @NonNull
     private final TextView adTitleTextView;
-    @Nullable
-    private Listener listener;
     @NonNull
     private final Themed[] themedItems;
-    @ColorInt
-    private int mainColor;
-    @ColorInt
-    private int accentColor;
+    @Nullable
+    private Listener listener;
     @NonNull
     private final OnClickListener clickListener = new OnClickListener() {
         @Override
@@ -64,6 +57,10 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
             if (view == pauseButton) listener.onButtonClick(AdControlsButton.PAUSE);
         }
     };
+    @ColorInt
+    private int mainColor;
+    @ColorInt
+    private int accentColor;
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -87,16 +84,18 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
 
         setClickable(true);
 
-        progressView = (ProgressBar) findViewById(R.id.ad_progress_bar);
-        playButton = (TintableImageButton) findViewById(R.id.ad_play_button);
-        pauseButton = (TintableImageButton) findViewById(R.id.ad_pause_button);
-        seekbar = (SeekBar) findViewById(R.id.ad_seekbar);
-        timeLeftTextView = (TextView) findViewById(R.id.ad_time_left);
-        adTitleTextView = (TextView) findViewById(R.id.ad_title);
+        bufferingView = findViewById(R.id.ad_progress_bar);
+        Animator animator = AnimatorInflater.loadAnimator(getContext(), R.animator.buffering_animator);
+        animator.setTarget(bufferingView);
+        animator.start();
 
-        themedItems = new Themed[]{
-                playButton,
-                pauseButton};
+        playButton = findViewById(R.id.ad_play_button);
+        pauseButton = findViewById(R.id.ad_pause_button);
+        seekbar = findViewById(R.id.ad_seekbar);
+        timeLeftTextView = findViewById(R.id.ad_time_left);
+        adTitleTextView = findViewById(R.id.ad_title);
+
+        themedItems = new Themed[]{playButton, pauseButton, seekbar};
 
         seekbar.setPadding(0, 0, 0, 0);
 
@@ -120,28 +119,8 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
     }
 
     protected void updateColors() {
-        progressView.getIndeterminateDrawable().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
-
-        Drawable drawable = ((LayerDrawable) seekbar.getProgressDrawable())
-                .findDrawableByLayerId(android.R.id.progress).mutate();
-        drawable.setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-
-        drawable = ((LayerDrawable) seekbar.getProgressDrawable())
-                .findDrawableByLayerId(android.R.id.secondaryProgress).mutate();
-        drawable.setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-
-        drawable.setAlpha(120);
-
-        Drawable thumb = seekbar.getThumb();
-        if (thumb != null) {
-            thumb.setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable = ((LayerDrawable) seekbar.getProgressDrawable())
-                    .findDrawableByLayerId(android.R.id.background).mutate();
-            drawable.setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
-        }
+        bufferingView.setAccentColor(mainColor);
+        bufferingView.setMainColor(mainColor);
 
         for (Themed item : themedItems) {
             item.setAccentColor(accentColor);
@@ -182,7 +161,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
 
     @Override
     public void render(@NonNull AdControlsVM adControlsVM) {
-        renderVisibility(adControlsVM.isProgressViewVisible, progressView);
+        renderVisibility(adControlsVM.isProgressViewVisible, bufferingView);
         renderVisibility(adControlsVM.isPlayButtonVisible, playButton);
         renderVisibility(adControlsVM.isPauseButtonVisible, pauseButton);
         renderVisibility(adControlsVM.isAdTimeViewVisible, timeLeftTextView);

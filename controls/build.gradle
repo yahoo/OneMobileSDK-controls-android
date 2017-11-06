@@ -1,10 +1,15 @@
 ext {
+    // Android build config constants
+    BUILD_CONFIG_CONSTS = [
+            'REMOTE_CONTROLS_HOST': 'https://s3.amazonaws.com/vdb-cdn-files/prod/r2/omsdk/controls/android/'
+    ]
+
     // Javadoc configuration
     JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
 
     // Maven
     GROUP_ID = 'com.aol.one.publishers.android'
-    ARTIFACT_ID = 'controls'
+    ARTIFACT_ID = 'controls-lw'
     LIBRARY_VERSION = GIT_BASED_VERSION
 }
 

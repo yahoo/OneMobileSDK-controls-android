@@ -29,7 +29,7 @@ public class PlayerControlsVM {
     public boolean isTrackChooserButtonEnabled;
     public boolean isTrackChooserButtonVisible;
     public int seekerBufferedProgress;
-    public int seekerMaxValue;
+    public int seekerMaxValue = 1;
     public double seekerProgress;
     public double compassLatitude;
     public double compassLongitude;

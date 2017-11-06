@@ -6,26 +6,60 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@null</item>
         <item name="android:visibility">invisible</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="MainActionButton">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">@dimen/controls_main_btn_size</item>
+        <item name="android:layout_height">@dimen/controls_main_btn_size</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:visibility">invisible</item>
+        <item name="remotePressEffectSource">ic_halo</item>
+    </style>
+
+    <style name="QuickSeekButton" parent="ControlButton">
+        <item name="android:layout_width">@dimen/controls_10sec_size</item>
+        <item name="android:layout_height">@dimen/controls_10sec_size</item>
+        <item name="remotePressSource">ic_10sec_on</item>
+        <item name="remoteSource">ic_10sec</item>
+    </style>
+
+    <style name="NavigationButton" parent="ControlButton">
+        <item name="android:layout_width">@dimen/controls_navi_size</item>
+        <item name="android:layout_height">@dimen/controls_navi_size</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="CompassButton" parent="ControlButton">
+        <item name="android:layout_width">@dimen/controls_compass_size</item>
+        <item name="android:layout_height">@dimen/controls_compass_size</item>
+        <item name="android:visibility">visible</item>
     </style>
 
     <style name="ControlToggleButton" parent="ControlButton">
-        <item name="android:scaleType">fitStart</item>
+        <item name="android:layout_width">@dimen/controls_tracks_size</item>
+        <item name="android:layout_height">@dimen/controls_tracks_size</item>
+        <item name="remotePressEffectSource">ic_tracks_on</item>
+        <item name="remoteSource">ic_tracks</item>
     </style>
 
     <style name="AdControl">
-        <item name="android:layout_width">@dimen/ad_controls_width</item>
+        <item name="android:layout_width">@dimen/ad_controls_height</item>
         <item name="android:layout_height">@dimen/ad_controls_height</item>
         <item name="android:background">@null</item>
+        <item name="android:padding">@dimen/ad_image_button_padding</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:visibility">invisible</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="AdControlProgressBar" parent="AdControl"/>
-
     <style name="AdControlButton" parent="AdControl">
-        <item name="android:scaleType">center</item>
+        <item name="android:scaleType">fitCenter</item>
         <item name="mainColor">@color/default_main_color</item>
         <item name="accentColor">@color/default_ad_accent_color</item>
     </style>

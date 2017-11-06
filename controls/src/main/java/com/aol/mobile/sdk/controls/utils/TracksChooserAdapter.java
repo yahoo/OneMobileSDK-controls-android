@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.viewmodel.TrackOptionVM;
 
@@ -17,15 +18,25 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.view.View.*;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.AUDIO;
 import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.CC;
-import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.TITLE;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 
 public class TracksChooserAdapter extends BaseAdapter {
     @NonNull
     private final List<Item> items = new ArrayList<>();
+    @NonNull
+    private Drawable selectedIcon;
+    @NonNull
+    private Drawable closeIcon;
+
+    public TracksChooserAdapter(@NonNull Drawable selectedIcon, @NonNull Drawable closeIcon) {
+        this.selectedIcon = selectedIcon;
+        this.closeIcon = closeIcon;
+    }
 
     @SuppressWarnings("deprecation")
     public void updateData(@NonNull Context context, @NonNull LinkedList<TrackOptionVM> audioTracks,
@@ -33,8 +44,6 @@ public class TracksChooserAdapter extends BaseAdapter {
         Resources resources = context.getResources();
         int headerColor = resources.getColor(R.color.tracks_header_color);
         int trackColor = resources.getColor(R.color.track_title_color);
-        Drawable selectedIcon = resources.getDrawable(R.drawable.ic_track_selected);
-        Drawable closeIcon = resources.getDrawable(R.drawable.ic_tracks_close);
 
         items.clear();
         if (!audioTracks.isEmpty()) {

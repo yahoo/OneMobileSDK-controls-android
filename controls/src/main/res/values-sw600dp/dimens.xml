@@ -9,7 +9,6 @@
     <dimen name="controls_padding">90dp</dimen>
     <dimen name="seekbar_bottom_padding">26dp</dimen>
     <dimen name="title_height">45dp</dimen>
-    <dimen name="ad_controls_width">54dp</dimen>
     <dimen name="ad_controls_height">54dp</dimen>
     <dimen name="ad_seekbar_right_mar">12dp</dimen>
     <dimen name="ad_title_bottom_pad">12dp</dimen>
@@ -18,5 +17,12 @@
     <dimen name="ad_time_left_bottom_pad">20dp</dimen>
     <dimen name="ad_time_left_right_pad">8dp</dimen>
     <dimen name="ad_time_left_text_size">12dp</dimen>
-    <dimen name="cast_button_size">41dp</dimen>
+    <dimen name="ad_image_button_padding">7dp</dimen>
+    <dimen name="controls_main_btn_size">125dp</dimen>
+    <dimen name="controls_10sec_size">62dp</dimen>
+    <dimen name="controls_navi_size">50dp</dimen>
+    <dimen name="controls_tracks_size">41dp</dimen>
+    <dimen name="controls_compass_size">45dp</dimen>
+    <dimen name="ad_seeker_height">10dp</dimen>
+    <bool name="isTablet">true</bool>
 </resources>

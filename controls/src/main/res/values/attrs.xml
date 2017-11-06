@@ -19,5 +19,14 @@
     <declare-styleable name="TintableImageButton">
         <attr name="mainColor"/>
         <attr name="accentColor"/>
+        <attr name="remoteSource" format="string"/>
+        <attr name="remotePressSource" format="string"/>
+        <attr name="remotePressEffectSource" format="string|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="TintableSeekbar">
+        <attr name="remoteSeekBg" format="string"/>
+        <attr name="remoteSeekProgress" format="string"/>
+        <attr name="remoteSeekThumb" format="string"/>
     </declare-styleable>
 </resources>
