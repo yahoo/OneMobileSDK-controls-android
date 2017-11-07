@@ -1,0 +1,25 @@
+ext {
+    // Javadoc configuration
+    JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
+
+    // Maven
+    GROUP_ID = 'com.aol.one.publishers.android'
+    ARTIFACT_ID = 'controls'
+    LIBRARY_VERSION = GIT_BASED_VERSION
+}
+
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/android.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/javadoc.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/sources.gradle'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/github-maven.gradle'
+
+dependencies {
+    compileOnly "com.android.support:support-annotations:27.0.0"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
+    testImplementation "org.robolectric:robolectric:3.4.2"
+    testImplementation "net.javacrumbs.json-unit:json-unit-fluent:1.18.0"
+    testImplementation "org.assertj:assertj-core:2.6.0"
+    testImplementation "com.squareup.assertj:assertj-android:1.1.1"
+    testImplementation "org.mockito:mockito-core:2.8.47"
+}
