@@ -6,6 +6,8 @@ ext {
     GROUP_ID = 'com.aol.one.publishers.android'
     ARTIFACT_ID = 'controls'
     LIBRARY_VERSION = GIT_BASED_VERSION
+
+    MINIFY_LIB = true
 }
 
 apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/android.gradle'
