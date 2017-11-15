@@ -24,6 +24,8 @@ buildscript {
 }
 
 allprojects {
+    apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/env-props.gradle'
+
     repositories {
         google()
         jcenter()
