@@ -16,7 +16,7 @@ apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-and
 apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/github-maven.gradle'
 
 dependencies {
-    compileOnly "com.android.support:support-annotations:27.0.1"
+    compileOnly "com.android.support:support-annotations:$SUPPORT_VERSION"
 
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
     testImplementation "org.robolectric:robolectric:3.4.2"
