@@ -8,13 +8,12 @@ android:
     # Using latest platform tools
     - tools
     - platform-tools
-    - tools
 
     # The BuildTools version used by your project
     - build-tools-26.0.2
 
     # The SDK version used to compile your project
-    - android-26
+    - android-27
 
     # Additional components
     - extra-google-google_play_services
@@ -34,11 +33,17 @@ cache:
 script: ./gradlew lintRelease testRelease
 
 deploy:
-  skip_cleanup: true
-  provider: script
-  on:
-    branch: master
-  script: ./gradlew gitPublishPush
+  - provider: script
+    script: ./gradlew gitPublishPush
+    skip_cleanup: true
+    on:
+      branch: master
+
+  - provider: script
+    script: ./gradlew —rerun-tasks gitPublishPush
+    skip_cleanup: true
+    on:
+      tags: true
 
 notifications:
   email: false
