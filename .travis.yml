@@ -33,11 +33,17 @@ cache:
 script: ./gradlew lintRelease testRelease
 
 deploy:
-  skip_cleanup: true
-  provider: script
-  on:
-    branch: master
-  script: ./gradlew gitPublishPush
+  - provider: script
+    script: ./gradlew gitPublishPush
+    skip_cleanup: true
+    on:
+      branch: master
+
+  - provider: script
+    script: ./gradlew —rerun-tasks gitPublishPush
+    skip_cleanup: true
+    on:
+      tags: true
 
 notifications:
   email: false
