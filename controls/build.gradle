@@ -23,5 +23,5 @@ dependencies {
     testImplementation "net.javacrumbs.json-unit:json-unit-fluent:1.18.0"
     testImplementation "org.assertj:assertj-core:3.3.0"
     testImplementation "com.squareup.assertj:assertj-android:1.1.1"
-    testImplementation "org.mockito:mockito-core:2.8.47"
+    testImplementation "org.mockito:mockito-core:2.12.0"
 }

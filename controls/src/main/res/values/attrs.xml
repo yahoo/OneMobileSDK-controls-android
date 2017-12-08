@@ -6,7 +6,7 @@
     <attr name="mainColor" format="color"/>
     <attr name="accentColor" format="color"/>
 
-    <declare-styleable name="PlayerControlsView">
+    <declare-styleable name="ContentControlsView">
         <attr name="mainColor"/>
         <attr name="accentColor"/>
     </declare-styleable>

@@ -4,7 +4,7 @@
 
 package com.aol.mobile.sdk.controls.utils;
 
-import com.aol.mobile.sdk.controls.view.PlayerControlsView;
+import com.aol.mobile.sdk.controls.view.ContentControlsView;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 public class VisibilityModuleTest {
     @Test
     public void testStateTravel() throws Exception {
-        PlayerControlsView playerControlsView = Mockito.mock(PlayerControlsView.class);
+        ContentControlsView playerControlsView = Mockito.mock(ContentControlsView.class);
         VisibilityModule visibilityModule = new VisibilityModule(playerControlsView);
         verify(playerControlsView, times(0)).show();
         verify(playerControlsView, times(0)).hide();
