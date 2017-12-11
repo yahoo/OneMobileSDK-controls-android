@@ -6,21 +6,37 @@ package com.aol.mobile.sdk.controls;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
+import android.support.annotation.UiThread;
 
-import com.aol.mobile.sdk.controls.viewmodel.AdControlsVM;
-
+@UiThread
 public interface AdControls {
     void setListener(@Nullable Listener listener);
 
-    @NonNull
-    View getView();
+    void render(@NonNull ViewModel vm);
 
-    void render(@NonNull AdControlsVM adControlsVM);
+    enum Button {PLAY, PAUSE}
 
+    @UiThread
     interface Listener {
-        void onButtonClick(@NonNull AdControlsButton button);
+        void onButtonClick(@NonNull Button button);
 
-        void onTap();
+        void onAdClicked();
+    }
+
+    final class ViewModel {
+        public boolean isProgressViewVisible;
+        public boolean isPlayButtonVisible;
+        public boolean isPauseButtonVisible;
+        public boolean isAdTimeViewVisible;
+        public double seekerProgress;
+        public int seekerMaxValue;
+        @Nullable
+        public String currentTimeText;
+        @Nullable
+        public String timeLeftText;
+        @Nullable
+        public String durationText;
+        @Nullable
+        public String adUrl;
     }
 }

@@ -5,6 +5,7 @@
 package com.aol.mobile.sdk.controls.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -23,10 +24,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.aol.mobile.sdk.controls.AdControls;
-import com.aol.mobile.sdk.controls.AdControlsButton;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
-import com.aol.mobile.sdk.controls.viewmodel.AdControlsVM;
 
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerMaxValue;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerProgress;
@@ -46,24 +45,26 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
     private final TextView timeLeftTextView;
     @NonNull
     private final TextView adTitleTextView;
-    @Nullable
-    private Listener listener;
     @NonNull
     private final Themed[] themedItems;
-    @ColorInt
-    private int mainColor;
-    @ColorInt
-    private int accentColor;
+    @Nullable
+    private Listener listener;
     @NonNull
     private final OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             if (listener == null) return;
 
-            if (view == playButton) listener.onButtonClick(AdControlsButton.PLAY);
-            if (view == pauseButton) listener.onButtonClick(AdControlsButton.PAUSE);
+            if (view == playButton) listener.onButtonClick(Button.PLAY);
+            if (view == pauseButton) listener.onButtonClick(Button.PAUSE);
         }
     };
+    @ColorInt
+    private int mainColor;
+    @ColorInt
+    private int accentColor;
+    @Nullable
+    private String adUrl;
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -87,12 +88,12 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
 
         setClickable(true);
 
-        progressView = (ProgressBar) findViewById(R.id.ad_progress_bar);
-        playButton = (TintableImageButton) findViewById(R.id.ad_play_button);
-        pauseButton = (TintableImageButton) findViewById(R.id.ad_pause_button);
-        seekbar = (SeekBar) findViewById(R.id.ad_seekbar);
-        timeLeftTextView = (TextView) findViewById(R.id.ad_time_left);
-        adTitleTextView = (TextView) findViewById(R.id.ad_title);
+        progressView = findViewById(R.id.ad_progress_bar);
+        playButton = findViewById(R.id.ad_play_button);
+        pauseButton = findViewById(R.id.ad_pause_button);
+        seekbar = findViewById(R.id.ad_seekbar);
+        timeLeftTextView = findViewById(R.id.ad_time_left);
+        adTitleTextView = findViewById(R.id.ad_title);
 
         themedItems = new Themed[]{
                 playButton,
@@ -158,7 +159,14 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) listener.onTap();
+                if (adUrl != null) {
+                    Context context = getContext();
+
+                    Intent intent = new Intent(context, TargetUrlActivity.class);
+                    intent.putExtra(TargetUrlActivity.KEY_TARGET_URL, adUrl);
+                    context.startActivity(intent);
+                    if (listener != null) listener.onAdClicked();
+                }
             }
         });
         seekbar.setOnTouchListener(new OnTouchListener() {
@@ -174,22 +182,17 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         this.listener = listener;
     }
 
-    @NonNull
     @Override
-    public View getView() {
-        return this;
-    }
-
-    @Override
-    public void render(@NonNull AdControlsVM adControlsVM) {
-        renderVisibility(adControlsVM.isProgressViewVisible, progressView);
-        renderVisibility(adControlsVM.isPlayButtonVisible, playButton);
-        renderVisibility(adControlsVM.isPauseButtonVisible, pauseButton);
-        renderVisibility(adControlsVM.isAdTimeViewVisible, timeLeftTextView);
-        renderVisibility(adControlsVM.isAdTimeViewVisible, seekbar);
-        renderSeekerMaxValue(adControlsVM.seekerMaxValue, seekbar);
-        renderSeekerProgress(adControlsVM.seekerProgress, seekbar);
-        renderText(adControlsVM.timeLeftText, timeLeftTextView);
+    public void render(@NonNull ViewModel vm) {
+        renderVisibility(vm.isProgressViewVisible, progressView);
+        renderVisibility(vm.isPlayButtonVisible, playButton);
+        renderVisibility(vm.isPauseButtonVisible, pauseButton);
+        renderVisibility(vm.isAdTimeViewVisible, timeLeftTextView);
+        renderVisibility(vm.isAdTimeViewVisible, seekbar);
+        renderSeekerMaxValue(vm.seekerMaxValue, seekbar);
+        renderSeekerProgress(vm.seekerProgress, seekbar);
+        renderText(vm.timeLeftText, timeLeftTextView);
+        adUrl = vm.adUrl;
     }
 
     @Override

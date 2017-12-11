@@ -11,8 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aol.mobile.sdk.controls.view.PlayerControlsView;
-import com.aol.mobile.sdk.controls.viewmodel.PlayerControlsVM;
+import com.aol.mobile.sdk.controls.view.ContentControlsView;
 
 import org.assertj.android.api.Assertions;
 import org.junit.After;
@@ -36,14 +35,14 @@ public class DefaultControlsViewTest {
     private SeekBar seeker;
     private TextView currentTime;
     private TextView duration;
-    private PlayerControlsVM props;
-    private PlayerControlsView controlsView;
+    private ContentControls.ViewModel props;
+    private ContentControlsView controlsView;
 
     @Before
     public void tearUp() {
         controller = Robolectric.buildActivity(Activity.class).create();
         Activity activity = controller.start().resume().get();
-        controlsView = new PlayerControlsView(activity);
+        controlsView = new ContentControlsView(activity);
         activity.setContentView(controlsView);
 
         playButton = controlsView.findViewById(R.id.play_button);
@@ -57,7 +56,7 @@ public class DefaultControlsViewTest {
         currentTime = controlsView.findViewById(R.id.current_time);
         duration = controlsView.findViewById(R.id.duration);
 
-        props = new PlayerControlsVM();
+        props = new ContentControls.ViewModel();
     }
 
     @After

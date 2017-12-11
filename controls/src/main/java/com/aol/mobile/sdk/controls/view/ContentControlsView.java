@@ -37,9 +37,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aol.mobile.sdk.controls.ControlsButton;
+import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.ImageLoader;
-import com.aol.mobile.sdk.controls.PlayerControls;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
@@ -47,15 +46,13 @@ import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.ViewUtils;
 import com.aol.mobile.sdk.controls.utils.VisibilityModule;
 import com.aol.mobile.sdk.controls.utils.VisibilityWrapper;
-import com.aol.mobile.sdk.controls.viewmodel.PlayerControlsVM;
-import com.aol.mobile.sdk.controls.viewmodel.TrackOptionVM;
 
 import java.util.LinkedList;
 
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
 
-public class PlayerControlsView extends RelativeLayout implements PlayerControls, Themed {
+public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
     @NonNull
     private final RelativeLayout controlsContainer;
     @NonNull
@@ -101,10 +98,6 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     @NonNull
     private final TextView durationView;
     @NonNull
-    private FrameLayout castHolder;
-    @Nullable
-    private View castButton;
-    @NonNull
     private final AndroidHandlerTimer timer = new AndroidHandlerTimer(new Handler());
     @NonNull
     private final VisibilityModule visibilityModule;
@@ -112,77 +105,19 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     private final Themed[] themedItems;
     @NonNull
     private final TracksChooserAdapter adapter = new TracksChooserAdapter();
+    @NonNull
+    private final LinkedList<ViewModel.TrackOptionVM> audioTracks = new LinkedList<>();
+    private final LinkedList<ViewModel.TrackOptionVM> ccTracks = new LinkedList<>();
+    @NonNull
+    private FrameLayout castHolder;
+    @Nullable
+    private View castButton;
     @Nullable
     private View focusedView;
     @Nullable
     private ValueAnimator animator;
     @Nullable
     private Listener listener;
-    @Nullable
-    private Dialog dialog;
-    @NonNull
-    private final OnClickListener clickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (listener == null) return;
-
-            visibilityModule.prolong();
-            if (view == playButton.view) listener.onButtonClick(ControlsButton.PLAY);
-            if (view == pauseButton.view) listener.onButtonClick(ControlsButton.PAUSE);
-            if (view == replayButton.view) listener.onButtonClick(ControlsButton.REPLAY);
-            if (view == playNextButton) listener.onButtonClick(ControlsButton.NEXT);
-            if (view == playPreviousButton) listener.onButtonClick(ControlsButton.PREVIOUS);
-            if (view == forwardSeekButton) listener.onButtonClick(ControlsButton.SEEK_FORWARD);
-            if (view == backwardSeekButton) listener.onButtonClick(ControlsButton.SEEK_BACKWARD);
-            if (view == compassView) listener.onButtonClick(ControlsButton.COMPASS);
-
-            if (view == trackChooserButton) {
-                adapter.updateData(getContext(), audioTracks, ccTracks);
-                dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        PlayerControlsView.this.dialog = null;
-                    }
-                });
-                ListView listView = new ListView(getContext());
-                listView.setDivider(null);
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        adapter.select(position);
-
-                        TracksChooserAdapter.Item item = adapter.getItem(position);
-
-                        switch (item.type) {
-                            case CC:
-                                listener.onCcTrackSelected(item.index);
-                                break;
-
-                            case AUDIO:
-                                listener.onAudioTrackSelected(item.index);
-                                break;
-
-                            case CLOSE:
-                                dialog.dismiss();
-                                break;
-                        }
-                    }
-                });
-                dialog.setContentView(listView);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
-                Window window = dialog.getWindow();
-                window.getAttributes().windowAnimations = R.style.TracksDialogAnimation;
-                window.getAttributes().gravity = Gravity.BOTTOM | Gravity.FILL_HORIZONTAL;
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.show();
-            }
-        }
-    };
-
     @NonNull
     private final SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -239,6 +174,70 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         }
     });
     @Nullable
+    private Dialog dialog;
+    @NonNull
+    private final OnClickListener clickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (listener == null) return;
+
+            visibilityModule.prolong();
+            if (view == playButton.view) listener.onButtonClick(Button.PLAY);
+            if (view == pauseButton.view) listener.onButtonClick(Button.PAUSE);
+            if (view == replayButton.view) listener.onButtonClick(Button.REPLAY);
+            if (view == playNextButton) listener.onButtonClick(Button.NEXT);
+            if (view == playPreviousButton) listener.onButtonClick(Button.PREVIOUS);
+            if (view == forwardSeekButton) listener.onButtonClick(Button.SEEK_FORWARD);
+            if (view == backwardSeekButton) listener.onButtonClick(Button.SEEK_BACKWARD);
+            if (view == compassView) listener.onButtonClick(Button.COMPASS);
+
+            if (view == trackChooserButton) {
+                adapter.updateData(getContext(), audioTracks, ccTracks);
+                dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        ContentControlsView.this.dialog = null;
+                    }
+                });
+                ListView listView = new ListView(getContext());
+                listView.setDivider(null);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        adapter.select(position);
+
+                        TracksChooserAdapter.Item item = adapter.getItem(position);
+
+                        switch (item.type) {
+                            case CC:
+                                listener.onCcTrackSelected(item.index);
+                                break;
+
+                            case AUDIO:
+                                listener.onAudioTrackSelected(item.index);
+                                break;
+
+                            case CLOSE:
+                                dialog.dismiss();
+                                break;
+                        }
+                    }
+                });
+                dialog.setContentView(listView);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+                Window window = dialog.getWindow();
+                window.getAttributes().windowAnimations = R.style.TracksDialogAnimation;
+                window.getAttributes().gravity = Gravity.BOTTOM | Gravity.FILL_HORIZONTAL;
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.show();
+            }
+        }
+    };
+    @Nullable
     private String thumbUrl;
     @Nullable
     private ImageLoader imageLoader;
@@ -250,25 +249,22 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     private int accentColor;
     @ColorInt
     private int liveDotColor;
-    @NonNull
-    private final LinkedList<TrackOptionVM> audioTracks = new LinkedList<>();
-    private final LinkedList<TrackOptionVM> ccTracks = new LinkedList<>();
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public PlayerControlsView(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ContentControlsView(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         this(context, attrs, defStyleAttr);
     }
 
-    public PlayerControlsView(@NonNull Context context) {
+    public ContentControlsView(@NonNull Context context) {
         this(context, null);
     }
 
-    public PlayerControlsView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ContentControlsView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PlayerControlsView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ContentControlsView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         readAttrs(context, attrs);
 
@@ -371,11 +367,11 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
         liveDotColor = Color.RED;
 
         if (attrs == null) return;
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PlayerControlsView, 0, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ContentControlsView, 0, 0);
 
         try {
-            mainColor = a.getColor(R.styleable.PlayerControlsView_mainColor, mainColor);
-            accentColor = a.getInteger(R.styleable.PlayerControlsView_accentColor, accentColor);
+            mainColor = a.getColor(R.styleable.ContentControlsView_mainColor, mainColor);
+            accentColor = a.getInteger(R.styleable.ContentControlsView_accentColor, accentColor);
         } finally {
             a.recycle();
         }
@@ -406,61 +402,61 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
     }
 
     @Override
-    public void render(@NonNull PlayerControlsVM viewModel) {
-        renderControlsVisibility(viewModel.isStreamPlaying);
-        ViewUtils.renderVisibility(viewModel.isLoading, progressView);
-        ViewUtils.renderVisibility(viewModel.isPlayButtonVisible, playButton.view);
-        ViewUtils.renderVisibility(viewModel.isPauseButtonVisible, pauseButton.view);
-        ViewUtils.renderVisibility(viewModel.isReplayButtonVisible, replayButton.view);
-        ViewUtils.renderVisibility(viewModel.isNextButtonVisible, playNextButton);
-        ViewUtils.renderVisibility(viewModel.isPrevButtonVisible, playPreviousButton);
-        ViewUtils.renderVisibility(viewModel.isSeekForwardButtonVisible, forwardSeekButton);
-        ViewUtils.renderVisibility(viewModel.isSeekBackButtonVisible, backwardSeekButton);
-        ViewUtils.renderVisibility(viewModel.isSeekerVisible, seekerContainer);
-        ViewUtils.renderVisibility(viewModel.isCompassViewVisible, compassContainer);
-        ViewUtils.renderVisibility(viewModel.isTitleVisible, titleView);
-        ViewUtils.renderVisibility(viewModel.isSubtitlesTextVisible, subtitlesContainer);
-        ViewUtils.renderVisibility(viewModel.isThumbnailImageVisible, thumbnailView);
-        ViewUtils.renderVisibility(viewModel.isTrackChooserButtonVisible, trackChooserButton);
+    public void render(@NonNull ViewModel vm) {
+        renderControlsVisibility(vm.isStreamPlaying);
+        ViewUtils.renderVisibility(vm.isLoading, progressView);
+        ViewUtils.renderVisibility(vm.isPlayButtonVisible, playButton.view);
+        ViewUtils.renderVisibility(vm.isPauseButtonVisible, pauseButton.view);
+        ViewUtils.renderVisibility(vm.isReplayButtonVisible, replayButton.view);
+        ViewUtils.renderVisibility(vm.isNextButtonVisible, playNextButton);
+        ViewUtils.renderVisibility(vm.isPrevButtonVisible, playPreviousButton);
+        ViewUtils.renderVisibility(vm.isSeekForwardButtonVisible, forwardSeekButton);
+        ViewUtils.renderVisibility(vm.isSeekBackButtonVisible, backwardSeekButton);
+        ViewUtils.renderVisibility(vm.isSeekerVisible, seekerContainer);
+        ViewUtils.renderVisibility(vm.isCompassViewVisible, compassContainer);
+        ViewUtils.renderVisibility(vm.isTitleVisible, titleView);
+        ViewUtils.renderVisibility(vm.isSubtitlesTextVisible, subtitlesContainer);
+        ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
+        ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
 
-        if (castButton != null && viewModel.isCastButtonVisible) {
+        if (castButton != null && vm.isCastButtonVisible) {
             castHolder.setVisibility(VISIBLE);
         } else {
             castHolder.setVisibility(GONE);
         }
 
-        ViewUtils.renderAvailability(viewModel.isNextButtonEnabled, playNextButton);
-        ViewUtils.renderAvailability(viewModel.isPrevButtonEnabled, playPreviousButton);
-        ViewUtils.renderAvailability(viewModel.isTrackChooserButtonEnabled, trackChooserButton);
+        ViewUtils.renderAvailability(vm.isNextButtonEnabled, playNextButton);
+        ViewUtils.renderAvailability(vm.isPrevButtonEnabled, playPreviousButton);
+        ViewUtils.renderAvailability(vm.isTrackChooserButtonEnabled, trackChooserButton);
 
-        ViewUtils.renderText(viewModel.titleText, titleView);
-        ViewUtils.renderText(viewModel.subtitlesText, subtitlesView);
-        ViewUtils.renderText(viewModel.seekerCurrentTimeText, currentTimeView);
-        ViewUtils.renderText(viewModel.seekerDurationText, durationView);
+        ViewUtils.renderText(vm.titleText, titleView);
+        ViewUtils.renderText(vm.subtitlesText, subtitlesView);
+        ViewUtils.renderText(vm.seekerCurrentTimeText, currentTimeView);
+        ViewUtils.renderText(vm.seekerDurationText, durationView);
 
-        ViewUtils.renderSeekerMaxValue(viewModel.seekerMaxValue, seekbar);
-        ViewUtils.renderSeekerProgress(viewModel.seekerProgress, seekbar);
-        ViewUtils.renderSeekerBufferProgress(viewModel.seekerBufferedProgress, seekbar);
+        ViewUtils.renderSeekerMaxValue(vm.seekerMaxValue, seekbar);
+        ViewUtils.renderSeekerProgress(vm.seekerProgress, seekbar);
+        ViewUtils.renderSeekerBufferProgress(vm.seekerBufferedProgress, seekbar);
 
-        renderThumbnail(viewModel.thumbnailImageUrl);
-        renderCompassDirection(viewModel.compassLongitude);
-        renderAudioAndCcList(viewModel.audioTracks, viewModel.ccTracks);
+        renderThumbnail(vm.thumbnailImageUrl);
+        renderCompassDirection(vm.compassLongitude);
+        renderAudioAndCcList(vm.audioTracks, vm.ccTracks);
 
-        liveIndicatorLayout.setVisibility(viewModel.isLiveIndicatorVisible ? VISIBLE : GONE);
+        liveIndicatorLayout.setVisibility(vm.isLiveIndicatorVisible ? VISIBLE : GONE);
 
         Drawable liveDot = liveIndicatorLayout.getChildAt(0).getBackground();
-        if (viewModel.isOnLiveEdge) {
+        if (vm.isOnLiveEdge) {
             liveDot.setColorFilter(liveDotColor, PorterDuff.Mode.MULTIPLY);
         } else {
             liveDot.setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
         }
 
-        isPlaying = viewModel.isStreamPlaying;
-        thumbUrl = viewModel.thumbnailImageUrl;
-        longitude = viewModel.compassLongitude;
+        isPlaying = vm.isStreamPlaying;
+        thumbUrl = vm.thumbnailImageUrl;
+        longitude = vm.compassLongitude;
     }
 
-    private void renderAudioAndCcList(@NonNull LinkedList<TrackOptionVM> audioTracks, @NonNull LinkedList<TrackOptionVM> ccTracks) {
+    private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
         this.audioTracks.clear();
         this.audioTracks.addAll(audioTracks);
 
@@ -683,12 +679,6 @@ public class PlayerControlsView extends RelativeLayout implements PlayerControls
 
     public void cancelTimer() {
         timer.reset();
-    }
-
-    @NonNull
-    @Override
-    public View getView() {
-        return this;
     }
 
     @NonNull

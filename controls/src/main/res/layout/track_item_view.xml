@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:gravity="center_vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
-    <View android:id="@+id/track_divider" android:layout_width="match_parent" android:layout_height="1dp"
-          android:background="#EBEBEB"/>
+    <View
+        android:id="@+id/track_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EBEBEB"/>
 
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:gravity="center_vertical" android:padding="8dp"
-            tools:ignore="UseCompoundDrawables">
-        <ImageView android:id="@+id/track_check_image" android:src="@drawable/ic_track_selected"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content" android:padding="8dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        tools:ignore="UseCompoundDrawables">
 
-        <TextView android:id="@+id/track_title" android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:paddingLeft="8dp"
-                  android:paddingStart="8dp"
-                  android:textSize="16sp"
-                  android:textColor="#000"/>
+        <ImageView
+            android:id="@+id/track_check_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@drawable/ic_track_selected"/>
+
+        <TextView
+            android:id="@+id/track_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:textColor="#000"
+            android:textSize="16sp"/>
     </LinearLayout>
 </LinearLayout>
