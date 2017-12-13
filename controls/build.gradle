@@ -18,6 +18,10 @@ apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-and
 dependencies {
     compileOnly "com.android.support:support-annotations:$SUPPORT_VERSION"
 
+    // Chromecast
+    compileOnly "com.aol.one.publishers.android:chromecast:1.4-SNAPSHOT"
+    testImplementation "com.aol.one.publishers.android:chromecast:1.4-SNAPSHOT"
+
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
     testImplementation "org.robolectric:robolectric:3.4.2"
     testImplementation "net.javacrumbs.json-unit:json-unit-fluent:1.18.0"
