@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -37,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.aol.mobile.sdk.chromecast.OneCastButtonFactory;
 import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.ImageLoader;
 import com.aol.mobile.sdk.controls.R;
@@ -110,8 +114,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private final LinkedList<ViewModel.TrackOptionVM> ccTracks = new LinkedList<>();
     @NonNull
     private FrameLayout castHolder;
-    @Nullable
-    private View castButton;
     @Nullable
     private View focusedView;
     @Nullable
@@ -227,12 +229,13 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                     }
                 });
                 dialog.setContentView(listView);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
                 Window window = dialog.getWindow();
-                window.getAttributes().windowAnimations = R.style.TracksDialogAnimation;
-                window.getAttributes().gravity = Gravity.BOTTOM | Gravity.FILL_HORIZONTAL;
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                if (window != null) {
+                    window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                    window.getAttributes().windowAnimations = R.style.TracksDialogAnimation;
+                    window.getAttributes().gravity = Gravity.BOTTOM | Gravity.FILL_HORIZONTAL;
+                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
                 dialog.show();
             }
         }
@@ -249,6 +252,38 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private int accentColor;
     @ColorInt
     private int liveDotColor;
+
+    private void checkCast() {
+        boolean hasChromecastModule = false;
+        Context context = getContext();
+
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle metaData = ai.metaData;
+            hasChromecastModule = metaData != null && metaData.getString("com.aol.mobile.sdk.chromecast.ReceiverApplicationId") != null;
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+
+        if (hasChromecastModule) {
+            castHolder.addView(OneCastButtonFactory.getCastButton(context));
+            OneCastButtonFactory castButtonFactory = new OneCastButtonFactory();
+            castButtonFactory.addCastButtonListener(context, new OneCastButtonFactory.CastButtonListener() {
+                @Override
+                public void enableCast() {
+                    if (listener != null) {
+                        listener.onCastEnabled();
+                    }
+                }
+
+                @Override
+                public void disableCast() {
+                    if (listener != null) {
+                        listener.onCastDisabled();
+                    }
+                }
+            });
+        }
+    }
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -293,6 +328,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         durationView = findView(this, R.id.duration);
         currentTimeView = findView(this, R.id.current_time);
         castHolder = findView(this, R.id.cast_placeholder);
+
+        checkCast();
 
         themedItems = new Themed[]{
                 playButton.view,
@@ -395,12 +432,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         this.listener = listener;
     }
 
-    public void setCastButton(@Nullable View castButton) {
-        castHolder.removeAllViews();
-        castHolder.addView(castButton);
-        this.castButton = castButton;
-    }
-
     @Override
     public void render(@NonNull ViewModel vm) {
         renderControlsVisibility(vm.isStreamPlaying);
@@ -418,12 +449,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderVisibility(vm.isSubtitlesTextVisible, subtitlesContainer);
         ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
-
-        if (castButton != null && vm.isCastButtonVisible) {
-            castHolder.setVisibility(VISIBLE);
-        } else {
-            castHolder.setVisibility(GONE);
-        }
+        ViewUtils.renderVisibility(vm.isCastButtonVisible, castHolder);
 
         ViewUtils.renderAvailability(vm.isNextButtonEnabled, playNextButton);
         ViewUtils.renderAvailability(vm.isPrevButtonEnabled, playPreviousButton);
@@ -491,7 +517,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
 
     private void requestFocus(View view) {
         UiModeManager uiModeManager = (UiModeManager) getContext().getSystemService(Context.UI_MODE_SERVICE);
-        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
+        if (uiModeManager != null && uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
             view.requestFocusFromTouch();
         } else {
             view.requestFocus();
@@ -681,6 +707,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         timer.reset();
     }
 
+    @SuppressWarnings("unused")
     @NonNull
     public SidePanel getSidePanel() {
         return sidePanel;
@@ -711,6 +738,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         return super.dispatchKeyEvent(event);
     }
 
+    @SuppressWarnings("unused")
     public void setImageLoader(@NonNull ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
     }
@@ -727,6 +755,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         updateColors();
     }
 
+    @SuppressWarnings("unused")
     public void setLiveDotColor(@ColorInt int color) {
         liveDotColor = color;
     }

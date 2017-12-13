@@ -27,6 +27,9 @@ allprojects {
     apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/env-props.gradle'
 
     repositories {
+        maven {
+            url 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-releases-android/maven/'
+        }
         google()
         jcenter()
     }

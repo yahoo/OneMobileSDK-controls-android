@@ -11,4 +11,6 @@
     <issue id="UnusedResources" severity="ignore"/>
     <issue id="ClickableViewAccessibility" severity="ignore"/>
     <issue id="SetJavaScriptEnabled" severity="ignore"/>
+    <issue id="AppCompatCustomView" severity="ignore"/>
+    <issue id="GradleCompatible" severity="ignore"/>
 </lint>

@@ -30,6 +30,10 @@ public interface ContentControls {
         void onAudioTrackSelected(int index);
 
         void onCcTrackSelected(int index);
+
+        void onCastEnabled();
+
+        void onCastDisabled();
     }
 
     final class ViewModel {
