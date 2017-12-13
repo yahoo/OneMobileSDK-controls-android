@@ -56,11 +56,19 @@
     public protected *;
 }
 
+-keep public class com.aol.mobile.sdk.controls.* {
+    public protected *;
+}
+
 -keep public class com.aol.mobile.sdk.controls.viewmodel.* {
     public protected *;
 }
 
 -keep public class com.aol.mobile.sdk.controls.view.* {
+    public protected *;
+}
+
+-keep public class com.aol.mobile.sdk.controls.view.*$* {
     public protected *;
 }
 
