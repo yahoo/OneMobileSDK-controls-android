@@ -252,36 +252,15 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private int accentColor;
     @ColorInt
     private int liveDotColor;
+    private boolean hasChromecastModule;
 
     private void checkCast() {
-        boolean hasChromecastModule = false;
         Context context = getContext();
-
         try {
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle metaData = ai.metaData;
             hasChromecastModule = metaData != null && metaData.getString("com.aol.mobile.sdk.chromecast.ReceiverApplicationId") != null;
         } catch (PackageManager.NameNotFoundException ignored) {
-        }
-
-        if (hasChromecastModule) {
-            castHolder.addView(OneCastButtonFactory.getCastButton(context));
-            OneCastButtonFactory castButtonFactory = new OneCastButtonFactory();
-            castButtonFactory.addCastButtonListener(context, new OneCastButtonFactory.CastButtonListener() {
-                @Override
-                public void enableCast() {
-                    if (listener != null) {
-                        listener.onCastEnabled();
-                    }
-                }
-
-                @Override
-                public void disableCast() {
-                    if (listener != null) {
-                        listener.onCastDisabled();
-                    }
-                }
-            });
         }
     }
 
@@ -330,6 +309,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         castHolder = findView(this, R.id.cast_placeholder);
 
         checkCast();
+        if (hasChromecastModule) {
+            castHolder.addView(OneCastButtonFactory.getCastButton(context));
+        }
 
         themedItems = new Themed[]{
                 playButton.view,
@@ -428,8 +410,26 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     @Override
-    public void setListener(@Nullable Listener listener) {
+    public void setListener(final @Nullable Listener listener) {
         this.listener = listener;
+        if (hasChromecastModule) {
+            OneCastButtonFactory castButtonFactory = new OneCastButtonFactory();
+            castButtonFactory.addCastButtonListener(getContext(), new OneCastButtonFactory.CastButtonListener() {
+                @Override
+                public void enableCast() {
+                    if (listener != null) {
+                        listener.onCastEnabled();
+                    }
+                }
+
+                @Override
+                public void disableCast() {
+                    if (listener != null) {
+                        listener.onCastDisabled();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -449,7 +449,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderVisibility(vm.isSubtitlesTextVisible, subtitlesContainer);
         ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
-        ViewUtils.renderVisibility(vm.isCastButtonVisible, castHolder);
+        castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
 
         ViewUtils.renderAvailability(vm.isNextButtonEnabled, playNextButton);
         ViewUtils.renderAvailability(vm.isPrevButtonEnabled, playPreviousButton);
