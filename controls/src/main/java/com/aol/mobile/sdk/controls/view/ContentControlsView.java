@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2017. Oath.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.aol.mobile.sdk.controls.view;
 
 import android.animation.Animator;
@@ -254,16 +274,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private int liveDotColor;
     private boolean hasChromecastModule;
 
-    private void checkCast() {
-        Context context = getContext();
-        try {
-            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            Bundle metaData = ai.metaData;
-            hasChromecastModule = metaData != null && metaData.getString("com.aol.mobile.sdk.chromecast.ReceiverApplicationId") != null;
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-    }
-
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ContentControlsView(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -342,6 +352,16 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         updateColors();
 
         visibilityModule = new VisibilityModule(this);
+    }
+
+    private void checkCast() {
+        Context context = getContext();
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle metaData = ai.metaData;
+            hasChromecastModule = metaData != null && metaData.getString("com.aol.mobile.sdk.chromecast.ReceiverApplicationId") != null;
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
     }
 
     private void updateColors() {

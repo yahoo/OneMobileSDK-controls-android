@@ -1,5 +1,21 @@
 /*
- * Copyright (c) 2016 One by Aol : Publishers. All rights reserved.
+ * Copyright (c) 2017. Oath.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package com.aol.mobile.sdk.controls.utils;
@@ -13,19 +29,19 @@ public final class VisibilityModule {
     private final ContentControlsView playerControlsView;
     @NonNull
     private Behaviour behaviour;
-    private final Behaviour VISIBLE_PAUSED = new BehaviourAdapter() {
+    private final Behaviour HIDDEN_PLAYING = new BehaviourAdapter() {
         @Override
-        public void play() {
-            playerControlsView.startTimer();
+        public void pause() {
+            playerControlsView.cancelTimer();
             playerControlsView.show();
-            behaviour = VISIBLE_PLAYING;
+            behaviour = VISIBLE_PAUSED;
         }
 
         @Override
         public void tap() {
-            playerControlsView.cancelTimer();
-            playerControlsView.hide();
-            behaviour = HIDDEN_PAUSED;
+            playerControlsView.startTimer();
+            playerControlsView.show();
+            behaviour = VISIBLE_PLAYING;
         }
     };
     private final Behaviour VISIBLE_PLAYING = new BehaviourAdapter() {
@@ -55,21 +71,6 @@ public final class VisibilityModule {
             playerControlsView.startTimer();
         }
     };
-    private final Behaviour HIDDEN_PLAYING = new BehaviourAdapter() {
-        @Override
-        public void pause() {
-            playerControlsView.cancelTimer();
-            playerControlsView.show();
-            behaviour = VISIBLE_PAUSED;
-        }
-
-        @Override
-        public void tap() {
-            playerControlsView.startTimer();
-            playerControlsView.show();
-            behaviour = VISIBLE_PLAYING;
-        }
-    };
     private final Behaviour HIDDEN_PAUSED = new BehaviourAdapter() {
         @Override
         public void play() {
@@ -83,6 +84,21 @@ public final class VisibilityModule {
             playerControlsView.cancelTimer();
             playerControlsView.show();
             behaviour = VISIBLE_PAUSED;
+        }
+    };
+    private final Behaviour VISIBLE_PAUSED = new BehaviourAdapter() {
+        @Override
+        public void play() {
+            playerControlsView.startTimer();
+            playerControlsView.show();
+            behaviour = VISIBLE_PLAYING;
+        }
+
+        @Override
+        public void tap() {
+            playerControlsView.cancelTimer();
+            playerControlsView.hide();
+            behaviour = HIDDEN_PAUSED;
         }
     };
 
