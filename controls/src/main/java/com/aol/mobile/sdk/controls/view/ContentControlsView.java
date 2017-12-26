@@ -500,6 +500,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         isPlaying = vm.isStreamPlaying;
         thumbUrl = vm.thumbnailImageUrl;
         longitude = vm.compassLongitude;
+        if (vm.isCasting){
+            timer.reset();
+        }
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
