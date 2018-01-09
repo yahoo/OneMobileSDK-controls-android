@@ -50,6 +50,7 @@ public final class AndroidHandlerTimer implements Timer {
 
     @Override
     public void reset() {
+        if (tasks.isEmpty()) return;
         for (Runnable task : tasks.keySet()) {
             handler.removeCallbacks(task);
         }
