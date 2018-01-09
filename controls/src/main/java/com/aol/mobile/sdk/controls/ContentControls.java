@@ -99,6 +99,7 @@ public interface ContentControls {
         public boolean isLiveIndicatorVisible;
         public boolean isOnLiveEdge;
         public boolean isCastButtonVisible;
+        public boolean isCasting;
 
         public final static class TrackOptionVM {
             @Nullable
