@@ -50,6 +50,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -140,6 +141,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private ValueAnimator animator;
     @Nullable
     private Listener listener;
+    private boolean shouldHideControls = true;
     @NonNull
     private final SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -273,6 +275,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @ColorInt
     private int liveDotColor;
     private boolean hasChromecastModule;
+    private AccessibilityManager accessibilityManager;
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -293,6 +296,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         readAttrs(context, attrs);
 
         inflate(getContext(), R.layout.player_controls_view, this);
+        accessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
         controlsContainer = findView(this, R.id.controls_container);
         progressView = findView(this, R.id.progressbar);
@@ -500,8 +504,13 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         isPlaying = vm.isStreamPlaying;
         thumbUrl = vm.thumbnailImageUrl;
         longitude = vm.compassLongitude;
-        if (vm.isCasting){
-            timer.reset();
+        if (vm.isCasting || (accessibilityManager != null && accessibilityManager.isEnabled())) {
+            if (shouldHideControls){
+                timer.reset();
+            }
+            shouldHideControls = false;
+        }else{
+            shouldHideControls = true;
         }
     }
 
@@ -717,13 +726,15 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     public void startTimer() {
-        timer.schedule(3000L, new Runnable() {
-            @Override
-            public void run() {
-                visibilityModule.timeout();
-            }
-        });
-        timer.start();
+        if (shouldHideControls) {
+            timer.schedule(3000L, new Runnable() {
+                @Override
+                public void run() {
+                    visibilityModule.timeout();
+                }
+            });
+            timer.start();
+        }
     }
 
     public void cancelTimer() {

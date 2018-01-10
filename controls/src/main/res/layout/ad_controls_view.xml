@@ -37,12 +37,14 @@
         android:id="@+id/ad_play_button"
         style="@style/AdControlButton"
         android:src="@drawable/ic_ad_play"
+        android:contentDescription="@string/play"
         tools:visibility="visible"/>
 
     <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/ad_pause_button"
         style="@style/AdControlButton"
         android:src="@drawable/ic_ad_pause"
+        android:contentDescription="@string/pause"
         tools:visibility="visible"/>
 
     <SeekBar
