@@ -61,7 +61,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aol.mobile.sdk.chromecast.OneCastButtonFactory;
+import com.aol.mobile.sdk.chromecast.OneCastManager;
 import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.ImageLoader;
 import com.aol.mobile.sdk.controls.R;
@@ -324,7 +324,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
 
         checkCast();
         if (hasChromecastModule) {
-            castHolder.addView(OneCastButtonFactory.getCastButton(context));
+            castHolder.addView(OneCastManager.getCastButton(context));
         }
 
         themedItems = new Themed[]{
@@ -437,8 +437,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     public void setListener(final @Nullable Listener listener) {
         this.listener = listener;
         if (hasChromecastModule) {
-            OneCastButtonFactory castButtonFactory = new OneCastButtonFactory();
-            castButtonFactory.addCastButtonListener(getContext(), new OneCastButtonFactory.CastButtonListener() {
+            OneCastManager castButtonFactory = new OneCastManager();
+            castButtonFactory.addCastButtonListener(getContext(), new OneCastManager.CastButtonListener() {
                 @Override
                 public void enableCast() {
                     if (listener != null) {
@@ -473,7 +473,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderVisibility(vm.isSubtitlesTextVisible, subtitlesContainer);
         ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
-        castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
 
         ViewUtils.renderAvailability(vm.isNextButtonEnabled, playNextButton);
         ViewUtils.renderAvailability(vm.isPrevButtonEnabled, playPreviousButton);
@@ -512,6 +511,17 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         }else{
             shouldHideControls = true;
         }
+
+        if (castHolder.getVisibility() == VISIBLE && !vm.isCastButtonVisible){
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    OneCastManager.stopCasting(getContext());
+                }
+            });
+        }
+
+        castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
