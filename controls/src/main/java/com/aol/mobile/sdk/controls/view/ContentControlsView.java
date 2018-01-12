@@ -437,8 +437,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     public void setListener(final @Nullable Listener listener) {
         this.listener = listener;
         if (hasChromecastModule) {
-            OneCastManager castButtonFactory = new OneCastManager();
-            castButtonFactory.addCastButtonListener(getContext(), new OneCastManager.CastButtonListener() {
+            OneCastManager castManager = new OneCastManager();
+            castManager.addCastButtonListener(getContext(), new OneCastManager.CastButtonListener() {
                 @Override
                 public void enableCast() {
                     if (listener != null) {
