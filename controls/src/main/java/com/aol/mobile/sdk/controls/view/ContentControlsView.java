@@ -512,7 +512,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             shouldHideControls = true;
         }
 
-        if (castHolder.getVisibility() == VISIBLE && !vm.isCastButtonVisible){
+        if (hasChromecastModule && castHolder.getVisibility() == VISIBLE && !vm.isCastButtonVisible){
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
