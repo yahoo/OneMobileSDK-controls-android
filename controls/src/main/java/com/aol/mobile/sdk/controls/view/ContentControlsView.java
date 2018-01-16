@@ -142,6 +142,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @Nullable
     private Listener listener;
     private boolean shouldHideControls = true;
+    private boolean isCastPrevState = true;
     @NonNull
     private final SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -504,15 +505,23 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         thumbUrl = vm.thumbnailImageUrl;
         longitude = vm.compassLongitude;
         if (vm.isCasting || (accessibilityManager != null && accessibilityManager.isEnabled())) {
-            if (shouldHideControls){
-                timer.reset();
+            if (shouldHideControls) {
+                show();
             }
             shouldHideControls = false;
-        }else{
-            shouldHideControls = true;
+        } else {
+            if (!shouldHideControls) {
+                if (isPlaying){
+                    shouldHideControls = true;
+                    visibilityModule.play();
+                }else{
+                    shouldHideControls = true;
+                    visibilityModule.pause();
+                }
+            }
         }
 
-        if (hasChromecastModule && castHolder.getVisibility() == VISIBLE && !vm.isCastButtonVisible){
+        if (hasChromecastModule && isCastPrevState && !vm.isCastButtonVisible) {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
@@ -520,8 +529,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                 }
             });
         }
-
         castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
+
+        isCastPrevState = vm.isCastButtonVisible;
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
@@ -697,6 +707,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     public void hide() {
+        if (!shouldHideControls) return;
         resetVisibilityState();
         focusedView = controlsContainer.findFocus();
         setFocusable(true);
@@ -736,15 +747,13 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     public void startTimer() {
-        if (shouldHideControls) {
-            timer.schedule(3000L, new Runnable() {
-                @Override
-                public void run() {
-                    visibilityModule.timeout();
-                }
-            });
-            timer.start();
-        }
+        timer.schedule(3000L, new Runnable() {
+            @Override
+            public void run() {
+                visibilityModule.timeout();
+            }
+        });
+        timer.start();
     }
 
     public void cancelTimer() {
