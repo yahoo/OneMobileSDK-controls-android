@@ -142,7 +142,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @Nullable
     private Listener listener;
     private boolean shouldHideControls = true;
-    private boolean isCastPrevState = true;
     @NonNull
     private final SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -520,18 +519,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                 }
             }
         }
-
-        if (hasChromecastModule && isCastPrevState && !vm.isCastButtonVisible) {
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    OneCastManager.stopCasting(getContext());
-                }
-            });
-        }
         castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
-
-        isCastPrevState = vm.isCastButtonVisible;
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
