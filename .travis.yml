@@ -40,13 +40,12 @@ deploy:
     script: ./gradlew gitPublishPush
     skip_cleanup: true
     on:
-      branch: master
-
+      tags: true
   - provider: script
-    script: ./gradlew —rerun-tasks gitPublishPush
+    script: ./gradlew gitPublishPush
     skip_cleanup: true
     on:
-      tags: true
+      branch: master
 
 notifications:
   email: false
