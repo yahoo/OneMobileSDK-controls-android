@@ -141,8 +141,9 @@
                 android:textSize="14dp"
                 tools:text="00:00"/>
 
-            <SeekBar
+            <com.aol.mobile.sdk.controls.view.AdsSeekBar
                 android:id="@+id/seekbar"
+                android:splitTrack="true"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/seeker_height"

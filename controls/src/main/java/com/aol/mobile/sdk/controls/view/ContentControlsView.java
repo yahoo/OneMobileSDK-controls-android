@@ -117,7 +117,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final RelativeLayout seekerContainer;
     @NonNull
-    private final SeekBar seekbar;
+    private final AdsSeekBar seekbar;
     @NonNull
     private final TextView currentTimeView;
     @NonNull
@@ -520,6 +520,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             }
         }
         castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
+        seekbar.renderAdCues(vm.adCues);
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {

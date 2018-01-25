@@ -29,5 +29,11 @@
     <item
         android:id="@android:id/progress"
         android:drawable="@drawable/ic_thumbseek"/>
+    <item
+        android:id="@+id/ad_marks">
+        <shape>
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
 
 </layer-list>

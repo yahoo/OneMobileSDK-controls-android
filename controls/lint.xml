@@ -29,4 +29,5 @@
     <issue id="SetJavaScriptEnabled" severity="ignore"/>
     <issue id="AppCompatCustomView" severity="ignore"/>
     <issue id="GradleCompatible" severity="ignore"/>
+    <issue id="UnusedAttribute" severity="ignore"/>
 </lint>
