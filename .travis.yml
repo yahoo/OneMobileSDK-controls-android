@@ -49,4 +49,4 @@ deploy:
 
 notifications:
   email: false
-  slack: aol:M5cVriVZt6P4yiHdkH84N10l
+  slack: ouroath:M5cVriVZt6P4yiHdkH84N10l
