@@ -25,7 +25,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 @UiThread
 public interface ContentControls {
@@ -100,6 +102,8 @@ public interface ContentControls {
         public boolean isOnLiveEdge;
         public boolean isCastButtonVisible;
         public boolean isCasting;
+        @NonNull
+        public final Set<Double> adCues = new HashSet<>();
 
         public final static class TrackOptionVM {
             @Nullable
