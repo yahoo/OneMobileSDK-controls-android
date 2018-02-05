@@ -19,10 +19,11 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:background="@android:color/black">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/open_advertisement_link"
+    tools:background="@android:color/black">
 
     <ProgressBar
         android:id="@+id/ad_progress_bar"
@@ -31,21 +32,21 @@
         android:layout_height="54dp"
         android:indeterminateDrawable="@drawable/ad_loading_animation"
         android:padding="12dp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/ad_play_button"
         style="@style/AdControlButton"
+        android:contentDescription="@string/play_advertisement"
         android:src="@drawable/ic_ad_play"
-        android:contentDescription="@string/play"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/ad_pause_button"
         style="@style/AdControlButton"
+        android:contentDescription="@string/pause_advertisement"
         android:src="@drawable/ic_ad_pause"
-        android:contentDescription="@string/pause"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <SeekBar
         android:id="@+id/ad_seekbar"
@@ -62,7 +63,7 @@
         android:thumb="@null"
         android:thumbOffset="0dp"
         tools:ignore="RtlHardcoded"
-        tools:progress="40"/>
+        tools:progress="40" />
 
     <TextView
         android:id="@id/ad_time_left"
@@ -77,7 +78,7 @@
         android:textStyle="bold"
         tools:ignore="RtlHardcoded,SpUsage"
         tools:text="00:00"
-        tools:textColor="@android:color/white"/>
+        tools:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/ad_title"
@@ -93,5 +94,5 @@
         android:text="@string/advertisement"
         android:textColor="@android:color/white"
         android:textSize="@dimen/ad_title_text_size"
-        tools:ignore="RtlHardcoded,SpUsage"/>
+        tools:ignore="RtlHardcoded,SpUsage" />
 </RelativeLayout>

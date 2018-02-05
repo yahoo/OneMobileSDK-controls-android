@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2017. Oath.
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -25,14 +24,18 @@
     <string name="text_tracks_title">SUBTITLES</string>
     <string name="track_close_title">Close</string>
     <string name="live">LIVE</string>
-    <string name="play">play</string>
-    <string name="replay">replay</string>
-    <string name="pause">pause</string>
+    <string name="play_video">play video</string>
+    <string name="replay_video">replay video</string>
+    <string name="pause_video">pause video</string>
+    <string name="play_advertisement">play advertisement</string>
+    <string name="pause_advertisement">pause advertisement</string>
+    <string name="open_advertisement_link">Open advertisement link</string>
     <string name="previous_video">previous video</string>
     <string name="next_video">next video</string>
     <string name="sec_10_forward">10 seconds forward</string>
-    <string name="sec_10_back">10 seconds back</string>
+    <string name="sec_10_back">10 seconds backward</string>
+    <string name="live_indicator">video is live</string>
     <string name="time">time</string>
     <string name="tracks">tracks selection</string>
-    <string name="compas">orientation reset</string>
+    <string name="compas">tap to center video</string>
 </resources>
