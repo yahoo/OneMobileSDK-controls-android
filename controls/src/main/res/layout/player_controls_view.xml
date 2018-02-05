@@ -82,14 +82,14 @@
                     android:id="@+id/play_button"
                     style="@style/ControlButton"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/play"
+                    android:contentDescription="@string/play_video"
                     android:src="@drawable/dr_play"/>
 
                 <com.aol.mobile.sdk.controls.view.TintableImageButton
                     android:id="@+id/pause_button"
                     style="@style/ControlButton"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/pause"
+                    android:contentDescription="@string/pause_video"
                     android:src="@drawable/dr_pause"/>
             </FrameLayout>
 
@@ -233,7 +233,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/compas"
             android:src="@drawable/ic_360_compass_body"/>
 
         <ImageView
@@ -241,6 +240,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rotation="180"
+            android:contentDescription="@string/compas"
             android:src="@drawable/ic_360_compass_direction"/>
     </FrameLayout>
 
@@ -260,7 +260,7 @@
         android:layout_alignRight="@+id/progressbar"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:contentDescription="@string/replay"
+        android:contentDescription="@string/replay_video"
         android:src="@drawable/dr_replay"/>
 
     <FrameLayout
@@ -290,6 +290,7 @@
         android:gravity="center"
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
+        android:contentDescription="@string/live_indicator"
         android:visibility="gone">
 
         <View
