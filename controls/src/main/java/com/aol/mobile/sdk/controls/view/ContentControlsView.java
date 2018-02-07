@@ -363,7 +363,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         try {
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle metaData = ai.metaData;
-            hasChromecastModule = metaData != null && metaData.getString("com.aol.mobile.sdk.chromecast.ReceiverApplicationId") != null;
+            hasChromecastModule = metaData != null && metaData.getString("com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME") != null;
         } catch (PackageManager.NameNotFoundException ignored) {
         }
     }
