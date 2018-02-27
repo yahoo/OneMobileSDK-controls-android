@@ -23,6 +23,9 @@ package com.aol.mobile.sdk.controls;
 
 import android.support.annotation.ColorInt;
 
+import com.aol.mobile.sdk.annotations.PublicApi;
+
+@PublicApi
 public interface Themed {
     void setMainColor(@ColorInt int color);
 

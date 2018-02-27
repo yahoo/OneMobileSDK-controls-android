@@ -24,7 +24,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 
+import com.aol.mobile.sdk.annotations.PublicApi;
+
 @UiThread
+@PublicApi
 public interface AdControls {
     void setListener(@Nullable Listener listener);
 
