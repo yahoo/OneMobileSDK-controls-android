@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.aol.mobile.sdk.annotations.PublicApi;
 import com.aol.mobile.sdk.controls.AdControls;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
@@ -48,6 +49,7 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerProgress;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderText;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderVisibility;
 
+@PublicApi
 public final class AdControlsView extends RelativeLayout implements AdControls, Themed {
     @NonNull
     private final ProgressBar progressView;

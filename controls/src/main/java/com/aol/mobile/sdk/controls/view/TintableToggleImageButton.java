@@ -27,6 +27,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
+import com.aol.mobile.sdk.annotations.PrivateApi;
+
+@PrivateApi
 public class TintableToggleImageButton extends TintableImageButton {
 
     public TintableToggleImageButton(@NonNull Context context) {

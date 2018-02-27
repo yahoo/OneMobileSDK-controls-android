@@ -30,9 +30,12 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
+import com.aol.mobile.sdk.annotations.PublicApi;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@PublicApi
 public class SidePanel extends LinearLayout {
 
     private final static int ANIMATION_DURATION = 200;

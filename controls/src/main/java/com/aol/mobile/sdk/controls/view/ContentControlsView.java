@@ -61,6 +61,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.aol.mobile.sdk.annotations.PublicApi;
 import com.aol.mobile.sdk.chromecast.OneCastManager;
 import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.ImageLoader;
@@ -77,6 +78,7 @@ import java.util.LinkedList;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
 
+@PublicApi
 public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
     @NonNull
     private final RelativeLayout controlsContainer;
@@ -141,7 +143,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private ValueAnimator animator;
     @Nullable
     private Listener listener;
-    private boolean shouldHideControls = true;
     @NonNull
     private final SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -197,6 +198,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             return true;
         }
     });
+    private boolean shouldHideControls = true;
     @Nullable
     private Dialog dialog;
     @NonNull

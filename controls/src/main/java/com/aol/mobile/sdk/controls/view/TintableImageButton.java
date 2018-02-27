@@ -29,9 +29,11 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import com.aol.mobile.sdk.annotations.PrivateApi;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 
+@PrivateApi
 public class TintableImageButton extends ImageButton implements Themed {
     protected int mainColor;
     protected int accentColor;

@@ -26,6 +26,9 @@ import android.support.annotation.NonNull;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.aol.mobile.sdk.annotations.PrivateApi;
+
+@PrivateApi
 public final class TargetUrlActivity extends Activity {
     @NonNull
     public final static String KEY_TARGET_URL = "KEY_TARGET_URL";

@@ -25,11 +25,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 
+import com.aol.mobile.sdk.annotations.PublicApi;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
 @UiThread
+@PublicApi
 public interface ContentControls {
     void setListener(@Nullable Listener listener);
 
@@ -63,6 +66,8 @@ public interface ContentControls {
         public final LinkedList<TrackOptionVM> audioTracks = new LinkedList<>();
         @NonNull
         public final LinkedList<TrackOptionVM> ccTracks = new LinkedList<>();
+        @NonNull
+        public final Set<Double> adCues = new HashSet<>();
         public boolean isLoading;
         public boolean isPlayButtonVisible;
         public boolean isPauseButtonVisible;
@@ -102,8 +107,6 @@ public interface ContentControls {
         public boolean isOnLiveEdge;
         public boolean isCastButtonVisible;
         public boolean isCasting;
-        @NonNull
-        public final Set<Double> adCues = new HashSet<>();
 
         public final static class TrackOptionVM {
             @Nullable
