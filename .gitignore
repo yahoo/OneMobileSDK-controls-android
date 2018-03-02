@@ -37,3 +37,4 @@ proguard/
 # Android Studio captures folder
 captures/
 *.DS_Store
+/controls/proguard-classes.pro

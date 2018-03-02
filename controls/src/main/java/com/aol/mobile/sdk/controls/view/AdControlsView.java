@@ -34,6 +34,8 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -44,6 +46,7 @@ import com.aol.mobile.sdk.controls.AdControls;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 
+import static android.widget.FrameLayout.LayoutParams.MATCH_PARENT;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerMaxValue;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerProgress;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderText;
@@ -52,7 +55,11 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderVisibility;
 @PublicApi
 public final class AdControlsView extends RelativeLayout implements AdControls, Themed {
     @NonNull
+    private final FrameLayout clickthroughContainer;
+    @NonNull
     private final ProgressBar progressView;
+    @NonNull
+    private final TintableImageButton clickthroughClose;
     @NonNull
     private final TintableImageButton playButton;
     @NonNull
@@ -73,6 +80,8 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         public void onClick(View view) {
             if (listener == null) return;
 
+            if (view == AdControlsView.this) listener.onAdClicked();
+            if (view == clickthroughClose) listener.onAdPresented();
             if (view == playButton) listener.onButtonClick(Button.PLAY);
             if (view == pauseButton) listener.onButtonClick(Button.PAUSE);
         }
@@ -106,6 +115,8 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
 
         setClickable(true);
 
+        clickthroughContainer = findViewById(R.id.clickthrough_container);
+        clickthroughClose = findViewById(R.id.clickthrough_close);
         progressView = findViewById(R.id.ad_progress_bar);
         playButton = findViewById(R.id.ad_play_button);
         pauseButton = findViewById(R.id.ad_pause_button);
@@ -113,9 +124,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         timeLeftTextView = findViewById(R.id.ad_time_left);
         adTitleTextView = findViewById(R.id.ad_title);
 
-        themedItems = new Themed[]{
-                playButton,
-                pauseButton};
+        themedItems = new Themed[]{playButton, pauseButton};
 
         seekbar.setPadding(0, 0, 0, 0);
 
@@ -172,27 +181,53 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
     }
 
     private void setupListeners() {
+        clickthroughClose.setOnClickListener(clickListener);
         playButton.setOnClickListener(clickListener);
         pauseButton.setOnClickListener(clickListener);
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (adUrl != null) {
-                    Context context = getContext();
-
-                    Intent intent = new Intent(context, TargetUrlActivity.class);
-                    intent.putExtra(TargetUrlActivity.KEY_TARGET_URL, adUrl);
-                    context.startActivity(intent);
-                    if (listener != null) listener.onAdClicked();
-                }
-            }
-        });
+        setOnClickListener(clickListener);
         seekbar.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
+    }
+
+    private void renderClickThrough(@Nullable String adUrl, boolean embedClickThroughUrl) {
+        if ((adUrl != null && !adUrl.equals(this.adUrl)) || (adUrl == null && this.adUrl != null)) {
+            this.adUrl = adUrl;
+
+            if (embedClickThroughUrl) {
+                renderEmbeddedClickthrough(adUrl);
+            } else {
+                renderClickthrough(adUrl);
+            }
+        }
+    }
+
+    void renderEmbeddedClickthrough(@Nullable String url) {
+        if (listener == null) return;
+
+        clickthroughContainer.removeAllViews();
+
+        if (url == null) {
+            clickthroughContainer.setVisibility(GONE);
+        } else {
+            WebView webView = new WebView(getContext());
+            clickthroughContainer.addView(webView, MATCH_PARENT, MATCH_PARENT);
+            clickthroughContainer.setVisibility(VISIBLE);
+            webView.loadUrl(url);
+        }
+    }
+
+    void renderClickthrough(@Nullable String url) {
+        if (listener == null || url == null) return;
+
+        listener.onAdPresented();
+        Context context = getContext();
+        Intent intent = new Intent(context, TargetUrlActivity.class);
+        intent.putExtra(TargetUrlActivity.KEY_TARGET_URL, url);
+        context.startActivity(intent);
     }
 
     @Override
@@ -207,10 +242,11 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         renderVisibility(vm.isPauseButtonVisible, pauseButton);
         renderVisibility(vm.isAdTimeViewVisible, timeLeftTextView);
         renderVisibility(vm.isAdTimeViewVisible, seekbar);
+        renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
         renderSeekerMaxValue(vm.seekerMaxValue, seekbar);
         renderSeekerProgress(vm.seekerProgress, seekbar);
         renderText(vm.timeLeftText, timeLeftTextView);
-        adUrl = vm.adUrl;
+        renderClickThrough(vm.adUrl, vm.embedClickThroughUrl);
     }
 
     @Override
