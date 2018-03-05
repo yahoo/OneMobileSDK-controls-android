@@ -39,6 +39,7 @@ public final class TargetUrlActivity extends Activity {
         String url = getIntent().getStringExtra(KEY_TARGET_URL);
         WebView webView = new WebView(this);
         setContentView(webView);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
     }
