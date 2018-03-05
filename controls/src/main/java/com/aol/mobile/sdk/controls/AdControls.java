@@ -40,9 +40,13 @@ public interface AdControls {
         void onButtonClick(@NonNull Button button);
 
         void onAdClicked();
+
+        void onAdPresented();
     }
 
     final class ViewModel {
+        public boolean embedClickThroughUrl;
+        public boolean isCloseButtonVisible;
         public boolean isProgressViewVisible;
         public boolean isPlayButtonVisible;
         public boolean isPauseButtonVisible;
