@@ -403,6 +403,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         durationView.setTextColor(mainColor);
         titleView.setTextColor(mainColor);
         currentTimeView.setTextColor(accentColor);
+
+        progressView.getIndeterminateDrawable().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
     }
 
     @SuppressWarnings("deprecation")
@@ -512,10 +514,10 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             shouldHideControls = false;
         } else {
             if (!shouldHideControls) {
-                if (isPlaying){
+                if (isPlaying) {
                     shouldHideControls = true;
                     visibilityModule.play();
-                }else{
+                } else {
                     shouldHideControls = true;
                     visibilityModule.pause();
                 }
