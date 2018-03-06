@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"/>
+
+    <com.aol.mobile.sdk.controls.view.TintableImageButton
+        android:id="@+id/clickthrough_close"
+        style="@style/AdControlButton"
+        android:layout_gravity="top|right"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_ad_close"
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded"
+        tools:visibility="visible"/>
+</merge>

@@ -125,7 +125,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         timeLeftTextView = findViewById(R.id.ad_time_left);
         adTitleTextView = findViewById(R.id.ad_title);
 
-        themedItems = new Themed[]{playButton, pauseButton};
+        themedItems = new Themed[]{playButton, pauseButton, clickthroughClose};
 
         seekbar.setPadding(0, 0, 0, 0);
 
@@ -201,7 +201,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
             if (embedClickThroughUrl) {
                 renderEmbeddedClickthrough(adUrl);
             } else {
-                renderClickthrough(adUrl);
+                renderClickthrough(adUrl, clickthroughClose.getVisibility() == VISIBLE);
             }
         }
     }
@@ -223,13 +223,14 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         }
     }
 
-    void renderClickthrough(@Nullable String url) {
+    void renderClickthrough(@Nullable String url, boolean isCloseVisible) {
         if (listener == null || url == null) return;
 
         listener.onAdPresented();
         Context context = getContext();
-        Intent intent = new Intent(context, TargetUrlActivity.class);
-        intent.putExtra(TargetUrlActivity.KEY_TARGET_URL, url);
+        Intent intent = new Intent(context, TargetUrlActivity.class)
+                .putExtra(TargetUrlActivity.KEY_TARGET_URL, url)
+                .putExtra(TargetUrlActivity.KEY_SHOW_CLOSE, isCloseVisible);
         context.startActivity(intent);
     }
 
