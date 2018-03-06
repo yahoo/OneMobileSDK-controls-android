@@ -114,7 +114,7 @@
             style="@style/AdControlButton"
             android:layout_gravity="top|right"
             android:layout_margin="8dp"
-            android:src="@drawable/ic_tracks_close"
+            android:src="@drawable/ic_ad_close"
             android:visibility="gone"
             tools:ignore="RtlHardcoded"
             tools:visibility="visible"/>
