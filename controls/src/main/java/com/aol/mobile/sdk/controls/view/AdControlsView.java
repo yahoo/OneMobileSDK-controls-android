@@ -35,6 +35,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -214,6 +215,8 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
             clickthroughContainer.setVisibility(GONE);
         } else {
             WebView webView = new WebView(getContext());
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient());
             clickthroughContainer.addView(webView, MATCH_PARENT, MATCH_PARENT);
             clickthroughContainer.setVisibility(VISIBLE);
             webView.loadUrl(url);
