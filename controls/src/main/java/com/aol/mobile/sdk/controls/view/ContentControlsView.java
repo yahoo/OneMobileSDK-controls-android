@@ -70,11 +70,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final FrameLayout compassContainer;
     @NonNull
-    private final FrameLayout subtitlesContainer;
-    @NonNull
     private final ProgressBar progressView;
-    @NonNull
-    private final TextView subtitlesView;
     @NonNull
     private final TextView titleView;
     @NonNull
@@ -296,8 +292,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         forwardSeekButton = findView(this, R.id.forward_seek_button);
         backwardSeekButton = findView(this, R.id.backward_seek_button);
         liveIndicatorLayout = findView(this, R.id.live_indicator);
-        subtitlesContainer = findView(this, R.id.subtitles_container);
-        subtitlesView = findView(this, R.id.subtitles_view);
         seekerContainer = findView(this, R.id.seekbar_container);
         seekbar = findView(this, R.id.seekbar);
         titleView = findView(this, R.id.title_view);
@@ -335,8 +329,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                 seekbarListener.onProgressChanged(seekbar, seekbar.getProgress(), false);
             }
         });
-
-        subtitlesContainer.setPadding(0, 0, 0, (int) (getResources().getDimension(R.dimen.seeker_height) + getResources().getDimension(R.dimen.seekbar_bottom_padding)));
 
         setupListeners();
         initFocusIssue();
@@ -459,7 +451,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderVisibility(vm.isSeekerVisible, seekerContainer);
         ViewUtils.renderVisibility(vm.isCompassViewVisible, compassContainer);
         ViewUtils.renderVisibility(vm.isTitleVisible, titleView);
-        ViewUtils.renderVisibility(vm.isSubtitlesTextVisible, subtitlesContainer);
         ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
 
@@ -468,7 +459,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderAvailability(vm.isTrackChooserButtonEnabled, trackChooserButton);
 
         ViewUtils.renderText(vm.titleText, titleView);
-        ViewUtils.renderText(vm.subtitlesText, subtitlesView);
         ViewUtils.renderText(vm.seekerCurrentTimeText, currentTimeView);
         ViewUtils.renderText(vm.seekerDurationText, durationView);
 
@@ -655,25 +645,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
                 controlsContainer.setAlpha(value);
-                subtitlesContainer.setPadding(0, 0, 0, (int) ((seekerContainer.getHeight() + getResources().getDimensionPixelSize(R.dimen.seekbar_bottom_padding)) * value));
-            }
-        });
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                subtitlesContainer.setPadding(0, 0, 0, (seekerContainer.getHeight() + getResources().getDimensionPixelSize(R.dimen.seekbar_bottom_padding)));
-            }
-
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
             }
         });
         animator.start();
@@ -681,7 +652,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             requestFocus(focusedView);
         }
         sidePanel.show();
-        subtitlesContainer.setPadding(0, 0, 0, seekerContainer.getHeight() + getResources().getDimensionPixelSize(R.dimen.seekbar_bottom_padding));
     }
 
     public void hide() {
@@ -695,7 +665,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             @Override
             public void onAnimationEnd(Animator animator) {
                 controlsContainer.setVisibility(INVISIBLE);
-                subtitlesContainer.setPadding(0, 0, 0, 0);
             }
 
             @Override
@@ -716,12 +685,10 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
                 controlsContainer.setAlpha(value);
-                subtitlesContainer.setPadding(0, 0, 0, (int) ((seekerContainer.getHeight() + getResources().getDimensionPixelSize(R.dimen.seekbar_bottom_padding)) * value));
             }
         });
         animator.start();
         sidePanel.hide();
-        subtitlesContainer.setPadding(0, 0, 0, 0);
     }
 
     public void startTimer() {
