@@ -65,7 +65,6 @@ public interface ContentControls {
         public boolean isSeekForwardButtonVisible;
         public boolean isSeekBackButtonVisible;
         public boolean isTitleVisible;
-        public boolean isSubtitlesTextVisible;
         public boolean isCompassViewVisible;
         public boolean isThumbnailImageVisible;
         public boolean isStreamPlaying;
@@ -84,8 +83,6 @@ public interface ContentControls {
         public String seekerDurationText;
         @Nullable
         public String titleText;
-        @Nullable
-        public CharSequence subtitlesText;
         @Nullable
         public String thumbnailImageUrl;
         public boolean isLiveIndicatorVisible;

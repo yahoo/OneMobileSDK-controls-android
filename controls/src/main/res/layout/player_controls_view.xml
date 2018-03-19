@@ -248,23 +248,6 @@
         android:contentDescription="@string/replay_video"
         android:src="@drawable/dr_replay"/>
 
-    <FrameLayout
-        android:id="@+id/subtitles_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible">
-
-        <TextView
-            android:id="@+id/subtitles_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#55333333"
-            android:gravity="center"
-            android:padding="5dp"
-            android:textColor="#FFFFFF"/>
-    </FrameLayout>
-
     <LinearLayout
         android:id="@+id/live_indicator"
         android:layout_width="wrap_content"
