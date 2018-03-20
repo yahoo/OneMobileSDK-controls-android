@@ -258,7 +258,10 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @ColorInt
     private int liveDotColor;
     private boolean hasChromecastModule;
+    @Nullable
     private AccessibilityManager accessibilityManager;
+    @Nullable
+    private OneCastManager oneCastManager;
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -305,7 +308,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
 
         checkCast();
         if (hasChromecastModule) {
-            castHolder.addView(OneCastManager.getCastButton(context));
+            oneCastManager = new OneCastManager(context);
+            castHolder.addView(oneCastManager.constructCastButton());
         }
 
         themedItems = new Themed[]{
@@ -417,9 +421,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @Override
     public void setListener(final @Nullable Listener listener) {
         this.listener = listener;
-        if (hasChromecastModule) {
-            OneCastManager castManager = new OneCastManager();
-            castManager.addCastButtonListener(getContext(), new OneCastManager.CastButtonListener() {
+        if (oneCastManager != null) {
+            oneCastManager.setCastListener(new OneCastManager.CastListener() {
                 @Override
                 public void enableCast() {
                     if (listener != null) {
