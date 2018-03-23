@@ -214,6 +214,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         listener.onAdPresented();
         Context context = getContext();
         Intent intent = new Intent(context, TargetUrlActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(TargetUrlActivity.KEY_TARGET_URL, url)
                 .putExtra(TargetUrlActivity.KEY_SHOW_CLOSE, isCloseVisible);
         context.startActivity(intent);
