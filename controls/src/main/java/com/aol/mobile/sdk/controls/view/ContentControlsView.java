@@ -386,6 +386,11 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         currentTimeView.setTextColor(accentColor);
 
         progressView.getIndeterminateDrawable().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
+
+        View castButton = castHolder.getChildAt(0);
+        if (castButton != null) {
+            castButton.getBackground().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
+        }
     }
 
     @SuppressWarnings("deprecation")
