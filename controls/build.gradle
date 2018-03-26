@@ -41,7 +41,6 @@ dependencies {
     //noinspection GradleDependency
     testImplementation "com.aol.one.publishers.android:chromecast:1.7-SNAPSHOT"
 
-
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
     testImplementation "org.robolectric:robolectric:3.8"
     testImplementation "net.javacrumbs.json-unit:json-unit-fluent:1.28.2"
