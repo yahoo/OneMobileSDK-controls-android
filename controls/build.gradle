@@ -22,7 +22,7 @@ apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-and
 apply plugin: 'api-tracker'
 
 apiTracker {
-    compareVersion = GIT_TAG
+    compareVersion = PREVIOUS_TAG
     reportFile = file("$buildDir/maven/API CHANGES/$ARTIFACT_ID/$compareVersion to ${LIBRARY_VERSION}.md")
     implicitNamespaces = ["com.aol.mobile.sdk.controls", "java.util"]
 }
@@ -36,8 +36,10 @@ dependencies {
     compileOnly "com.android.support:support-annotations:$SUPPORT_VERSION"
 
     // Chromecast
-    compileOnly "com.aol.one.publishers.android:chromecast:$CHROMECAST_VERSION"
-    testImplementation "com.aol.one.publishers.android:chromecast:$CHROMECAST_VERSION"
+    //noinspection GradleDependency
+    compileOnly "com.aol.one.publishers.android:chromecast:1.7-SNAPSHOT"
+    //noinspection GradleDependency
+    testImplementation "com.aol.one.publishers.android:chromecast:1.7-SNAPSHOT"
 
 
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
