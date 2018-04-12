@@ -24,9 +24,6 @@ public class AdsSeekBar extends SeekBar {
 
     private Paint adCuesPaint = new Paint();
     private Set<Double> adCues;
-    private int width;
-    private int height;
-    private float radius;
 
     public AdsSeekBar(final Context context) {
         this(context, null);
@@ -40,7 +37,6 @@ public class AdsSeekBar extends SeekBar {
         super(context, attrs, defStyle);
         adCuesPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         adCuesPaint.setColor(getResources().getColor(R.color.default_accent_color));
-        updateMarkParams();
     }
 
     public void renderAdCues(Set<Double> adCues) {
@@ -51,6 +47,11 @@ public class AdsSeekBar extends SeekBar {
     }
 
     private void drawMarks() {
+        LayerDrawable progressDrawable = (LayerDrawable) getProgressDrawable();
+        Drawable background = progressDrawable.findDrawableByLayerId(android.R.id.background);
+        final int height = background.getBounds().height();
+        final int width = background.getBounds().width();
+        final float radius = getResources().getDimension(R.dimen.ad_mark_radius);
         if (width == 0 || height == 0) return;
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(bitmap);
@@ -59,23 +60,13 @@ public class AdsSeekBar extends SeekBar {
                 c.drawCircle((float) (position * width), height / 2, radius, adCuesPaint);
             }
         }
-        LayerDrawable progressDrawable = (LayerDrawable) getProgressDrawable();
         progressDrawable.setDrawableByLayerId(R.id.ad_marks, new BitmapDrawable(getResources(), bitmap));
-    }
-
-    private void updateMarkParams() {
-        LayerDrawable progressDrawable = (LayerDrawable) getProgressDrawable();
-        Drawable background = progressDrawable.findDrawableByLayerId(android.R.id.background);
-        height = background.getBounds().height();
-        width = background.getBounds().width();
-        radius = getResources().getDimension(R.dimen.ad_mark_radius);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (changed) {
-            updateMarkParams();
             drawMarks();
         }
     }
