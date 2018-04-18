@@ -26,95 +26,94 @@ publishing {
     }
 }
 afterEvaluate {
-    android.libraryVariants.each { variant ->
-        if (variant.buildType.name == "release") {
-            def flavorName = variant.flavorName
-            def genJavadocTask = task("generate${flavorName.capitalize()}Javadoc", type: Javadoc) {
-                def compilerTask = variant.getJavaCompiler()
+    android.libraryVariants.all { variant ->
+        def flavorName = variant.flavorName
+        def genJavadocTask = task("generate${flavorName.capitalize()}Javadoc", type: Javadoc) {
+            def compilerTask = variant.getJavaCompiler()
 
-                dependsOn compilerTask
+            dependsOn compilerTask
 
-                title = javadoc_title
-                source = compilerTask.source
-                classpath = files(compilerTask.classpath, project.android.getBootClasspath())
+            title = javadoc_title
+            source = compilerTask.source
+            classpath = files(compilerTask.classpath, project.android.getBootClasspath())
 
-                options {
-                    doclet "ch.raffael.doclets.pegdown.PegdownDoclet"
-                    docletpath configurations.jaxDoclet.files as File[]
-                    links "http://docs.oracle.com/javase/7/docs/api/"
-                    linksOffline "https://developer.android.com/reference", "${android.sdkDirectory}/docs/reference"
-                    encoding = 'UTF-8'
-                    locale 'en'
+            options {
+                doclet "ch.raffael.doclets.pegdown.PegdownDoclet"
+                docletpath configurations.jaxDoclet.files as File[]
+                links "http://docs.oracle.com/javase/7/docs/api/"
+                linksOffline "https://developer.android.com/reference", "${android.sdkDirectory}/docs/reference"
+                encoding = 'UTF-8'
+                locale 'en'
 
-                    options.addStringOption "overview", "$rootDir/README.md"
-                    options.addStringOption "javadocversion", "v8"
-                    options.addStringOption "extensions", "all"
-                    options.addStringOption "parse-timeout", "100"
-                    options.addStringOption "enable-auto-highlight"
-                    options.addStringOption "quiet"
-                }
-
-                exclude '**/R.java'
+                options.addStringOption "overview", "$rootDir/README.md"
+                options.addStringOption "javadocversion", "v8"
+                options.addStringOption "extensions", "all"
+                options.addStringOption "parse-timeout", "100"
+                options.addStringOption "enable-auto-highlight"
+                options.addStringOption "quiet"
             }
 
-            def jarJavadocTask = task("jar${flavorName.capitalize()}Javadoc", type: Jar) {
-                classifier = 'javadoc'
-                dependsOn genJavadocTask
-                from genJavadocTask.destinationDir
-            }
+            exclude '**/R.java'
+        }
 
-            def jarSourcesTask = task("jar${flavorName.capitalize()}Sources", type: Jar) {
-                classifier = 'sources'
-                from android.sourceSets.main.java.srcDirs
-            }
+        def jarJavadocTask = task("jar${flavorName.capitalize()}Javadoc", type: Jar) {
+            classifier = 'javadoc'
+            dependsOn genJavadocTask
+            from genJavadocTask.destinationDir
+        }
 
-            publishing.publications.create flavorName, MavenPublication, {
-                groupId group_id
-                version library_version
-                artifactId flavorName == "full" ? artifact_id : "$artifact_id-$flavorName"
-                artifact variant.outputs[0].outputFile
-                artifact jarJavadocTask
-                artifact jarSourcesTask
+        def jarSourcesTask = task("jar${flavorName.capitalize()}Sources", type: Jar) {
+            classifier = 'sources'
+            from android.sourceSets.main.java.srcDirs
+        }
 
-                pom.withXml {
-                    final dependenciesNode = asNode().appendNode('dependencies')
+        publishing.publications.create flavorName, MavenPublication, {
+            groupId group_id
+            version library_version
+            artifactId flavorName == "full" ? artifact_id : "$artifact_id-$flavorName"
 
-                    ext.addDependency = { Dependency dep, String scope ->
-                        if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
-                            return // ignore invalid dependencies
+            artifact variant.outputs[0].outputFile
+            artifact jarJavadocTask
+            artifact jarSourcesTask
+            artifact source: variant.ext.pubApi, classifier: 'pubapi', extension: 'json'
 
-                        final dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', dep.group)
-                        dependencyNode.appendNode('artifactId', dep.name)
-                        dependencyNode.appendNode('version', dep.version)
-                        dependencyNode.appendNode('scope', scope)
+            pom.withXml {
+                final dependenciesNode = asNode().appendNode('dependencies')
 
-                        if (!dep.transitive) {
-                            // If this dependency is transitive, we should force exclude all its dependencies them from the POM
-                            final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
-                            exclusionNode.appendNode('groupId', '*')
-                            exclusionNode.appendNode('artifactId', '*')
-                        } else if (!dep.properties.excludeRules.empty) {
-                            // Otherwise add specified exclude rules
-                            final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
-                            dep.properties.excludeRules.each { ExcludeRule rule ->
-                                exclusionNode.appendNode('groupId', rule.group ?: '*')
-                                exclusionNode.appendNode('artifactId', rule.module ?: '*')
-                            }
+                ext.addDependency = { Dependency dep, String scope ->
+                    if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
+                        return // ignore invalid dependencies
+
+                    final dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dep.group)
+                    dependencyNode.appendNode('artifactId', dep.name)
+                    dependencyNode.appendNode('version', dep.version)
+                    dependencyNode.appendNode('scope', scope)
+
+                    if (!dep.transitive) {
+                        // If this dependency is transitive, we should force exclude all its dependencies them from the POM
+                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                        exclusionNode.appendNode('groupId', '*')
+                        exclusionNode.appendNode('artifactId', '*')
+                    } else if (!dep.properties.excludeRules.empty) {
+                        // Otherwise add specified exclude rules
+                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                        dep.properties.excludeRules.each { ExcludeRule rule ->
+                            exclusionNode.appendNode('groupId', rule.group ?: '*')
+                            exclusionNode.appendNode('artifactId', rule.module ?: '*')
                         }
                     }
-
-                    // List all "compile" dependencies (for old Gradle)
-                    configurations.compile.getAllDependencies().each { dep -> addDependency(dep, "compile") }
-                    // List all "api" dependencies (for new Gradle) as "compile" dependencies
-                    configurations.api.getAllDependencies().each { dep -> addDependency(dep, "compile") }
-                    // List all "implementation" dependencies (for new Gradle) as "runtime" dependencies
-                    configurations.implementation.getAllDependencies().each { dep -> addDependency(dep, "runtime") }
                 }
+
+                // List all "compile" dependencies (for old Gradle)
+                configurations.compile.getAllDependencies().each { dep -> addDependency(dep, "compile") }
+                // List all "api" dependencies (for new Gradle) as "compile" dependencies
+                configurations.api.getAllDependencies().each { dep -> addDependency(dep, "compile") }
+                // List all "implementation" dependencies (for new Gradle) as "runtime" dependencies
+                configurations.implementation.getAllDependencies().each { dep -> addDependency(dep, "runtime") }
             }
         }
     }
-
     tasks.publish.dependsOn tasks.assembleRelease, tasks.gitPublishReset
     tasks.gitPublishCommit.dependsOn tasks.publish
 }
