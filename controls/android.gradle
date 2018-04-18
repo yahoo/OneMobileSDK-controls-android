@@ -3,6 +3,8 @@
  * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
  */
 
+import static java.io.File.separator
+
 android {
     compileSdkVersion target_api_version
 
@@ -83,5 +85,21 @@ android {
         lightweight {
             dimension "mode"
         }
+    }
+
+    variantFilter { variant ->
+        if (variant.buildType.name.contains("debug")) {
+            setIgnore(true)
+        }
+    }
+
+    libraryVariants.all { variant ->
+        def file = new File(project.buildDir, "pubapi$separator${variant.flavorName.capitalize()}${variant.buildType.name.capitalize()}")
+        file.mkdirs()
+        def apiManifestPath = file.absolutePath
+        def options = variant.javaCompileOptions.annotationProcessorOptions
+
+        variant.ext.pubApi = new File(file, "public_api_manifest.json")
+        options.arguments = ["BUILD_PATH_KEY": apiManifestPath]
     }
 }
