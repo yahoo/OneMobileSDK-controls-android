@@ -10,7 +10,7 @@ android:
     - platform-tools
 
     # The BuildTools version used by your project
-    - build-tools-26.0.2
+    - build-tools-27.0.3
 
     # The SDK version used to compile your project
     - android-27
@@ -33,7 +33,7 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
-script: ./gradlew lintRelease testRelease
+script: ./gradlew test lint
 
 deploy:
   - provider: script

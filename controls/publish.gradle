@@ -1,0 +1,120 @@
+/*
+ * Copyright 2018, Oath Inc.
+ * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+ */
+
+configurations {
+    jaxDoclet
+}
+dependencies {
+    jaxDoclet('ch.raffael.pegdown-doclet:pegdown-doclet:1.3')
+}
+gitPublish {
+    repoUri = 'https://github.com/aol-public/OneMobileSDK-releases-android.git'
+    branch = 'maven'
+    repoDir = file("$buildDir/maven")
+    preserve {
+        include '**/*'
+    }
+    commitMessage "Artifact $group_id:$artifact_id:$library_version"
+}
+publishing {
+    repositories {
+        maven {
+            url "$buildDir/maven/"
+        }
+    }
+}
+afterEvaluate {
+    android.libraryVariants.each { variant ->
+        if (variant.buildType.name == "release") {
+            def flavorName = variant.flavorName
+            def genJavadocTask = task("generate${flavorName.capitalize()}Javadoc", type: Javadoc) {
+                def compilerTask = variant.getJavaCompiler()
+
+                dependsOn compilerTask
+
+                title = javadoc_title
+                source = compilerTask.source
+                classpath = files(compilerTask.classpath, project.android.getBootClasspath())
+
+                options {
+                    doclet "ch.raffael.doclets.pegdown.PegdownDoclet"
+                    docletpath configurations.jaxDoclet.files as File[]
+                    links "http://docs.oracle.com/javase/7/docs/api/"
+                    linksOffline "https://developer.android.com/reference", "${android.sdkDirectory}/docs/reference"
+                    encoding = 'UTF-8'
+                    locale 'en'
+
+                    options.addStringOption "overview", "$rootDir/README.md"
+                    options.addStringOption "javadocversion", "v8"
+                    options.addStringOption "extensions", "all"
+                    options.addStringOption "parse-timeout", "100"
+                    options.addStringOption "enable-auto-highlight"
+                    options.addStringOption "quiet"
+                }
+
+                exclude '**/R.java'
+            }
+
+            def jarJavadocTask = task("jar${flavorName.capitalize()}Javadoc", type: Jar) {
+                classifier = 'javadoc'
+                dependsOn genJavadocTask
+                from genJavadocTask.destinationDir
+            }
+
+            def jarSourcesTask = task("jar${flavorName.capitalize()}Sources", type: Jar) {
+                classifier = 'sources'
+                from android.sourceSets.main.java.srcDirs
+            }
+
+            publishing.publications.create flavorName, MavenPublication, {
+                groupId group_id
+                version library_version
+                artifactId flavorName == "full" ? artifact_id : "$artifact_id-$flavorName"
+                artifact variant.outputs[0].outputFile
+                artifact jarJavadocTask
+                artifact jarSourcesTask
+
+                pom.withXml {
+                    final dependenciesNode = asNode().appendNode('dependencies')
+
+                    ext.addDependency = { Dependency dep, String scope ->
+                        if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
+                            return // ignore invalid dependencies
+
+                        final dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dep.group)
+                        dependencyNode.appendNode('artifactId', dep.name)
+                        dependencyNode.appendNode('version', dep.version)
+                        dependencyNode.appendNode('scope', scope)
+
+                        if (!dep.transitive) {
+                            // If this dependency is transitive, we should force exclude all its dependencies them from the POM
+                            final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                            exclusionNode.appendNode('groupId', '*')
+                            exclusionNode.appendNode('artifactId', '*')
+                        } else if (!dep.properties.excludeRules.empty) {
+                            // Otherwise add specified exclude rules
+                            final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                            dep.properties.excludeRules.each { ExcludeRule rule ->
+                                exclusionNode.appendNode('groupId', rule.group ?: '*')
+                                exclusionNode.appendNode('artifactId', rule.module ?: '*')
+                            }
+                        }
+                    }
+
+                    // List all "compile" dependencies (for old Gradle)
+                    configurations.compile.getAllDependencies().each { dep -> addDependency(dep, "compile") }
+                    // List all "api" dependencies (for new Gradle) as "compile" dependencies
+                    configurations.api.getAllDependencies().each { dep -> addDependency(dep, "compile") }
+                    // List all "implementation" dependencies (for new Gradle) as "runtime" dependencies
+                    configurations.implementation.getAllDependencies().each { dep -> addDependency(dep, "runtime") }
+                }
+            }
+        }
+    }
+
+    tasks.publish.dependsOn tasks.assembleRelease, tasks.gitPublishReset
+    tasks.gitPublishCommit.dependsOn tasks.publish
+}

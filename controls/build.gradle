@@ -3,46 +3,37 @@
  * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
  */
 
+plugins {
+    id 'org.ajoberstar.git-publish' version '0.3.3'
+}
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/env-props.gradle'
 ext {
     // Javadoc configuration
-    JAVADOC_TITLE = "OneMobileSDK controls Javadoc"
+    javadoc_title = "OneMobileSDK controls Javadoc"
 
     // Maven
-    GROUP_ID = 'com.aol.one.publishers.android'
-    ARTIFACT_ID = 'controls'
-    LIBRARY_VERSION = GIT_BASED_VERSION
+    group_id = 'com.aol.one.publishers.android'
+    artifact_id = 'controls'
+    library_version = GIT_BASED_VERSION
 
-    MINIFY_LIB = true
+    target_api_version = 27
+    min_api_version = 16
 }
-
-apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/android.gradle'
-apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/javadoc.gradle'
-apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/sources.gradle'
-apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/github-maven.gradle'
-apply plugin: 'api-tracker'
-
-apiTracker {
-    compareVersion = PREVIOUS_TAG
-    reportFile = file("$buildDir/maven/API CHANGES/$ARTIFACT_ID/$compareVersion to ${LIBRARY_VERSION}.md")
-    implicitNamespaces = ["com.aol.mobile.sdk.controls", "java.util"]
-}
-
-afterEvaluate {
-    gitPublishCommit.dependsOn checkApiChanges
-    checkApiChanges.dependsOn gitPublishReset
-}
-
 dependencies {
-    compileOnly "com.android.support:support-annotations:$SUPPORT_VERSION"
-
-    // Chromecast
+    compileOnly "com.android.support:support-annotations:$support_version"
     compileOnly "com.aol.one.publishers.android:chromecast:1.8"
-    testImplementation "com.aol.one.publishers.android:chromecast:1.8"
+    compileOnly "com.aol.one.publishers.android:annotations:1.3"
 
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
+    testImplementation "com.aol.one.publishers.android:chromecast:1.8"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testImplementation "org.robolectric:robolectric:3.8"
     testImplementation "net.javacrumbs.json-unit:json-unit-fluent:1.28.2"
     testImplementation "org.assertj:assertj-core:3.9.1"
     testImplementation "com.squareup.assertj:assertj-android:1.2.0"
     testImplementation "org.mockito:mockito-core:2.16.0"
 }
+apply from: 'android.gradle'
+apply from: 'publish.gradle'
