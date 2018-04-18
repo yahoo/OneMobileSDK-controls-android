@@ -1,0 +1,87 @@
+/*
+ * Copyright 2018, Oath Inc.
+ * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+ */
+
+android {
+    compileSdkVersion target_api_version
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    aaptOptions {
+        failOnMissingConfigEntry true
+    }
+
+    lintOptions {
+        abortOnError true
+        showAll true
+        warningsAsErrors true
+        explainIssues true
+
+        textReport true
+        textOutput "stdout"
+
+        htmlReport false
+        xmlReport false
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+
+        unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
+        }
+    }
+
+    defaultConfig {
+        minSdkVersion min_api_version
+        targetSdkVersion target_api_version
+        versionName library_version
+
+        if (project.ext.has('BUILD_CONFIG_CONSTS')) {
+            BUILD_CONFIG_CONSTS.each { key, value -> buildConfigField "String", key, "\"${value}\"" }
+            manifestPlaceholders = BUILD_CONFIG_CONSTS
+        }
+
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'proguard-classes.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            useProguard true
+        }
+
+        debug {
+            minifyEnabled false
+            useProguard false
+            debuggable true
+        }
+    }
+
+    flavorDimensions "mode"
+
+    productFlavors {
+        full {
+            dimension "mode"
+        }
+
+        minimal {
+            dimension "mode"
+        }
+
+        lightweight {
+            dimension "mode"
+        }
+    }
+}
