@@ -35,3 +35,4 @@ captures/
 /controls/proguard-classes.pro
 /.idea/codeStyles/Project.xml
 /.idea/caches/
+/controls/proguard-classes-*
