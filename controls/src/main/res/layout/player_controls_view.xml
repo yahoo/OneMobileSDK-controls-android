@@ -16,6 +16,31 @@
         android:background="#000"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/advertisement_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/advertisement_click_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone"
+        android:text="@string/visit_web_site"
+        android:layout_marginBottom="@dimen/seeker_height"
+        android:paddingBottom="20dp"
+        android:textSize="15sp" />
+
     <RelativeLayout
         android:id="@+id/controls_container"
         android:layout_width="match_parent"
