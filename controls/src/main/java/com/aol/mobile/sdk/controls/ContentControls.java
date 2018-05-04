@@ -67,6 +67,8 @@ public interface ContentControls {
         public boolean isTitleVisible;
         public boolean isCompassViewVisible;
         public boolean isThumbnailImageVisible;
+        public boolean isAdvertisementTextVisible;
+        public boolean isAdvertisementClickButtonVisible;
         public boolean isStreamPlaying;
         public boolean isTrackChooserButtonEnabled;
         public boolean isTrackChooserButtonVisible;
@@ -77,6 +79,10 @@ public interface ContentControls {
         public double compassLongitude;
         @Nullable
         public String seekerCurrentTimeText;
+        @Nullable
+        public String advertisementText;
+        @Nullable
+        public String advertisementClickUrl;
         @Nullable
         public String seekerTimeLeftText;
         @Nullable

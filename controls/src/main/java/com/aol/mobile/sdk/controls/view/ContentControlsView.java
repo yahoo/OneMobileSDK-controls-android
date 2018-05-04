@@ -74,6 +74,10 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final TextView titleView;
     @NonNull
+    private final TextView advertisementView;
+    @NonNull
+    private final TextView advertisementClickButton;
+    @NonNull
     private final VisibilityWrapper<TintableImageButton> playButton;
     @NonNull
     private final VisibilityWrapper<TintableImageButton> pauseButton;
@@ -298,6 +302,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         seekerContainer = findView(this, R.id.seekbar_container);
         seekbar = findView(this, R.id.seekbar);
         titleView = findView(this, R.id.title_view);
+        advertisementView = findView(this, R.id.advertisement_view);
+        advertisementClickButton = findView(this, R.id.advertisement_click_button);
         compassContainer = findView(this, R.id.compass_container);
         compassView = findView(this, R.id.compass_view);
         thumbnailView = findView(this, R.id.thumbnail);
@@ -459,6 +465,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderVisibility(vm.isSeekerVisible, seekerContainer);
         ViewUtils.renderVisibility(vm.isCompassViewVisible, compassContainer);
         ViewUtils.renderVisibility(vm.isTitleVisible, titleView);
+        ViewUtils.renderVisibility(vm.isAdvertisementTextVisible, advertisementView);
+        ViewUtils.renderVisibility(vm.isAdvertisementClickButtonVisible, advertisementClickButton);
         ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
 
@@ -467,6 +475,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderAvailability(vm.isTrackChooserButtonEnabled, trackChooserButton);
 
         ViewUtils.renderText(vm.titleText, titleView);
+        ViewUtils.renderText(vm.advertisementText, advertisementView);
         ViewUtils.renderText(vm.seekerCurrentTimeText, currentTimeView);
         ViewUtils.renderText(vm.seekerDurationText, durationView);
 
