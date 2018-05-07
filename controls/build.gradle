@@ -3,32 +3,27 @@
  * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
  */
 
-plugins {
-    id 'org.ajoberstar.git-publish' version '0.3.3'
-}
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'maven-publish'
-apply from: 'https://raw.githubusercontent.com/aol-public/OneMobileSDK-tools-android/master/env-props.gradle'
-ext {
-    // Javadoc configuration
-    javadoc_title = "OneMobileSDK controls Javadoc"
+apply plugin: 'android-ci-library'
 
-    // Maven
-    group_id = 'com.aol.one.publishers.android'
-    artifact_id = 'controls'
-    library_version = GIT_BASED_VERSION
-
-    target_api_version = 27
-    min_api_version = 16
+androidCi {
+    groupId = 'com.aol.one.publishers.android'
+    artifactId = 'controls'
+    githubRepo = 'aol-public/OneMobileSDK-releases-android'
+    apiTrimNamespaces.add("com.aol.mobile.sdk.controls")
 }
+
+android {
+    flavorDimensions "mode"
+    productFlavors {
+        full { dimension "mode" }
+        minimal { dimension "mode" }
+        lightweight { dimension "mode" }
+    }
+}
+
 dependencies {
-    kapt "com.aol.one.publishers.android:api-collector:1.4"
-
     compileOnly "com.android.support:support-annotations:$support_version"
     compileOnly "com.aol.one.publishers.android:chromecast:1.8"
-    compileOnly "com.aol.one.publishers.android:annotations:1.4"
 
     testImplementation "com.aol.one.publishers.android:chromecast:1.8"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
@@ -38,5 +33,3 @@ dependencies {
     testImplementation "com.squareup.assertj:assertj-android:1.2.0"
     testImplementation "org.mockito:mockito-core:2.16.0"
 }
-apply from: 'android.gradle'
-apply from: 'publish.gradle'
