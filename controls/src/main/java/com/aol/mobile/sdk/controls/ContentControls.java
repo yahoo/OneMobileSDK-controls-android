@@ -44,6 +44,11 @@ public interface ContentControls {
         void onCastEnabled();
 
         void onCastDisabled();
+
+        void onContentAdClicked();
+
+        void onContentAdPresented();
+
     }
 
     final class ViewModel {
@@ -67,6 +72,8 @@ public interface ContentControls {
         public boolean isTitleVisible;
         public boolean isCompassViewVisible;
         public boolean isThumbnailImageVisible;
+        public boolean isAdvertisementTextVisible;
+        public boolean isAdvertisementClickButtonVisible;
         public boolean isStreamPlaying;
         public boolean isTrackChooserButtonEnabled;
         public boolean isTrackChooserButtonVisible;
@@ -77,6 +84,10 @@ public interface ContentControls {
         public double compassLongitude;
         @Nullable
         public String seekerCurrentTimeText;
+        @Nullable
+        public String advertisementText;
+        @Nullable
+        public String advertisementClickUrl;
         @Nullable
         public String seekerTimeLeftText;
         @Nullable
@@ -89,6 +100,9 @@ public interface ContentControls {
         public boolean isOnLiveEdge;
         public boolean isCastButtonVisible;
         public boolean isCasting;
+
+        @Nullable
+        public String targetUrl;
 
         public final static class TrackOptionVM {
             @Nullable
