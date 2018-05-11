@@ -44,6 +44,11 @@ public interface ContentControls {
         void onCastEnabled();
 
         void onCastDisabled();
+
+        void onContentAdClicked();
+
+        void onContentAdPresented();
+
     }
 
     final class ViewModel {
@@ -95,6 +100,9 @@ public interface ContentControls {
         public boolean isOnLiveEdge;
         public boolean isCastButtonVisible;
         public boolean isCasting;
+
+        @Nullable
+        public String targetUrl;
 
         public final static class TrackOptionVM {
             @Nullable
