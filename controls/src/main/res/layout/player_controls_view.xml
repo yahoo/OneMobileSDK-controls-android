@@ -16,32 +16,32 @@
         android:background="#000"
         android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/advertisement_view"
+    <Button
+        android:id="@+id/advertisement_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/content_ad_button_background"
+        android:drawableEnd="@drawable/ic_link"
+        android:drawablePadding="10dp"
+        android:drawableRight="@drawable/ic_link"
+        android:elevation="5dp"
         android:gravity="center"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="gone"
-        android:textSize="15sp" />
-    <TextView
-        android:id="@+id/advertisement_click_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:gravity="center"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="gone"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/visit_web_site"
-        android:layout_marginBottom="@dimen/seeker_height"
-        android:paddingBottom="20dp"
-        android:textSize="15sp" />
+        android:minHeight="36dp"
+        android:shadowColor="@color/content_ad_text_shadow_color"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="@string/advertisement"
+        android:textAllCaps="false"
+        android:textColor="@color/content_ad_text_color"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/controls_container"
