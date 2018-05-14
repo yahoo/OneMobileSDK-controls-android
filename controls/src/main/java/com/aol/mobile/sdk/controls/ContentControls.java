@@ -72,8 +72,7 @@ public interface ContentControls {
         public boolean isTitleVisible;
         public boolean isCompassViewVisible;
         public boolean isThumbnailImageVisible;
-        public boolean isAdvertisementTextVisible;
-        public boolean isAdvertisementClickButtonVisible;
+        public boolean isAdvertisementButtonVisible;
         public boolean isStreamPlaying;
         public boolean isTrackChooserButtonEnabled;
         public boolean isTrackChooserButtonVisible;
