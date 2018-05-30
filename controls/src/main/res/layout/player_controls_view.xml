@@ -34,9 +34,9 @@
         android:gravity="center"
         android:minHeight="36dp"
         android:textAllCaps="false"
-        android:typeface="sans"
         android:textColor="@color/content_ad_text_color"
         android:textSize="16sp"
+        android:typeface="sans"
         android:visibility="gone" />
 
     <RelativeLayout

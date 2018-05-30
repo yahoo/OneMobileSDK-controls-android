@@ -128,7 +128,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @Nullable
     private Listener listener;
     @Nullable
-    private String adUrl;
+    private String advertisementClickUrl;
     @NonNull
     private final SeekBar.OnSeekBarChangeListener seekbarListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -202,7 +202,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             if (view == forwardSeekButton) listener.onButtonClick(Button.SEEK_FORWARD);
             if (view == backwardSeekButton) listener.onButtonClick(Button.SEEK_BACKWARD);
             if (view == compassView) listener.onButtonClick(Button.COMPASS);
-            if (view == advertisementButton) listener.onContentAdClicked();
+            if (view == advertisementButton) listener.onBrandedContentAdClicked();
 
             if (view == trackChooserButton) {
                 adapter.updateData(getContext(), audioTracks, ccTracks);
@@ -518,7 +518,11 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         }
         castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
         seekbar.renderAdCues(vm.adCues);
-        renderClickThrough(vm.targetUrl);
+
+        advertisementButton.setClickable(vm.isAdvertisementButtonClickable);
+        int linkDrawable = vm.isAdvertisementButtonClickable ? R.drawable.ic_link : 0;
+        advertisementButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, linkDrawable, 0);
+        renderClickThrough(vm.advertisementClickUrl);
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
@@ -755,16 +759,17 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         return super.dispatchKeyEvent(event);
     }
 
-    private void renderClickThrough(@Nullable String adUrl) {
-        if ((adUrl != null && !adUrl.equals(this.adUrl)) || (adUrl == null && this.adUrl != null)) {
-            this.adUrl = adUrl;
-            if (listener == null || adUrl == null) return;
+    private void renderClickThrough(@Nullable String advertisementClickUrl) {
+        if ((advertisementClickUrl != null && !advertisementClickUrl.equals(this.advertisementClickUrl)) ||
+                (advertisementClickUrl == null && this.advertisementClickUrl != null)) {
+            this.advertisementClickUrl = advertisementClickUrl;
+            if (listener == null || advertisementClickUrl == null) return;
 
-            listener.onContentAdPresented();
+            listener.onBrandedContentAdPresented();
             Context context = getContext();
             Intent intent = new Intent(context, TargetUrlActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(TargetUrlActivity.KEY_TARGET_URL, adUrl);
+                    .putExtra(TargetUrlActivity.KEY_TARGET_URL, advertisementClickUrl);
             context.startActivity(intent);
         }
     }
