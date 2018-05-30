@@ -518,7 +518,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         }
         castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
         seekbar.renderAdCues(vm.adCues);
-        renderClickThrough(vm.targetUrl);
+        renderClickThrough(vm.advertisementClickUrl);
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
