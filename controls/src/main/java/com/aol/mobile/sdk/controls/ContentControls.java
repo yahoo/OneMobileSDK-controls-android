@@ -100,9 +100,6 @@ public interface ContentControls {
         public boolean isCastButtonVisible;
         public boolean isCasting;
 
-        @Nullable
-        public String targetUrl;
-
         public final static class TrackOptionVM {
             @Nullable
             public String title;
