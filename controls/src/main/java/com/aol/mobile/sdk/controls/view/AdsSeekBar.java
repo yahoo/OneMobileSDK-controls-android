@@ -52,15 +52,16 @@ public class AdsSeekBar extends SeekBar {
         final int height = background.getBounds().height();
         final int width = background.getBounds().width();
         final float radius = getResources().getDimension(R.dimen.ad_mark_radius);
-        if (width == 0 || height == 0) return;
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bitmap);
-        if (adCues != null && adCues.size() != 0) {
-            for (double position : adCues) {
-                c.drawCircle((float) (position * width), height / 2, radius, adCuesPaint);
+        if (width > 0 && height > 0) {
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(bitmap);
+            if (adCues != null && adCues.size() != 0) {
+                for (double position : adCues) {
+                    c.drawCircle((float) (position * width), height / 2, radius, adCuesPaint);
+                }
             }
+            progressDrawable.setDrawableByLayerId(R.id.ad_marks, new BitmapDrawable(getResources(), bitmap));
         }
-        progressDrawable.setDrawableByLayerId(R.id.ad_marks, new BitmapDrawable(getResources(), bitmap));
     }
 
     @Override
