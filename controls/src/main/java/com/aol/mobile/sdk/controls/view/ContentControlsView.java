@@ -57,7 +57,6 @@ import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
 import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.ViewUtils;
 import com.aol.mobile.sdk.controls.utils.VisibilityModule;
-import com.aol.mobile.sdk.controls.utils.VisibilityWrapper;
 
 import java.util.LinkedList;
 
@@ -77,9 +76,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final TextView advertisementButton;
     @NonNull
-    private final VisibilityWrapper<TintableImageButton> playButton;
+    /*package private*/ VisibilityWrapper<TintableImageButton> playButton;
     @NonNull
-    private final VisibilityWrapper<TintableImageButton> pauseButton;
+    /*package private*/ VisibilityWrapper<TintableImageButton> pauseButton;
     @NonNull
     private final VisibilityWrapper<TintableImageButton> replayButton;
     @NonNull
@@ -194,8 +193,14 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             if (listener == null) return;
 
             visibilityModule.prolong();
-            if (view == playButton.view) listener.onButtonClick(Button.PLAY);
-            if (view == pauseButton.view) listener.onButtonClick(Button.PAUSE);
+            if (view == playButton.view) {
+                listener.onButtonClick(Button.PLAY);
+                pauseButton.view.requestFocus();
+            }
+            if (view == pauseButton.view) {
+                listener.onButtonClick(Button.PAUSE);
+                playButton.view.requestFocus();
+            }
             if (view == replayButton.view) listener.onButtonClick(Button.REPLAY);
             if (view == playNextButton) listener.onButtonClick(Button.NEXT);
             if (view == playPreviousButton) listener.onButtonClick(Button.PREVIOUS);
@@ -287,7 +292,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         super(context, attrs, defStyleAttr);
         readAttrs(context, attrs);
 
-        inflate(getContext(), R.layout.player_controls_view, this);
+        inflate(getContext(), R.layout.content_controls_view, this);
         accessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
         controlsContainer = findView(this, R.id.controls_container);

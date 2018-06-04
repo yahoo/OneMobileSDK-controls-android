@@ -155,6 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/seeker_height"
                 android:contentDescription="@string/time"
+                android:focusable="true"
                 android:maxHeight="@dimen/seeker_height"
                 android:minHeight="@dimen/seeker_height"
                 android:padding="0dp"

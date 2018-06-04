@@ -3,25 +3,30 @@
  * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
  */
 
-package com.aol.mobile.sdk.controls;
+package com.aol.mobile.sdk.controls.view;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aol.mobile.sdk.controls.view.ContentControlsView;
+import com.aol.mobile.sdk.controls.ContentControls;
+import com.aol.mobile.sdk.controls.R;
 
 import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
+
+import static org.mockito.Mockito.spy;
 
 @RunWith(RobolectricTestRunner.class)
 public class DefaultControlsViewTest {
@@ -38,6 +43,62 @@ public class DefaultControlsViewTest {
     private TextView duration;
     private ContentControls.ViewModel props;
     private ContentControlsView controlsView;
+    private ContentControls.Listener listener = new ContentControls.Listener() {
+        @Override
+        public void onButtonClick(@NonNull ContentControls.Button button) {
+
+        }
+
+        @Override
+        public void onScroll(float distanceX, float distanceY) {
+
+        }
+
+        @Override
+        public void onSeekStarted() {
+
+        }
+
+        @Override
+        public void onSeekTo(double position) {
+
+        }
+
+        @Override
+        public void onSeekStopped() {
+
+        }
+
+        @Override
+        public void onAudioTrackSelected(int index) {
+
+        }
+
+        @Override
+        public void onCcTrackSelected(int index) {
+
+        }
+
+        @Override
+        public void onCastEnabled() {
+
+        }
+
+        @Override
+        public void onCastDisabled() {
+
+        }
+
+        @Override
+        public void onBrandedContentAdClicked() {
+
+        }
+
+        @Override
+        public void onBrandedContentAdPresented() {
+
+        }
+    };
 
     @Before
     public void tearUp() {
@@ -201,5 +262,27 @@ public class DefaultControlsViewTest {
         controlsView.render(props);
 
         Assertions.assertThat(seeker).isVisible().hasProgress(40);
+    }
+
+    @Test
+    public void playButtonShouldRequestFocusAfterPause() {
+        controlsView.setListener(listener);
+
+        TintableImageButton spyPlay = spy(controlsView.playButton.view);
+        controlsView.playButton.view = spyPlay;
+        pauseButton.callOnClick();
+
+        Mockito.verify(spyPlay, Mockito.times(1)).requestFocus();
+    }
+
+    @Test
+    public void pauseButtonShouldRequestFocusAfterPlay() {
+        controlsView.setListener(listener);
+
+        TintableImageButton spyPause = spy(controlsView.pauseButton.view);
+        controlsView.pauseButton.view = spyPause;
+        playButton.callOnClick();
+
+        Mockito.verify(spyPause, Mockito.times(1)).requestFocus();
     }
 }
