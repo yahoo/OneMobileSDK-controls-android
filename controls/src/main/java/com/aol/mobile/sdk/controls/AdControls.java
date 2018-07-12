@@ -35,7 +35,8 @@ public interface AdControls {
         public boolean isProgressViewVisible;
         public boolean isPlayButtonVisible;
         public boolean isPauseButtonVisible;
-        public boolean isAdTimeViewVisible;
+        public boolean isSeekbarVisible;
+        public boolean isTimeLeftTextVisible;
         public double seekerProgress;
         public int seekerMaxValue;
         @Nullable
