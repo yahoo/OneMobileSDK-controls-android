@@ -230,8 +230,8 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         renderVisibility(vm.isProgressViewVisible, progressView);
         renderVisibility(vm.isPlayButtonVisible, playButton);
         renderVisibility(vm.isPauseButtonVisible, pauseButton);
-        renderVisibility(vm.isAdTimeViewVisible, timeLeftTextView);
-        renderVisibility(vm.isAdTimeViewVisible, seekbar);
+        renderVisibility(vm.isSeekbarVisible, seekbar);
+        renderVisibility(vm.isTimeLeftTextVisible, timeLeftTextView);
         renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
         renderSeekerMaxValue(vm.seekerMaxValue, seekbar);
         renderSeekerProgress(vm.seekerProgress, seekbar);
