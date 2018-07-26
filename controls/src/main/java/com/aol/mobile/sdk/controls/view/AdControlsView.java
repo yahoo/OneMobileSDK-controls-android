@@ -78,6 +78,13 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
     private int accentColor;
     @Nullable
     private String adUrl;
+    private boolean isHandleTouchEvent;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        return isHandleTouchEvent;
+    }
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -237,6 +244,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         renderSeekerProgress(vm.seekerProgress, seekbar);
         renderText(vm.timeLeftText, timeLeftTextView);
         renderClickThrough(vm.adUrl, vm.embedClickThroughUrl);
+        isHandleTouchEvent = !vm.isVpaid;
     }
 
     @Override
