@@ -53,12 +53,7 @@ public class SidePanel extends LinearLayout {
             animators.add(animator);
             animator.setDuration(ANIMATION_DURATION);
             animator.setInterpolator(new DecelerateInterpolator());
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    view.setX((Float) animation.getAnimatedValue());
-                }
-            });
+            animator.addUpdateListener(animation -> view.setX((Float) animation.getAnimatedValue()));
             animator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationEnd(Animator animator) {
@@ -90,12 +85,7 @@ public class SidePanel extends LinearLayout {
             animators.add(animator);
             animator.setDuration(ANIMATION_DURATION);
             animator.setInterpolator(new DecelerateInterpolator());
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    view.setX((Float) animation.getAnimatedValue());
-                }
-            });
+            animator.addUpdateListener(animation -> view.setX((Float) animation.getAnimatedValue()));
             animator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationEnd(Animator animator) {

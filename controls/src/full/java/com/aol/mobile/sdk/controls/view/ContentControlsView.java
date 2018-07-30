@@ -10,7 +10,6 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -37,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,7 +62,7 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
 
 @PublicApi
-public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
+public final class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
     @NonNull
     private final RelativeLayout controlsContainer;
     @NonNull
@@ -213,35 +211,27 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                 adapter.updateData(getContext(), audioTracks, ccTracks);
                 dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 dialog.setCanceledOnTouchOutside(true);
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        ContentControlsView.this.dialog = null;
-                    }
-                });
+                dialog.setOnDismissListener(dialog -> ContentControlsView.this.dialog = null);
                 ListView listView = new ListView(getContext());
                 listView.setDivider(null);
                 listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        adapter.select(position);
+                listView.setOnItemClickListener((parent, view1, position, id) -> {
+                    adapter.select(position);
 
-                        TracksChooserAdapter.Item item = adapter.getItem(position);
+                    TracksChooserAdapter.Item item = adapter.getItem(position);
 
-                        switch (item.type) {
-                            case CC:
-                                listener.onCcTrackSelected(item.index);
-                                break;
+                    switch (item.type) {
+                        case CC:
+                            listener.onCcTrackSelected(item.index);
+                            break;
 
-                            case AUDIO:
-                                listener.onAudioTrackSelected(item.index);
-                                break;
+                        case AUDIO:
+                            listener.onAudioTrackSelected(item.index);
+                            break;
 
-                            case CLOSE:
-                                dialog.dismiss();
-                                break;
-                        }
+                        case CLOSE:
+                            dialog.dismiss();
+                            break;
                     }
                 });
                 dialog.setContentView(listView);
@@ -297,9 +287,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
 
         controlsContainer = findView(this, R.id.controls_container);
         progressView = findView(this, R.id.progressbar);
-        playButton = new VisibilityWrapper<>((TintableImageButton) findView(this, R.id.play_button));
-        pauseButton = new VisibilityWrapper<>((TintableImageButton) findView(this, R.id.pause_button));
-        replayButton = new VisibilityWrapper<>((TintableImageButton) findView(this, R.id.replay_button));
+        playButton = new VisibilityWrapper<>(findView(this, R.id.play_button));
+        pauseButton = new VisibilityWrapper<>(findView(this, R.id.pause_button));
+        replayButton = new VisibilityWrapper<>(findView(this, R.id.replay_button));
         playNextButton = findView(this, R.id.next_button);
         playPreviousButton = findView(this, R.id.prev_button);
         trackChooserButton = findView(this, R.id.tracks_button);
@@ -339,12 +329,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderAvailability(false, playPreviousButton);
 
         seekbar.setPadding(0, 0, 0, 0);
-        seekbar.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                seekbarListener.onProgressChanged(seekbar, seekbar.getProgress(), false);
-            }
-        });
+        seekbar.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) ->
+                seekbarListener.onProgressChanged(seekbar, seekbar.getProgress(), false));
 
         setupListeners();
         initFocusIssue();
@@ -588,59 +574,47 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     private void initFocusIssue() {
-        playButton.setVisibilityListener(new VisibilityWrapper.VisibilityListener() {
-            @Override
-            public void onVisibilityChanged(int visibility) {
-                if (visibility == INVISIBLE && playButton.isFocused()) {
-                    focusedView = playButton.view;
-                }
-                if (visibility == VISIBLE &&
-                        (focusedView == pauseButton.view || focusedView == replayButton.view || focusedView == playButton.view
-                                || pauseButton.isFocused() || replayButton.isFocused())) {
-                    playButton.setVisibility(visibility);
-                    focusedView = playButton.view;
-                    requestFocus(playButton.view);
-                }
+        playButton.setVisibilityListener(visibility -> {
+            if (visibility == INVISIBLE && playButton.isFocused()) {
+                focusedView = playButton.view;
+            }
+            if (visibility == VISIBLE &&
+                    (focusedView == pauseButton.view || focusedView == replayButton.view || focusedView == playButton.view
+                            || pauseButton.isFocused() || replayButton.isFocused())) {
+                playButton.setVisibility(visibility);
+                focusedView = playButton.view;
+                requestFocus(playButton.view);
             }
         });
 
-        pauseButton.setVisibilityListener(new VisibilityWrapper.VisibilityListener() {
-            @Override
-            public void onVisibilityChanged(int visibility) {
-                if (visibility == INVISIBLE && pauseButton.isFocused()) {
-                    focusedView = pauseButton.view;
-                }
-                if (visibility == VISIBLE &&
-                        (focusedView == playButton.view || focusedView == replayButton.view || focusedView == pauseButton.view
-                                || playButton.isFocused() || replayButton.isFocused())) {
-                    pauseButton.setVisibility(visibility);
-                    focusedView = pauseButton.view;
-                    requestFocus(pauseButton.view);
-                }
+        pauseButton.setVisibilityListener(visibility -> {
+            if (visibility == INVISIBLE && pauseButton.isFocused()) {
+                focusedView = pauseButton.view;
+            }
+            if (visibility == VISIBLE &&
+                    (focusedView == playButton.view || focusedView == replayButton.view || focusedView == pauseButton.view
+                            || playButton.isFocused() || replayButton.isFocused())) {
+                pauseButton.setVisibility(visibility);
+                focusedView = pauseButton.view;
+                requestFocus(pauseButton.view);
             }
         });
 
-        replayButton.setVisibilityListener(new VisibilityWrapper.VisibilityListener() {
-            @Override
-            public void onVisibilityChanged(int visibility) {
-                if (visibility == INVISIBLE && replayButton.isFocused()) {
-                    focusedView = replayButton.view;
-                }
-                if (visibility == VISIBLE &&
-                        (focusedView == playButton.view || focusedView == pauseButton.view || focusedView == replayButton.view
-                                || playButton.isFocused() || pauseButton.isFocused())) {
-                    replayButton.setVisibility(visibility);
-                    focusedView = replayButton.view;
-                    requestFocus(replayButton.view);
-                }
+        replayButton.setVisibilityListener(visibility -> {
+            if (visibility == INVISIBLE && replayButton.isFocused()) {
+                focusedView = replayButton.view;
+            }
+            if (visibility == VISIBLE &&
+                    (focusedView == playButton.view || focusedView == pauseButton.view || focusedView == replayButton.view
+                            || playButton.isFocused() || pauseButton.isFocused())) {
+                replayButton.setVisibility(visibility);
+                focusedView = replayButton.view;
+                requestFocus(replayButton.view);
             }
         });
-        OnFocusChangeListener focusChangeListener = new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b && (playButton.getVisibility() == VISIBLE || pauseButton.getVisibility() == VISIBLE || replayButton.getVisibility() == VISIBLE)) {
-                    focusedView = null;
-                }
+        OnFocusChangeListener focusChangeListener = (view, b) -> {
+            if (b && (playButton.getVisibility() == VISIBLE || pauseButton.getVisibility() == VISIBLE || replayButton.getVisibility() == VISIBLE)) {
+                focusedView = null;
             }
         };
         playNextButton.setOnFocusChangeListener(focusChangeListener);
@@ -668,12 +642,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         setFocusable(false);
         animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(400);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (Float) animation.getAnimatedValue();
-                controlsContainer.setAlpha(value);
-            }
+        animator.addUpdateListener(animation -> {
+            float value = (Float) animation.getAnimatedValue();
+            controlsContainer.setAlpha(value);
         });
         animator.start();
         if (focusedView != null) {
@@ -708,24 +679,16 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             }
         });
         animator.setDuration(400);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (Float) animation.getAnimatedValue();
-                controlsContainer.setAlpha(value);
-            }
+        animator.addUpdateListener(animation -> {
+            float value = (Float) animation.getAnimatedValue();
+            controlsContainer.setAlpha(value);
         });
         animator.start();
         sidePanel.hide();
     }
 
     public void startTimer() {
-        timer.schedule(3000L, new Runnable() {
-            @Override
-            public void run() {
-                visibilityModule.timeout();
-            }
-        });
+        timer.schedule(3000L, visibilityModule::timeout);
         timer.start();
     }
 
