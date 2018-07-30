@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018, Oath Inc.
+  ~ Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+  -->
+
+<resources>
+    <string name="advertisement">Advertisement</string>
+    <string name="audio_tracks_title">AUDIO</string>
+    <string name="text_tracks_title">SUBTITLES</string>
+    <string name="track_close_title">Close</string>
+    <string name="live">LIVE</string>
+    <string name="play_video">play video</string>
+    <string name="replay_video">replay video</string>
+    <string name="pause_video">pause video</string>
+    <string name="play_advertisement">play advertisement</string>
+    <string name="pause_advertisement">pause advertisement</string>
+    <string name="open_advertisement_link">Open advertisement link</string>
+    <string name="previous_video">previous video</string>
+    <string name="next_video">next video</string>
+    <string name="sec_10_forward">10 seconds forward</string>
+    <string name="sec_10_back">10 seconds backward</string>
+    <string name="live_indicator">video is live</string>
+    <string name="time">time</string>
+    <string name="tracks">tracks selection</string>
+    <string name="compas">tap to center video</string>
+</resources>

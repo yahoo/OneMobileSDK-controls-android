@@ -4,6 +4,12 @@
   -->
 
 <resources>
+    <dimen name="thumb_size">16dp</dimen>
+    <dimen name="seeker_height">56dp</dimen>
+    <dimen name="progressbar_size">94dp</dimen>
+    <dimen name="controls_padding">40dp</dimen>
+    <dimen name="seekbar_bottom_padding">24dp</dimen>
+    <dimen name="title_height">43dp</dimen>
     <dimen name="ad_controls_width">54dp</dimen>
     <dimen name="ad_controls_height">54dp</dimen>
     <dimen name="ad_seekbar_right_mar">8dp</dimen>
@@ -13,5 +19,6 @@
     <dimen name="ad_time_left_bottom_pad">14dp</dimen>
     <dimen name="ad_time_left_right_pad">8dp</dimen>
     <dimen name="ad_time_left_text_size">10dp</dimen>
+    <dimen name="cast_button_size">32dp</dimen>
     <dimen name="ad_mark_radius">3dp</dimen>
 </resources>
