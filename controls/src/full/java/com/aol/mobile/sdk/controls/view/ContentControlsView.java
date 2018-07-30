@@ -62,7 +62,7 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
 
 @PublicApi
-public final class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
+public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
     @NonNull
     private final RelativeLayout controlsContainer;
     @NonNull
