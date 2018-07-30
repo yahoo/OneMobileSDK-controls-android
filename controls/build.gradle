@@ -17,7 +17,6 @@ android {
     productFlavors {
         full { dimension "mode" }
         minimal { dimension "mode" }
-        lightweight { dimension "mode" }
     }
 }
 
