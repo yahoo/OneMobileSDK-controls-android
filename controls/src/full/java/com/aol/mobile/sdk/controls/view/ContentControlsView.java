@@ -11,8 +11,6 @@ import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -21,7 +19,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -55,11 +52,13 @@ import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
 import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.ViewUtils;
 import com.aol.mobile.sdk.controls.utils.VisibilityModule;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.LinkedList;
 
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
+import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
 @PublicApi
 public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
@@ -340,12 +339,12 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     private void checkCast() {
-        Context context = getContext();
         try {
-            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            Bundle metaData = ai.metaData;
-            hasChromecastModule = metaData != null && metaData.getString("com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME") != null;
-        } catch (PackageManager.NameNotFoundException ignored) {
+            Class.forName("com.aol.mobile.sdk.chromecast.OneCastManager");
+            int GPSStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+            hasChromecastModule = GPSStatus == SUCCESS;
+        } catch (Exception e) {
+            hasChromecastModule = false;
         }
     }
 
