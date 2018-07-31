@@ -4,6 +4,8 @@
 -keepparameternames
 -renamesourcefileattribute SourceFile
 
+-dontwarn java.lang.invoke.**
+
 -dontnote com.google.android.gms.**
 -dontnote android.net.http.**
 -dontnote android.support.**

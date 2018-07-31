@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright 2018, Oath Inc.
+  ~ Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+  -->
+
+<resources>
+    <dimen name="thumb_size">21dp</dimen>
+    <dimen name="seeker_height">61dp</dimen>
+    <dimen name="progressbar_size">124dp</dimen>
+    <dimen name="controls_padding">90dp</dimen>
+    <dimen name="seekbar_bottom_padding">26dp</dimen>
+    <dimen name="title_height">45dp</dimen>
+    <dimen name="ad_controls_width">54dp</dimen>
+    <dimen name="ad_controls_height">54dp</dimen>
+    <dimen name="ad_seekbar_right_mar">12dp</dimen>
+    <dimen name="ad_title_bottom_pad">12dp</dimen>
+    <dimen name="ad_title_text_size">15dp</dimen>
+    <dimen name="ad_time_left_right_mar">12dp</dimen>
+    <dimen name="ad_time_left_bottom_pad">20dp</dimen>
+    <dimen name="ad_time_left_right_pad">8dp</dimen>
+    <dimen name="ad_time_left_text_size">12dp</dimen>
+    <dimen name="cast_button_size">41dp</dimen>
+</resources>

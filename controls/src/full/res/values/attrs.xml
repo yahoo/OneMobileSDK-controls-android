@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright 2018, Oath Inc.
+  ~ Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+  -->
+
+<resources>
+    <attr name="mainColor" format="color"/>
+    <attr name="accentColor" format="color"/>
+
+    <declare-styleable name="ContentControlsView">
+        <attr name="mainColor"/>
+        <attr name="accentColor"/>
+    </declare-styleable>
+
+    <declare-styleable name="AdControlsView">
+        <attr name="mainColor"/>
+        <attr name="accentColor"/>
+    </declare-styleable>
+
+    <declare-styleable name="TintableImageButton">
+        <attr name="mainColor"/>
+        <attr name="accentColor"/>
+    </declare-styleable>
+</resources>
