@@ -58,7 +58,7 @@ import java.util.LinkedList;
 
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
-import static com.google.android.gms.common.ConnectionResult.SUCCESS;
+import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
 
 @PublicApi
 public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
@@ -134,11 +134,12 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             if (fromUser) {
                 visibilityModule.prolong();
             }
-            if (fromUser) listener.onSeekTo(progress / (float) seekBar.getMax());
+            int max = seekBar.getMax();
+            if (fromUser) listener.onSeekTo(max == 0 ? 0f : progress / (float) max);
 
 
             int thumbWidth = getResources().getDimensionPixelSize(R.dimen.thumb_size);
-            int val = progress * (seekBar.getWidth() - thumbWidth) / seekBar.getMax();
+            int val = max == 0 ? 0 : progress * (seekBar.getWidth() - thumbWidth) / max;
             if (val < (currentTimeView.getWidth() - thumbWidth) / 2) {
                 val = 0;
             } else if (val > seekBar.getWidth() - (currentTimeView.getWidth() + thumbWidth) / 2) {
