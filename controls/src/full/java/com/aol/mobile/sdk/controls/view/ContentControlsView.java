@@ -43,7 +43,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.aol.mobile.sdk.annotations.PublicApi;
-import com.aol.mobile.sdk.chromecast.OneCastManager;
+//import com.aol.mobile.sdk.chromecast.OneCastManager;
 import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.ImageLoader;
 import com.aol.mobile.sdk.controls.R;
@@ -52,13 +52,13 @@ import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
 import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.ViewUtils;
 import com.aol.mobile.sdk.controls.utils.VisibilityModule;
-import com.google.android.gms.common.GoogleApiAvailability;
+//import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.LinkedList;
 
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
-import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
+//import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
 
 @PublicApi
 public class ContentControlsView extends RelativeLayout implements ContentControls, Themed {
@@ -261,8 +261,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private boolean hasChromecastModule;
     @Nullable
     private AccessibilityManager accessibilityManager;
-    @Nullable
-    private OneCastManager oneCastManager;
+//    @Nullable
+//    private OneCastManager oneCastManager;
 
     @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -308,11 +308,11 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         currentTimeView = findView(this, R.id.current_time);
         castHolder = findView(this, R.id.cast_placeholder);
 
-        checkCast();
-        if (hasChromecastModule) {
-            oneCastManager = new OneCastManager(context);
-            castHolder.addView(oneCastManager.constructCastButton());
-        }
+//        checkCast();
+//        if (hasChromecastModule) {
+//            oneCastManager = new OneCastManager(context);
+//            castHolder.addView(oneCastManager.constructCastButton());
+//        }
 
         themedItems = new Themed[]{
                 playButton.view,
@@ -339,15 +339,15 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         visibilityModule = new VisibilityModule(this);
     }
 
-    private void checkCast() {
-        try {
-            Class.forName("com.aol.mobile.sdk.chromecast.OneCastManager");
-            int GPSStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
-            hasChromecastModule = GPSStatus == SUCCESS;
-        } catch (Exception e) {
-            hasChromecastModule = false;
-        }
-    }
+//    private void checkCast() {
+//        try {
+//            Class.forName("com.aol.mobile.sdk.chromecast.OneCastManager");
+//            int GPSStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+//            hasChromecastModule = GPSStatus == SUCCESS;
+//        } catch (Exception e) {
+//            hasChromecastModule = false;
+//        }
+//    }
 
     private void updateColors() {
         Drawable drawable = ((LayerDrawable) seekbar.getProgressDrawable())
@@ -425,23 +425,23 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @Override
     public void setListener(final @Nullable Listener listener) {
         this.listener = listener;
-        if (oneCastManager != null) {
-            oneCastManager.setCastListener(new OneCastManager.CastListener() {
-                @Override
-                public void enableCast() {
-                    if (listener != null) {
-                        listener.onCastEnabled();
-                    }
-                }
-
-                @Override
-                public void disableCast() {
-                    if (listener != null) {
-                        listener.onCastDisabled();
-                    }
-                }
-            });
-        }
+//        if (oneCastManager != null) {
+//            oneCastManager.setCastListener(new OneCastManager.CastListener() {
+//                @Override
+//                public void enableCast() {
+//                    if (listener != null) {
+//                        listener.onCastEnabled();
+//                    }
+//                }
+//
+//                @Override
+//                public void disableCast() {
+//                    if (listener != null) {
+//                        listener.onCastDisabled();
+//                    }
+//                }
+//            });
+//        }
     }
 
     @Override
