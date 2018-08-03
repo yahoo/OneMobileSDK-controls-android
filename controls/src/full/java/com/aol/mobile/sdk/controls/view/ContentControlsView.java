@@ -43,7 +43,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.aol.mobile.sdk.annotations.PublicApi;
-//import com.aol.mobile.sdk.chromecast.OneCastManager;
 import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.ImageLoader;
 import com.aol.mobile.sdk.controls.R;
@@ -52,12 +51,14 @@ import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
 import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.ViewUtils;
 import com.aol.mobile.sdk.controls.utils.VisibilityModule;
-//import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.LinkedList;
 
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.isVisible;
+
+//import com.aol.mobile.sdk.chromecast.OneCastManager;
+//import com.google.android.gms.common.GoogleApiAvailability;
 //import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
 
 @PublicApi
@@ -115,8 +116,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final LinkedList<ViewModel.TrackOptionVM> audioTracks = new LinkedList<>();
     private final LinkedList<ViewModel.TrackOptionVM> ccTracks = new LinkedList<>();
-    @NonNull
-    private FrameLayout castHolder;
+    //    @NonNull
+//    private FrameLayout castHolder;
     @Nullable
     private View focusedView;
     @Nullable
@@ -306,7 +307,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         sidePanel = findView(this, R.id.side_panel);
         durationView = findView(this, R.id.duration);
         currentTimeView = findView(this, R.id.current_time);
-        castHolder = findView(this, R.id.cast_placeholder);
+//        castHolder = findView(this, R.id.cast_placeholder);
 
 //        checkCast();
 //        if (hasChromecastModule) {
@@ -385,10 +386,10 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
 
         progressView.getIndeterminateDrawable().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
 
-        View castButton = castHolder.getChildAt(0);
-        if (castButton != null) {
-            castButton.getBackground().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
-        }
+//        View castButton = castHolder.getChildAt(0);
+//        if (castButton != null) {
+//            castButton.getBackground().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
+//        }
     }
 
     @SuppressWarnings("deprecation")
@@ -507,7 +508,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                 }
             }
         }
-        castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
+//        castHolder.setVisibility(vm.isCastButtonVisible ? VISIBLE : GONE);
         seekbar.renderAdCues(vm.adCues);
 
         advertisementButton.setClickable(vm.isAdvertisementButtonClickable);

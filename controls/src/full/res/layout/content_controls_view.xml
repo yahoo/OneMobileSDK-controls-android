@@ -203,18 +203,18 @@
             android:layout_marginRight="60dp"
             android:orientation="horizontal">
 
-            <com.aol.mobile.sdk.controls.view.TintableImageButton
-                android:id="@id/tracks_button"
-                style="@style/ControlToggleButton"
-                android:contentDescription="@string/tracks"
-                android:src="@drawable/dr_tracks" />
-
             <FrameLayout
                 android:id="@+id/cast_placeholder"
                 android:layout_width="@dimen/cast_button_size"
                 android:layout_height="@dimen/cast_button_size"
                 android:padding="1.5dp"
-                android:visibility="invisible" />
+                android:visibility="gone" />
+
+            <com.aol.mobile.sdk.controls.view.TintableImageButton
+                android:id="@id/tracks_button"
+                style="@style/ControlToggleButton"
+                android:contentDescription="@string/tracks"
+                android:src="@drawable/dr_tracks" />
         </LinearLayout>
 
         <com.aol.mobile.sdk.controls.view.SidePanel
