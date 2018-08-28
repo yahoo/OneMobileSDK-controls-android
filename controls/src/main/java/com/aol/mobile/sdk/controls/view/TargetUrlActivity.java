@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -32,12 +31,7 @@ public final class TargetUrlActivity extends Activity {
 
         View closeBtn = findViewById(R.id.clickthrough_close);
         closeBtn.setVisibility(isCloseVisible ? View.VISIBLE : View.GONE);
-        closeBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        closeBtn.setOnClickListener(view -> finish());
         WebView webView = findViewById(R.id.web_view);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());

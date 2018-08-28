@@ -13,6 +13,9 @@ androidCi {
 }
 
 android {
+    defaultConfig {
+        minSdkVersion 19
+    }
     flavorDimensions "mode"
     productFlavors {
         full { dimension "mode" }

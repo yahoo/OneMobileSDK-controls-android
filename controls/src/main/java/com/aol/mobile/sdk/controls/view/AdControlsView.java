@@ -178,12 +178,7 @@ public final class AdControlsView extends RelativeLayout implements AdControls, 
         playButton.setOnClickListener(clickListener);
         pauseButton.setOnClickListener(clickListener);
         setOnClickListener(clickListener);
-        seekbar.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        seekbar.setOnTouchListener((v, event) -> true);
     }
 
     private void renderClickThrough(@Nullable String adUrl, boolean embedClickThroughUrl) {
