@@ -39,7 +39,7 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderText;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderVisibility;
 
 @PublicApi
-public final class AdControlsView extends RelativeLayout implements AdControls, Themed {
+public class AdControlsView extends RelativeLayout implements AdControls, Themed {
     @NonNull
     private final FrameLayout clickthroughContainer;
     @NonNull
