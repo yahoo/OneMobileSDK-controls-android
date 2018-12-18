@@ -37,6 +37,7 @@ public interface AdControls {
         public boolean isPauseButtonVisible;
         public boolean isSeekbarVisible;
         public boolean isTimeLeftTextVisible;
+        public boolean isSkipButtonVisible;
         public boolean isVpaid;
         public double seekerProgress;
         public int seekerMaxValue;
