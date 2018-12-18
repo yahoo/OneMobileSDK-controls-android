@@ -1,3 +1,3 @@
-@vidible/mobile-sdk-team: Ready for review.
+@OathAdPlatforms/mobile-sdk-developers: Ready for review.
 
-[JIRA](https://jira.ops.aol.com/browse/OMSDK-)
+[JIRA](https://jira.ops.aol.com/browse/OMSDK-XXXX)
