@@ -45,11 +45,13 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
     @NonNull
     private final ProgressBar progressView;
     @NonNull
-    private final TintableImageButton clickthroughClose;
-    @NonNull
     private final TintableImageButton playButton;
     @NonNull
     private final TintableImageButton pauseButton;
+    @NonNull
+    private final TintableImageButton clickthroughClose;
+    @NonNull
+    private final android.widget.Button skipButton;
     @NonNull
     private final SeekBar seekbar;
     @NonNull
@@ -67,9 +69,10 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
             if (listener == null) return;
 
             if (view == AdControlsView.this) listener.onAdClicked();
-            if (view == clickthroughClose) listener.onAdPresented();
             if (view == playButton) listener.onButtonClick(Button.PLAY);
             if (view == pauseButton) listener.onButtonClick(Button.PAUSE);
+            if (view == clickthroughClose) listener.onAdPresented();
+            if (view == skipButton) listener.onButtonClick(Button.SKIP);
         }
     };
     @ColorInt
@@ -108,18 +111,18 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
 
         setClickable(true);
 
-        clickthroughContainer = findViewById(R.id.clickthrough_container);
-        clickthroughClose = findViewById(R.id.clickthrough_close);
         progressView = findViewById(R.id.ad_progress_bar);
         playButton = findViewById(R.id.ad_play_button);
         pauseButton = findViewById(R.id.ad_pause_button);
+        clickthroughContainer = findViewById(R.id.clickthrough_container);
+        clickthroughClose = findViewById(R.id.clickthrough_close);
+        skipButton = findViewById(R.id.btn_skip);
         seekbar = findViewById(R.id.ad_seekbar);
+        seekbar.setPadding(0, 0, 0, 0);
         timeLeftTextView = findViewById(R.id.ad_time_left);
         adTitleTextView = findViewById(R.id.ad_title);
 
         themedItems = new Themed[]{playButton, pauseButton, clickthroughClose};
-
-        seekbar.setPadding(0, 0, 0, 0);
 
         updateColors();
         setupListeners();
@@ -174,11 +177,12 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
     }
 
     private void setupListeners() {
-        clickthroughClose.setOnClickListener(clickListener);
         playButton.setOnClickListener(clickListener);
         pauseButton.setOnClickListener(clickListener);
-        setOnClickListener(clickListener);
+        clickthroughClose.setOnClickListener(clickListener);
+        skipButton.setOnClickListener(clickListener);
         seekbar.setOnTouchListener((v, event) -> true);
+        setOnClickListener(clickListener);
     }
 
     private void renderClickThrough(@Nullable String adUrl, boolean embedClickThroughUrl) {
@@ -232,9 +236,10 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
         renderVisibility(vm.isProgressViewVisible, progressView);
         renderVisibility(vm.isPlayButtonVisible, playButton);
         renderVisibility(vm.isPauseButtonVisible, pauseButton);
+        renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
+        renderVisibility(vm.isSkipButtonVisible, skipButton);
         renderVisibility(vm.isSeekbarVisible, seekbar);
         renderVisibility(vm.isTimeLeftTextVisible, timeLeftTextView);
-        renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
         renderSeekerMaxValue(vm.seekerMaxValue, seekbar);
         renderSeekerProgress(vm.seekerProgress, seekbar);
         renderText(vm.timeLeftText, timeLeftTextView);

@@ -18,7 +18,7 @@ public interface AdControls {
 
     void render(@NonNull ViewModel vm);
 
-    enum Button {PLAY, PAUSE}
+    enum Button {PLAY, PAUSE, SKIP}
 
     @UiThread
     interface Listener {
