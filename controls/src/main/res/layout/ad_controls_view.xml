@@ -4,11 +4,11 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/open_advertisement_link"
-                tools:background="@android:color/black">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/open_advertisement_link"
+    tools:background="@android:color/black">
 
     <ProgressBar
         android:id="@+id/ad_progress_bar"
@@ -17,21 +17,21 @@
         android:layout_height="54dp"
         android:indeterminateDrawable="@drawable/ad_loading_animation"
         android:padding="12dp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/ad_play_button"
         style="@style/AdControlButton"
         android:contentDescription="@string/play_advertisement"
         android:src="@drawable/ic_ad_play"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <com.aol.mobile.sdk.controls.view.TintableImageButton
         android:id="@+id/ad_pause_button"
         style="@style/AdControlButton"
         android:contentDescription="@string/pause_advertisement"
         android:src="@drawable/ic_ad_pause"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <SeekBar
         android:id="@+id/ad_seekbar"
@@ -48,22 +48,22 @@
         android:thumb="@null"
         android:thumbOffset="0dp"
         tools:ignore="RtlHardcoded"
-        tools:progress="40"/>
+        tools:progress="40" />
 
     <TextView
         android:id="@id/ad_time_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/ad_time_left_right_mar"
-        android:paddingBottom="@dimen/ad_time_left_bottom_pad"
         android:paddingRight="@dimen/ad_time_left_right_pad"
+        android:paddingBottom="@dimen/ad_time_left_bottom_pad"
         android:textSize="@dimen/ad_time_left_text_size"
         android:textStyle="bold"
         tools:ignore="RtlHardcoded,SpUsage"
         tools:text="00:00"
-        tools:textColor="@android:color/white"/>
+        tools:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/ad_title"
@@ -79,14 +79,14 @@
         android:text="@string/advertisement"
         android:textColor="@android:color/white"
         android:textSize="@dimen/ad_title_text_size"
-        tools:ignore="RtlHardcoded,SpUsage"/>
+        tools:ignore="RtlHardcoded,SpUsage" />
 
     <FrameLayout
         android:id="@+id/clickthrough_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -102,6 +102,18 @@
             android:src="@drawable/ic_ad_close"
             android:visibility="gone"
             tools:ignore="RtlHardcoded"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="@dimen/ad_controls_width"
+            android:layout_height="@dimen/ad_controls_height"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="@dimen/ad_controls_height"
+            android:text="skip"
+            android:visibility="gone"
+            tools:ignore="RtlHardcoded"
+            tools:visibility="visible" />
     </FrameLayout>
 </RelativeLayout>
