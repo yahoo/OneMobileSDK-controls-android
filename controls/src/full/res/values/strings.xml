@@ -23,4 +23,6 @@
     <string name="time">time</string>
     <string name="tracks">tracks selection</string>
     <string name="compas">tap to center video</string>
+    <string name="skip">Skip%s%s</string>
+    <string name="in">\u0020in</string>
 </resources>

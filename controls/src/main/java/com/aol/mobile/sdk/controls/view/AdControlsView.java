@@ -33,6 +33,7 @@ import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 
 import static android.widget.FrameLayout.LayoutParams.MATCH_PARENT;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderAvailability;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerMaxValue;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerProgress;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderText;
@@ -238,6 +239,16 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
         renderVisibility(vm.isPauseButtonVisible, pauseButton);
         renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
         renderVisibility(vm.isSkipButtonVisible, skipButton);
+        String skipText = String.format(getResources().getString(R.string.skip),
+                "",
+                "");
+        if (vm.skipCountdown != null) {
+            skipText = String.format(getResources().getString(R.string.skip),
+                    getResources().getString(R.string.in),
+                    " " + vm.skipCountdown);
+        }
+        renderText(skipText, skipButton);
+        renderAvailability(vm.isSkipButtonEnabled, skipButton);
         renderVisibility(vm.isSeekbarVisible, seekbar);
         renderVisibility(vm.isTimeLeftTextVisible, timeLeftTextView);
         renderSeekerMaxValue(vm.seekerMaxValue, seekbar);
