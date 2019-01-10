@@ -7,6 +7,7 @@ package com.aol.mobile.sdk.controls.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -17,27 +18,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.aol.mobile.sdk.annotations.PublicApi;
 import com.aol.mobile.sdk.controls.AdControls;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 
 import static android.widget.FrameLayout.LayoutParams.MATCH_PARENT;
-import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderAvailability;
-import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerMaxValue;
-import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerProgress;
-import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderText;
-import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderVisibility;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.*;
 
 @PublicApi
 public class AdControlsView extends RelativeLayout implements AdControls, Themed {
@@ -117,7 +110,7 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
         pauseButton = findViewById(R.id.ad_pause_button);
         clickthroughContainer = findViewById(R.id.clickthrough_container);
         clickthroughClose = findViewById(R.id.clickthrough_close);
-        skipButton = findViewById(R.id.btn_skip);
+        skipButton = findViewById(R.id.skip_button);
         seekbar = findViewById(R.id.ad_seekbar);
         seekbar.setPadding(0, 0, 0, 0);
         timeLeftTextView = findViewById(R.id.ad_time_left);
@@ -175,6 +168,9 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
 
         timeLeftTextView.setTextColor(accentColor);
         adTitleTextView.setTextColor(mainColor);
+
+        skipButton.setTextColor(mainColor);
+        skipButton.getBackground().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
     }
 
     private void setupListeners() {
@@ -182,6 +178,17 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
         pauseButton.setOnClickListener(clickListener);
         clickthroughClose.setOnClickListener(clickListener);
         skipButton.setOnClickListener(clickListener);
+        skipButton.setOnTouchListener((view, motionEvent) -> {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    view.setAlpha(0.75F);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    view.setAlpha(1);
+                    break;
+            }
+            return false;
+        });
         seekbar.setOnTouchListener((v, event) -> true);
         setOnClickListener(clickListener);
     }
@@ -234,17 +241,24 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
 
     @Override
     public void render(@NonNull ViewModel vm) {
+        Resources resources = getResources();
         renderVisibility(vm.isProgressViewVisible, progressView);
         renderVisibility(vm.isPlayButtonVisible, playButton);
         renderVisibility(vm.isPauseButtonVisible, pauseButton);
         renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
         renderVisibility(vm.isSkipButtonVisible, skipButton);
-        String skipText = String.format(getResources().getString(R.string.skip),
+        String skipText = String.format(resources.getString(R.string.skip),
                 "",
                 "");
+        int px32dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, resources.getDisplayMetrics());
+        skipButton.setPadding(px32dp, 0, 0, 0);
+        skipButton.setBackground(resources.getDrawable(R.drawable.skip_background_narrow));
         if (vm.skipCountdown != null) {
-            skipText = String.format(getResources().getString(R.string.skip),
-                    getResources().getString(R.string.in),
+            int px22dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22, resources.getDisplayMetrics());
+            skipButton.setPadding(px22dp, 0, 0, 0);
+            skipButton.setBackground(resources.getDrawable(R.drawable.skip_background_wide));
+            skipText = String.format(resources.getString(R.string.skip),
+                    resources.getString(R.string.in),
                     " " + vm.skipCountdown);
         }
         renderText(skipText, skipButton);
