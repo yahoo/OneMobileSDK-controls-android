@@ -38,6 +38,7 @@ public interface AdControls {
         public boolean isSeekbarVisible;
         public boolean isTimeLeftTextVisible;
         public boolean isSkipButtonVisible;
+        public boolean isSkipButtonEnabled;
         public boolean isVpaid;
         public double seekerProgress;
         public int seekerMaxValue;
@@ -49,5 +50,7 @@ public interface AdControls {
         public String durationText;
         @Nullable
         public String adUrl;
+        @Nullable
+        public String skipCountdown;
     }
 }
