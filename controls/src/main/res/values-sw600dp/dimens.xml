@@ -15,9 +15,10 @@
     <dimen name="ad_seekbar_right_mar">12dp</dimen>
     <dimen name="ad_title_bottom_pad">12dp</dimen>
     <dimen name="ad_title_text_size">15dp</dimen>
-    <dimen name="ad_time_left_right_mar">12dp</dimen>
+    <dimen name="ad_time_left_horizontal_mar">12dp</dimen>
     <dimen name="ad_time_left_bottom_pad">20dp</dimen>
     <dimen name="ad_time_left_right_pad">8dp</dimen>
     <dimen name="ad_time_left_text_size">12dp</dimen>
     <dimen name="cast_button_size">41dp</dimen>
+    <dimen name="ad_skip_right_margin">10dp</dimen>
 </resources>

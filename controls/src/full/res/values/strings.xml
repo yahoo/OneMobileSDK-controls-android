@@ -14,6 +14,7 @@
     <string name="pause_video">pause video</string>
     <string name="play_advertisement">play advertisement</string>
     <string name="pause_advertisement">pause advertisement</string>
+    <string name="skip_advertisement">skip advertisement</string>
     <string name="open_advertisement_link">Open advertisement link</string>
     <string name="previous_video">previous video</string>
     <string name="next_video">next video</string>
