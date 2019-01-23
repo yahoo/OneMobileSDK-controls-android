@@ -16,7 +16,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.aol.one.publishers.android:api-tracker-plugin:1.5-SNAPSHOT"
+        classpath "com.aol.one.publishers.android:api-tracker-plugin:1.5"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
