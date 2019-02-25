@@ -41,6 +41,8 @@ public interface ContentControls {
 
         void onCcTrackSelected(int index);
 
+        void onPlaybackSpeedSelected(float speed);
+
         void onCastEnabled();
 
         void onCastDisabled();
