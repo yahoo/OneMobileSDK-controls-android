@@ -76,6 +76,8 @@ public interface ContentControls {
         public boolean isStreamPlaying;
         public boolean isTrackChooserButtonEnabled;
         public boolean isTrackChooserButtonVisible;
+        public boolean isPlaybackSpeedButtonEnabled;
+        public boolean isPlaybackSpeedButtonVisible;
         public int seekerBufferedProgress;
         public int seekerMaxValue;
         public double seekerProgress;

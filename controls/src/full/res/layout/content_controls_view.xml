@@ -209,6 +209,11 @@
                 android:layout_height="@dimen/cast_button_size"
                 android:padding="1.5dp"
                 android:visibility="gone" />
+            <com.aol.mobile.sdk.controls.view.TintableImageButton
+                android:id="@id/playback_speed_button"
+                style="@style/ControlToggleButton"
+                android:contentDescription="@string/tracks"
+                android:src="@drawable/dr_tracks" />
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@id/tracks_button"

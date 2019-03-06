@@ -16,47 +16,38 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aol.mobile.sdk.controls.ContentControls;
 import com.aol.mobile.sdk.controls.R;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.AUDIO;
-import static com.aol.mobile.sdk.controls.utils.TracksChooserAdapter.Item.Type.CC;
+import static com.aol.mobile.sdk.controls.utils.PlaybackSpeedChooserAdapter.Item.Type.SPEED;
 import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 
-public class TracksChooserAdapter extends BaseAdapter {
+public class PlaybackSpeedChooserAdapter extends BaseAdapter {
     @NonNull
     private final List<Item> items = new ArrayList<>();
 
-    @SuppressWarnings("deprecation")
-    public void updateData(@NonNull Context context, @NonNull LinkedList<ContentControls.ViewModel.TrackOptionVM> audioTracks,
-                           @NonNull LinkedList<ContentControls.ViewModel.TrackOptionVM> ccTracks) {
+    public PlaybackSpeedChooserAdapter(@NonNull Context context) {
         Resources resources = context.getResources();
         int headerColor = resources.getColor(R.color.dialog_header_color);
         int trackColor = resources.getColor(R.color.dialog_title_color);
         Drawable selectedIcon = resources.getDrawable(R.drawable.ic_item_selected);
         Drawable closeIcon = resources.getDrawable(R.drawable.ic_dialog_close);
 
-        items.clear();
-        if (!audioTracks.isEmpty()) {
-            items.add(new Item(headerColor, resources.getString(R.string.audio_tracks_title)));
-            for (ContentControls.ViewModel.TrackOptionVM audioTrack : audioTracks) {
-                items.add(new Item(trackColor, audioTrack, selectedIcon, AUDIO, audioTracks.indexOf(audioTrack)));
-            }
-        }
+        items.add(new Item(headerColor, resources.getString(R.string.playback_speed_title)));
 
-        if (!ccTracks.isEmpty()) {
-            items.add(new Item(headerColor, resources.getString(R.string.text_tracks_title)));
-            for (ContentControls.ViewModel.TrackOptionVM ccTrack : ccTracks) {
-                items.add(new Item(trackColor, ccTrack, selectedIcon, CC, ccTracks.indexOf(ccTrack)));
-            }
-        }
+        items.add(new Item(trackColor, 0.25f, "0.25", selectedIcon));
+        items.add(new Item(trackColor, 0.5f, "0.5", selectedIcon));
+        items.add(new Item(trackColor, 0.75f, "0.75", selectedIcon));
+        items.add(new Item(trackColor, 1f, resources.getString(R.string.normal_playback_speed), selectedIcon));
+        items.add(new Item(trackColor, 1.25f, "1.25", selectedIcon));
+        items.add(new Item(trackColor, 1.5f, "1.5", selectedIcon));
+        items.add(new Item(trackColor, 1.75f, "1.75", selectedIcon));
+        items.add(new Item(trackColor, 2f, "2", selectedIcon));
 
         items.add(new Item(trackColor, resources.getString(R.string.dialog_close_title), closeIcon));
 
@@ -66,10 +57,10 @@ public class TracksChooserAdapter extends BaseAdapter {
     public void select(int index) {
         Item selectedItem = items.get(index);
 
-        if (selectedItem.type == CC || selectedItem.type == AUDIO) {
+        if (selectedItem.type == SPEED) {
             for (Item item : items) {
-                if (item.type == selectedItem.type) {
-                    item.imageVisibility = item == selectedItem ? VISIBLE : INVISIBLE;
+                if (item.type == SPEED) {
+                    item.isSelected = item == selectedItem;
                 }
             }
         }
@@ -98,11 +89,6 @@ public class TracksChooserAdapter extends BaseAdapter {
     }
 
     @Override
-    public boolean isEnabled(int position) {
-        return getItem(position).imageVisibility != GONE;
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = View.inflate(parent.getContext(), R.layout.track_item_view, null);
@@ -115,7 +101,7 @@ public class TracksChooserAdapter extends BaseAdapter {
         ViewHolder views = (ViewHolder) convertView.getTag();
         Item item = getItem(position);
 
-        views.image.setVisibility(item.imageVisibility);
+        views.image.setVisibility(item.isSelected ? VISIBLE : INVISIBLE);
         views.image.setImageDrawable(item.imageDrawable);
         views.title.setText(item.text);
         views.title.setTextColor(item.color);
@@ -142,42 +128,46 @@ public class TracksChooserAdapter extends BaseAdapter {
     public static class Item {
         @NonNull
         public final Type type;
-        public final int index;
-        int color;
-        int imageVisibility;
-        @Nullable
-        Drawable imageDrawable;
-        @Nullable
+        public final float value;
+        final int color;
         String text;
-        boolean hadDivider;
+        @Nullable
+        final Drawable imageDrawable;
+        final boolean hadDivider;
+        boolean isSelected;
 
         Item(int color, @Nullable String text) {
-            this.color = color;
-            this.imageVisibility = GONE;
-            this.text = text;
             this.type = Type.TITLE;
-            this.index = -1;
+            this.value = -1;
+            this.color = color;
+            this.text = text;
+            this.imageDrawable = null;
+            this.hadDivider = false;
+            this.isSelected = false;
         }
 
         Item(int color, @Nullable String text, @Nullable Drawable drawable) {
+            this.type = Type.CLOSE;
+            this.value = -1;
             this.color = color;
-            this.imageVisibility = VISIBLE;
             this.text = text;
             this.imageDrawable = drawable;
             this.hadDivider = true;
-            this.type = Type.CLOSE;
-            this.index = -1;
+            this.isSelected = true;
         }
 
-        Item(int color, @NonNull ContentControls.ViewModel.TrackOptionVM track, @NonNull Drawable selectedIcon, @NonNull Type type, int index) {
+        Item(int color, float playbackSpeed, @NonNull String text, @NonNull Drawable selectedIcon) {
+            this.type = Type.SPEED;
+            this.value = playbackSpeed;
             this.color = color;
-            this.imageVisibility = track.isSelected ? VISIBLE : INVISIBLE;
+            this.text = text;
             this.imageDrawable = selectedIcon;
-            this.text = track.title;
-            this.type = type;
-            this.index = index;
+            this.hadDivider = false;
+            this.isSelected = playbackSpeed == 1;
         }
 
-        public enum Type {AUDIO, CC, TITLE, CLOSE}
+        public enum Type {SPEED, TITLE, CLOSE}
     }
+
+
 }

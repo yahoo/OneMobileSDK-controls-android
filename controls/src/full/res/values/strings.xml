@@ -5,9 +5,11 @@
 
 <resources>
     <string name="advertisement">Advertisement</string>
+    <string name="playback_speed_title">PLAYBACK SPEED</string>
+    <string name="normal_playback_speed">Normal</string>
     <string name="audio_tracks_title">AUDIO</string>
     <string name="text_tracks_title">SUBTITLES</string>
-    <string name="track_close_title">Close</string>
+    <string name="dialog_close_title">Close</string>
     <string name="live">LIVE</string>
     <string name="play_video">play video</string>
     <string name="replay_video">replay video</string>
