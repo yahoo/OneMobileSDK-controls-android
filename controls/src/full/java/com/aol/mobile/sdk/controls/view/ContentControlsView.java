@@ -48,6 +48,7 @@ import com.aol.mobile.sdk.controls.ImageLoader;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 import com.aol.mobile.sdk.controls.utils.AndroidHandlerTimer;
+import com.aol.mobile.sdk.controls.utils.PlaybackSpeedChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.TracksChooserAdapter;
 import com.aol.mobile.sdk.controls.utils.ViewUtils;
 import com.aol.mobile.sdk.controls.utils.VisibilityModule;
@@ -82,6 +83,8 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final TintableImageButton trackChooserButton;
     @NonNull
+    private final TintableImageButton playbackSpeedButton;
+    @NonNull
     private final TintableImageButton backwardSeekButton;
     @NonNull
     private final TintableImageButton forwardSeekButton;
@@ -112,7 +115,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @NonNull
     private final Themed[] themedItems;
     @NonNull
-    private final TracksChooserAdapter adapter = new TracksChooserAdapter();
+    private final TracksChooserAdapter tracksChooserAdapter = new TracksChooserAdapter();
+    @NonNull
+    private final PlaybackSpeedChooserAdapter playbackSpeedChooserAdapter;
     @NonNull
     private final LinkedList<ViewModel.TrackOptionVM> audioTracks = new LinkedList<>();
     private final LinkedList<ViewModel.TrackOptionVM> ccTracks = new LinkedList<>();
@@ -184,7 +189,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     });
     private boolean shouldHideControls = true;
     @Nullable
-    private Dialog dialog;
+    private Dialog tracksDialog;
+    @Nullable
+    private Dialog playbackSpeedDialog;
     @NonNull
     private final OnClickListener clickListener = new OnClickListener() {
         @Override
@@ -209,17 +216,17 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
             if (view == advertisementButton) listener.onBrandedContentAdClicked();
 
             if (view == trackChooserButton) {
-                adapter.updateData(getContext(), audioTracks, ccTracks);
-                dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.setOnDismissListener(dialog -> ContentControlsView.this.dialog = null);
+                tracksChooserAdapter.updateData(getContext(), audioTracks, ccTracks);
+                tracksDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                tracksDialog.setCanceledOnTouchOutside(true);
+                tracksDialog.setOnDismissListener(dialog -> ContentControlsView.this.tracksDialog = null);
                 ListView listView = new ListView(getContext());
                 listView.setDivider(null);
-                listView.setAdapter(adapter);
+                listView.setAdapter(tracksChooserAdapter);
                 listView.setOnItemClickListener((parent, view1, position, id) -> {
-                    adapter.select(position);
+                    tracksChooserAdapter.select(position);
 
-                    TracksChooserAdapter.Item item = adapter.getItem(position);
+                    TracksChooserAdapter.Item item = tracksChooserAdapter.getItem(position);
 
                     switch (item.type) {
                         case CC:
@@ -231,19 +238,52 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                             break;
 
                         case CLOSE:
-                            dialog.dismiss();
+                            tracksDialog.dismiss();
                             break;
                     }
                 });
-                dialog.setContentView(listView);
-                Window window = dialog.getWindow();
+                tracksDialog.setContentView(listView);
+                Window window = tracksDialog.getWindow();
                 if (window != null) {
                     window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                     window.getAttributes().windowAnimations = R.style.TracksDialogAnimation;
                     window.getAttributes().gravity = Gravity.BOTTOM | Gravity.FILL_HORIZONTAL;
                     window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 }
-                dialog.show();
+                tracksDialog.show();
+            }
+            if (view == playbackSpeedButton) {
+                playbackSpeedDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                playbackSpeedDialog.setCanceledOnTouchOutside(true);
+                playbackSpeedDialog.setOnDismissListener(dialog -> ContentControlsView.this.playbackSpeedDialog = null);
+                ListView listView = new ListView(getContext());
+                listView.setDivider(null);
+                listView.setAdapter(playbackSpeedChooserAdapter);
+                listView.setOnItemClickListener((parent, view1, position, id) -> {
+                    playbackSpeedChooserAdapter.select(position);
+
+                    PlaybackSpeedChooserAdapter.Item item = playbackSpeedChooserAdapter.getItem(position);
+
+                    switch (item.type) {
+                        case SPEED:
+                            listener.onPlaybackSpeedSelected(item.value);
+                            playbackSpeedDialog.dismiss();
+                            break;
+
+                        case CLOSE:
+                            playbackSpeedDialog.dismiss();
+                            break;
+                    }
+                });
+                playbackSpeedDialog.setContentView(listView);
+                Window window = playbackSpeedDialog.getWindow();
+                if (window != null) {
+                    window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                    window.getAttributes().windowAnimations = R.style.TracksDialogAnimation;
+                    window.getAttributes().gravity = Gravity.BOTTOM | Gravity.FILL_HORIZONTAL;
+                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                playbackSpeedDialog.show();
             }
         }
     };
@@ -294,6 +334,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         playNextButton = findView(this, R.id.next_button);
         playPreviousButton = findView(this, R.id.prev_button);
         trackChooserButton = findView(this, R.id.tracks_button);
+        playbackSpeedButton = findView(this, R.id.playback_speed_button);
         forwardSeekButton = findView(this, R.id.forward_seek_button);
         backwardSeekButton = findView(this, R.id.backward_seek_button);
         liveIndicatorLayout = findView(this, R.id.live_indicator);
@@ -307,6 +348,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         sidePanel = findView(this, R.id.side_panel);
         durationView = findView(this, R.id.duration);
         currentTimeView = findView(this, R.id.current_time);
+        playbackSpeedChooserAdapter = new PlaybackSpeedChooserAdapter(context);
 //        castHolder = findView(this, R.id.cast_placeholder);
 
 //        checkCast();
@@ -320,6 +362,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
                 pauseButton.view,
                 replayButton.view,
                 trackChooserButton,
+                playbackSpeedButton,
                 backwardSeekButton,
                 forwardSeekButton,
                 playPreviousButton,
@@ -419,6 +462,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         backwardSeekButton.setOnClickListener(clickListener);
         compassView.setOnClickListener(clickListener);
         trackChooserButton.setOnClickListener(clickListener);
+        playbackSpeedButton.setOnClickListener(clickListener);
         advertisementButton.setOnClickListener(clickListener);
         seekbar.setOnSeekBarChangeListener(seekbarListener);
     }
@@ -462,10 +506,12 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         ViewUtils.renderVisibility(vm.isAdvertisementButtonVisible, advertisementButton);
         ViewUtils.renderVisibility(vm.isThumbnailImageVisible, thumbnailView);
         ViewUtils.renderVisibility(vm.isTrackChooserButtonVisible, trackChooserButton);
+        ViewUtils.renderVisibility(vm.isPlaybackSpeedButtonVisible, playbackSpeedButton);
 
         ViewUtils.renderAvailability(vm.isNextButtonEnabled, playNextButton);
         ViewUtils.renderAvailability(vm.isPrevButtonEnabled, playPreviousButton);
         ViewUtils.renderAvailability(vm.isTrackChooserButtonEnabled, trackChooserButton);
+        ViewUtils.renderAvailability(vm.isPlaybackSpeedButtonEnabled, trackChooserButton);
 
         ViewUtils.renderText(vm.titleText, titleView);
         ViewUtils.renderText(vm.advertisementText, advertisementButton);
@@ -525,9 +571,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         this.ccTracks.addAll(ccTracks);
 
         if (audioTracks.isEmpty() && ccTracks.isEmpty()) {
-            if (dialog != null) {
-                dialog.dismiss();
-                dialog = null;
+            if (tracksDialog != null) {
+                tracksDialog.dismiss();
+                tracksDialog = null;
             }
         }
     }
@@ -623,6 +669,7 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         backwardSeekButton.setOnFocusChangeListener(focusChangeListener);
         forwardSeekButton.setOnFocusChangeListener(focusChangeListener);
         trackChooserButton.setOnFocusChangeListener(focusChangeListener);
+        playbackSpeedButton.setOnFocusChangeListener(focusChangeListener);
         seekbar.setOnFocusChangeListener(focusChangeListener);
         focusedView = replayButton.view;
     }
