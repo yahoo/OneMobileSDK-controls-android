@@ -210,10 +210,11 @@
                 android:padding="1.5dp"
                 android:visibility="gone" />
             <com.aol.mobile.sdk.controls.view.TintableImageButton
+                android:layout_marginRight="5dp"
                 android:id="@id/playback_speed_button"
                 style="@style/ControlToggleButton"
-                android:contentDescription="@string/tracks"
-                android:src="@drawable/dr_tracks" />
+                android:contentDescription="@string/playback_speed"
+                android:src="@drawable/dr_playback_speed" />
 
             <com.aol.mobile.sdk.controls.view.TintableImageButton
                 android:id="@id/tracks_button"

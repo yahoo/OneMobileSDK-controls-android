@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018, Oath Inc.
+  ~ Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_playback_speed_on" android:state_focused="false" android:state_selected="true"/>
+    <item android:drawable="@drawable/ic_playback_speed_on_halo" android:state_focused="true" android:state_selected="true"/>
+    <item android:drawable="@drawable/ic_playback_speed_on_halo" android:state_focused="true" android:state_selected="false"/>
+    <item android:drawable="@drawable/ic_playback_speed"/>
+</selector>
