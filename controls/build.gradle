@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit
+
 /*
  * Copyright 2018, Oath Inc.
  * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
@@ -12,9 +14,61 @@ androidCi {
     apiTrimNamespaces.add("com.aol.mobile.sdk.controls")
 }
 
+String libraryVersion = calculateVersions()
+
+private static int waitOnProcess(Process process) {
+    process.waitFor(60, TimeUnit.SECONDS)
+    return process.exitValue()
+}
+
+private String calculateVersions() {
+    Boolean isCommitTagged
+    Process tagProcess = "git describe --exact-match --tags HEAD".execute()
+    isCommitTagged = waitOnProcess(tagProcess) == 0
+
+    String gitTag = ""
+    def process = "git describe --tags --abbrev=0".execute()
+
+    process.in.eachLine { line ->
+        gitTag += line
+    }
+
+    if (gitTag == "" || gitTag == null) {
+        gitTag = "0.1"
+    }
+
+    List<String> versionParts = gitTag.split(".")
+    String nextVersion
+    switch (versionParts.size()) {
+        case 0:
+            nextVersion = "1.0"
+            break
+        case 1:
+            nextVersion = "1.0"
+            break
+        default:
+            nextVersion = versionParts.withIndex().collect { String part, int index ->
+                if (index == (versionParts.size() - 1)) {
+                    "${part.toInteger() + 1}"
+                } else {
+                    part
+                }
+            }.joinToString(separator = ".", postfix = "", prefix = "")
+    }
+
+    if (isCommitTagged) {
+        return gitTag
+    } else {
+        return "$nextVersion-SNAPSHOT"
+    }
+}
+
 android {
     defaultConfig {
         minSdkVersion 16
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        versionCode = 1
+        versionName = libraryVersion
     }
     flavorDimensions "mode"
     productFlavors {
