@@ -23,14 +23,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.*;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
 import com.aol.mobile.sdk.annotations.PublicApi;
 import com.aol.mobile.sdk.controls.AdControls;
 import com.aol.mobile.sdk.controls.R;
 import com.aol.mobile.sdk.controls.Themed;
 
 import static android.widget.FrameLayout.LayoutParams.MATCH_PARENT;
-import static com.aol.mobile.sdk.controls.utils.ViewUtils.*;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderAvailability;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerMaxValue;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderSeekerProgress;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderText;
+import static com.aol.mobile.sdk.controls.utils.ViewUtils.renderVisibility;
 
 @PublicApi
 public class AdControlsView extends RelativeLayout implements AdControls, Themed {
@@ -247,6 +256,7 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
         renderVisibility(vm.isPauseButtonVisible, pauseButton);
         renderVisibility(vm.isCloseButtonVisible, clickthroughClose);
         renderVisibility(vm.isSkipButtonVisible, skipButton);
+        renderAvailability(vm.isSkipButtonEnabled, skipButton);
         String skipText = String.format(resources.getString(R.string.skip),
                 "",
                 "");
@@ -260,9 +270,13 @@ public class AdControlsView extends RelativeLayout implements AdControls, Themed
             skipText = String.format(resources.getString(R.string.skip),
                     resources.getString(R.string.in),
                     " " + vm.skipCountdown);
+            skipButton.setContentDescription(String.format(resources.getString(R.string.disabled_skip_advertisement),
+                    resources.getString(R.string.in),
+                    " " + vm.skipCountdown));
+        } else {
+            skipButton.setContentDescription(resources.getString(R.string.skip_advertisement));
         }
         renderText(skipText, skipButton);
-        renderAvailability(vm.isSkipButtonEnabled, skipButton);
         renderVisibility(vm.isSeekbarVisible, seekbar);
         renderVisibility(vm.isTimeLeftTextVisible, timeLeftTextView);
         renderSeekerMaxValue(vm.seekerMaxValue, seekbar);

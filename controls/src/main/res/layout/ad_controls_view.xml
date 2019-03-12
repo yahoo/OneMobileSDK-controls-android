@@ -110,7 +110,6 @@
             android:layout_marginRight="@dimen/ad_skip_right_margin"
             android:layout_marginBottom="@dimen/ad_controls_height"
             android:background="@drawable/skip_background_narrow"
-            android:contentDescription="@string/skip_advertisement"
             android:gravity="left|center_vertical"
             android:includeFontPadding="false"
             android:maxWidth="0dp"

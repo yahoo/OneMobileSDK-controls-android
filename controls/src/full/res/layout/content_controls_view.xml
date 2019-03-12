@@ -19,6 +19,7 @@
     <Button
         android:id="@+id/advertisement_button"
         android:layout_width="wrap_content"
+        android:contentDescription="@string/advertisement"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
