@@ -9,5 +9,6 @@
     <color name="default_main_color">#FFFFFF</color>
     <color name="tracks_header_color">#A7A7A7</color>
     <color name="track_title_color">#000</color>
+    <color name="failed_track_title_color">#A7A7A7</color>
     <color name="content_ad_text_color">#292929</color>
 </resources>
