@@ -33,6 +33,7 @@ import static com.aol.mobile.sdk.controls.utils.ViewUtils.findView;
 public class TracksChooserAdapter extends BaseAdapter {
     @NonNull
     private final List<Item> items = new ArrayList<>();
+    int failedtTackColor;
 
     @SuppressWarnings("deprecation")
     public void updateData(@NonNull Context context, @NonNull LinkedList<ContentControls.ViewModel.TrackOptionVM> audioTracks,
@@ -40,6 +41,7 @@ public class TracksChooserAdapter extends BaseAdapter {
         Resources resources = context.getResources();
         int headerColor = resources.getColor(R.color.tracks_header_color);
         int trackColor = resources.getColor(R.color.track_title_color);
+        failedtTackColor = resources.getColor(R.color.failed_track_title_color);
         Drawable selectedIcon = resources.getDrawable(R.drawable.ic_track_selected);
         Drawable closeIcon = resources.getDrawable(R.drawable.ic_tracks_close);
 
@@ -99,7 +101,7 @@ public class TracksChooserAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return getItem(position).imageVisibility != GONE;
+        return getItem(position).imageVisibility != GONE && getItem(position).isEnabled;
     }
 
     @Override
@@ -118,7 +120,8 @@ public class TracksChooserAdapter extends BaseAdapter {
         views.image.setVisibility(item.imageVisibility);
         views.image.setImageDrawable(item.imageDrawable);
         views.title.setText(item.text);
-        views.title.setTextColor(item.color);
+        views.title.setEnabled(item.isEnabled);
+        views.title.setTextColor(item.isEnabled ? item.color : failedtTackColor);
         views.divider.setVisibility(item.hadDivider ? VISIBLE : GONE);
 
         return convertView;
@@ -149,6 +152,7 @@ public class TracksChooserAdapter extends BaseAdapter {
         Drawable imageDrawable;
         @Nullable
         String text;
+        boolean isEnabled = true;
         boolean hadDivider;
 
         Item(int color, @Nullable String text) {
@@ -176,6 +180,7 @@ public class TracksChooserAdapter extends BaseAdapter {
             this.text = track.title;
             this.type = type;
             this.index = index;
+            this.isEnabled = !track.isFailed;
         }
 
         public enum Type {AUDIO, CC, TITLE, CLOSE}

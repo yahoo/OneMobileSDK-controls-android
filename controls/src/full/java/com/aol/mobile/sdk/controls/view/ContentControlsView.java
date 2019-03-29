@@ -518,11 +518,15 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     }
 
     private void renderAudioAndCcList(@NonNull LinkedList<ViewModel.TrackOptionVM> audioTracks, @NonNull LinkedList<ViewModel.TrackOptionVM> ccTracks) {
-        this.audioTracks.clear();
-        this.audioTracks.addAll(audioTracks);
+        if (!this.audioTracks.equals(audioTracks) || !this.ccTracks.equals(ccTracks)) {
+            this.audioTracks.clear();
+            this.audioTracks.addAll(audioTracks);
 
-        this.ccTracks.clear();
-        this.ccTracks.addAll(ccTracks);
+            this.ccTracks.clear();
+            this.ccTracks.addAll(ccTracks);
+
+            adapter.updateData(getContext(), audioTracks, ccTracks);
+        }
 
         if (audioTracks.isEmpty() && ccTracks.isEmpty()) {
             if (dialog != null) {

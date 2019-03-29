@@ -9,6 +9,7 @@ package com.aol.mobile.sdk.controls;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.text.TextUtils;
 
 import com.aol.mobile.sdk.annotations.PublicApi;
 
@@ -104,10 +105,30 @@ public interface ContentControls {
             @Nullable
             public String title;
             public boolean isSelected;
+            public boolean isFailed;
 
-            public TrackOptionVM(@Nullable String title, boolean isSelected) {
+            public TrackOptionVM(@Nullable String title, boolean isSelected, boolean isFailed) {
                 this.title = title;
                 this.isSelected = isSelected;
+                this.isFailed = isFailed;
+            }
+
+            @Override
+            public boolean equals(Object other) {
+                if (other == null) return false;
+                if (other == this) return true;
+                if (!(other instanceof TrackOptionVM)) return false;
+                TrackOptionVM track = (TrackOptionVM) other;
+                return TextUtils.equals(track.title, title) && isSelected == track.isSelected && isFailed == track.isFailed;
+            }
+
+            @Override
+            public int hashCode() {
+                int result = 17;
+                result = 31 * result + (title == null ? 0 : title.hashCode());
+                result = 31 * result + Boolean.valueOf(isSelected).hashCode();
+                result = 31 * result + Boolean.valueOf(isFailed).hashCode();
+                return result;
             }
         }
     }
