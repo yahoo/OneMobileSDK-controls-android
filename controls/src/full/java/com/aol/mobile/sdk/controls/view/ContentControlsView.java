@@ -259,6 +259,12 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     private int accentColor;
     @ColorInt
     private int liveDotColor;
+    @ColorInt
+    private int durationColor;
+    @ColorInt
+    private int titleColor;
+    @ColorInt
+    private int currentTimeColor;
     private boolean hasChromecastModule;
     @Nullable
     private AccessibilityManager accessibilityManager;
@@ -380,10 +386,6 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         TextView liveText = (TextView) liveIndicatorLayout.getChildAt(1);
         liveText.setTextColor(mainColor);
 
-        durationView.setTextColor(mainColor);
-        titleView.setTextColor(mainColor);
-        currentTimeView.setTextColor(accentColor);
-
         progressView.getIndeterminateDrawable().setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
 
 //        View castButton = castHolder.getChildAt(0);
@@ -397,6 +399,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         mainColor = context.getResources().getColor(R.color.default_main_color);
         accentColor = context.getResources().getColor(R.color.default_accent_color);
         liveDotColor = Color.RED;
+        durationColor = mainColor;
+        titleColor = mainColor;
+        currentTimeColor = accentColor;
 
         if (attrs == null) return;
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ContentControlsView, 0, 0);
@@ -488,6 +493,9 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
         } else {
             liveDot.setColorFilter(mainColor, PorterDuff.Mode.MULTIPLY);
         }
+        durationView.setTextColor(durationColor);
+        titleView.setTextColor(titleColor);
+        currentTimeView.setTextColor(currentTimeColor);
 
         isPlaying = vm.isStreamPlaying;
         thumbUrl = vm.thumbnailImageUrl;
@@ -767,5 +775,20 @@ public class ContentControlsView extends RelativeLayout implements ContentContro
     @SuppressWarnings("unused")
     public void setLiveDotColor(@ColorInt int color) {
         liveDotColor = color;
+    }
+
+    @SuppressWarnings("unused")
+    public void setDurationColor(@ColorInt int color) {
+        durationColor = color;
+    }
+
+    @SuppressWarnings("unused")
+    public void setTitleColor(@ColorInt int color) {
+        titleColor = color;
+    }
+
+    @SuppressWarnings("unused")
+    public void setCurrentTimeColor(@ColorInt int color) {
+        currentTimeColor = color;
     }
 }
