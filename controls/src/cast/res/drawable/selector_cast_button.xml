@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018, Oath Inc.
+  ~ Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/icon_media_route_on" android:state_checked="true" android:state_enabled="true" />
+    <item android:drawable="@drawable/anim_cast_button_connecting" android:state_checkable="true" android:state_enabled="true" />
+    <item android:drawable="@drawable/icon_media_route_off" android:state_enabled="true" />
+    <item android:state_pressed="false">
+        <bitmap android:alpha="178" android:src="@drawable/icon_media_route_off" />
+    </item>
+</selector>
