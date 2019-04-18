@@ -1,17 +1,15 @@
 /*
- * Copyright 2018, Oath Inc.
+ * Copyright 2019, Oath Inc.
  * Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
  */
 
-package com.aol.mobile.sdk.controls.utils;
+package com.aol.mobile.sdk.controls.view;
 
 import android.support.annotation.NonNull;
 
-import com.aol.mobile.sdk.controls.view.ContentControlsView;
-
 public final class VisibilityModule {
     @NonNull
-    private final ContentControlsView playerControlsView;
+    private final AbstractContentControlsView playerControlsView;
     @NonNull
     private Behaviour behaviour;
     private final Behaviour VISIBLE_PAUSED = new BehaviourAdapter() {
@@ -87,7 +85,7 @@ public final class VisibilityModule {
         }
     };
 
-    public VisibilityModule(@NonNull ContentControlsView playerControlsView) {
+    public VisibilityModule(@NonNull AbstractContentControlsView playerControlsView) {
         this.playerControlsView = playerControlsView;
         this.behaviour = VISIBLE_PAUSED;
     }
