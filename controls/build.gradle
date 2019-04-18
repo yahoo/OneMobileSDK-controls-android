@@ -16,18 +16,23 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
+
     flavorDimensions "mode"
+
     productFlavors {
         full { dimension "mode" }
         minimal { dimension "mode" }
+        cast { dimension "mode" }
     }
 }
 
 dependencies {
     compileOnly "com.android.support:support-annotations:$support_version"
 
+    castImplementation "com.google.android.gms:play-services-cast-framework:16.1.2"
+
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testImplementation "org.robolectric:robolectric:3.8"
+    testImplementation "org.robolectric:robolectric:4.2"
     testImplementation "net.javacrumbs.json-unit:json-unit-fluent:1.28.2"
     testImplementation "org.assertj:assertj-core:3.9.1"
     testImplementation "com.squareup.assertj:assertj-android:1.2.0"

@@ -6,6 +6,7 @@
 package com.aol.mobile.sdk.controls.utils
 
 import com.aol.mobile.sdk.controls.view.ContentControlsView
+import com.aol.mobile.sdk.controls.view.VisibilityModule
 
 import org.junit.Test
 import org.mockito.Mockito

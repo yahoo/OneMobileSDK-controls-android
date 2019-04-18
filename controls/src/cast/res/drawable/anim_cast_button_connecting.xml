@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018, Oath Inc.
+  ~ Licensed under the terms of the MIT License. See LICENSE.md file in project root for terms.
+  -->
+
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item
+        android:drawable="@drawable/icon_media_route_on_0"
+        android:duration="500" />
+    <item
+        android:drawable="@drawable/icon_media_route_on_1"
+        android:duration="500" />
+    <item
+        android:drawable="@drawable/icon_media_route_on_2"
+        android:duration="500" />
+    <item
+        android:drawable="@drawable/icon_media_route_on_1"
+        android:duration="500" />
+</animation-list>
